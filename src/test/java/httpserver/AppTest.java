@@ -8,6 +8,6 @@ public class AppTest {
     @Test
     public void returnsHelloWorld() throws Exception {
         App app = new App();
-        assertEquals(app.message(), "hello World");
+        assertEquals(app.message(), "Hello World");
     }
 }
