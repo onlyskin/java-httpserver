@@ -17,3 +17,9 @@ jar {
         attributes 'Main-Class': 'httpserver.App'
     }
 }
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
