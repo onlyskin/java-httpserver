@@ -9,9 +9,14 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 public class ResponderTest {
+    private final String tempdir;
+
+    public ResponderTest() {
+        this.tempdir = System.getProperty("java.io.tmpdir");
+    }
+
     @Test
     public void makesResponseForFile() throws Exception {
-        String tempdir = System.getProperty("java.io.tmpdir");
         File tempFile = File.createTempFile("temp-", "-testfile");
         tempFile.deleteOnExit();
         String fullPath = tempFile.toString();
@@ -19,7 +24,7 @@ public class ResponderTest {
 
         FileOutputStream fileOutputStream = new FileOutputStream(fullPath);
         fileOutputStream.write("Test file contents.".getBytes());
-        Request request = new Request("GET", relativePath, new HashMap<String, String>());
+        Request request = new Request("GET", relativePath, new HashMap<>());
         Responder responder = new Responder(tempdir);
 
         Response response = responder.makeResponse(request);
@@ -30,8 +35,7 @@ public class ResponderTest {
 
     @Test
     public void returns404ForFileThatDoesntExist() throws Exception {
-        String tempdir = System.getProperty("java.io.tmpdir");
-        Request request = new Request("GET", "/nonexistent_path_123456789", new HashMap<String, String>());
+        Request request = new Request("GET", "/nonexistent_path_123456789", new HashMap<>());
         Responder responder = new Responder(tempdir);
 
         Response response = responder.makeResponse(request);
