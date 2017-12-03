@@ -20,7 +20,7 @@ public class RequestTest {
 
     @Test
     public void getMethodReturnsGet() throws Exception {
-        assertEquals("GET", request.getMethod());
+        assertEquals(Method.GET, request.getMethod());
     }
 
     @Test

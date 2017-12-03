@@ -3,17 +3,17 @@ package httpserver;
 import java.util.HashMap;
 
 public class Request {
-    private final String method;
+    private final Method method;
     private final String path;
     private final HashMap<String, String> headers;
 
     public Request(String method, String path, HashMap<String, String> headers) {
-        this.method = method;
+        this.method = Method.valueOf(method);
         this.path = path;
         this.headers = headers;
     }
 
-    public String getMethod() {
+    public Method getMethod() {
         return method;
     }
 
