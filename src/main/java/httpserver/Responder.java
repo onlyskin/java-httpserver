@@ -3,8 +3,14 @@ package httpserver;
 import java.io.*;
 
 public class Responder {
+    private final String fileDirectory;
+
+    public Responder(String fileDirectory) {
+        this.fileDirectory = fileDirectory;
+    }
+
     public Response makeResponse(Request request) {
-        File file = new File(request.getPath());
+        File file = new File(fileDirectory + request.getPath());
         byte[] payload;
         int status_code;
 
