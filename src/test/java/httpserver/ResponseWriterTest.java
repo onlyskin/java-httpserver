@@ -17,17 +17,21 @@ public class ResponseWriterTest {
     }
 
     @Test
-    public void itWritesTheFirstLine() throws Exception {
+    public void writes200RequestWithPayload() throws Exception {
         String output = outputStreamForResponse(200, "example");
 
-        assertEquals("HTTP/1.1 200 OK\r\n", output);
+        assertEquals(output,
+                "HTTP/1.1 200 OK\r\n" +
+                        "Content-Length: 7\r\n" +
+                        "\r\n" +
+                        "example");
     }
 
     @Test
     public void itWritesTheFirstLineFor404() throws Exception {
         String output = outputStreamForResponse(404, "");
 
-        assertEquals("HTTP/1.1 404 Not Found\r\n", output);
+        assertTrue(output.contains("HTTP/1.1 404 Not Found\r\n"));
     }
 
     public String outputStreamForResponse(int statusCode, String payload) throws IOException {

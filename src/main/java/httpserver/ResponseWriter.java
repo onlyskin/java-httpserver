@@ -19,5 +19,8 @@ public class ResponseWriter {
         outputStream.write(("HTTP/1.1 " + statusCode
                     + " " + statuses.get(statusCode)
                     + "\r\n").getBytes());
+        outputStream.write(("Content-Length: " + response.getPayload().length + "\r\n").getBytes());
+        outputStream.write(("\r\n").getBytes());
+        outputStream.write(response.getPayload());
     }
 }
