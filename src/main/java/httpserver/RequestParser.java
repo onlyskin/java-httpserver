@@ -8,10 +8,18 @@ import java.util.HashMap;
 
 public class RequestParser {
     public Request parse(InputStream inputStream) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(inputStream));
 
-        String[] requestParams = in.readLine().split(" ", 3);
+        String[] requestParams = in.readLine().split(" ");
 
-        return new Request(requestParams[0], requestParams[1], new HashMap<>());
+        HashMap<String, String> headers = new HashMap<>();
+        String inputLine;
+        while (!(inputLine = in.readLine()).equals("")) {
+            String[] header = inputLine.split(":\\s*", 2);
+            headers.put(header[0], header[1]);
+        }
+
+        return new Request(requestParams[0], requestParams[1], headers);
     }
 }
