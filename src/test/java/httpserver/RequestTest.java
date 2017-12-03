@@ -20,17 +20,17 @@ public class RequestTest {
 
     @Test
     public void getMethodReturnsGet() throws Exception {
-        assertEquals(request.getMethod(), "GET");
+        assertEquals("GET", request.getMethod());
     }
 
     @Test
     public void getPathReturnsPath() throws Exception {
-        assertEquals(request.getPath(), "example.txt");
+        assertEquals("example.txt", request.getPath());
     }
 
     @Test
     public void getHeadersReturnsHeaders() throws Exception {
         HashMap<String, String> headers = request.getHeaders();
-        assertEquals(headers.get("test-header"), "test-value");
+        assertEquals("test-value", headers.get("test-header"));
     }
 }
