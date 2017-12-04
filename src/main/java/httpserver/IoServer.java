@@ -4,13 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class Server {
+public class IoServer {
     private final String fileDirectory;
     private final RequestParser requestParser;
     private final Responder responder;
     private final ResponseWriter responseWriter;
 
-    public Server(String fileDirectory) {
+    public IoServer(String fileDirectory) {
         this.fileDirectory = fileDirectory;
         this.requestParser = new RequestParser();
         this.responder = new Responder(fileDirectory);
