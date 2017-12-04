@@ -3,6 +3,8 @@ package httpserver;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 
@@ -13,15 +15,18 @@ import static org.junit.Assert.*;
 public class ResponderTest {
     private final String tempdir;
     private final Responder responder;
+    private final Path tempDirPath;
 
-    public ResponderTest() {
-        this.tempdir = System.getProperty("java.io.tmpdir");
+    public ResponderTest() throws IOException {
+        this.tempDirPath = createTempDirectory("temp-dir");
+        tempDirPath.toFile().deleteOnExit();
+        this.tempdir = tempDirPath.toString() + "/";
         responder = new Responder(tempdir);
     }
 
     @Test
     public void makesResponseForFile() throws Exception {
-        Path tempFile = createTempFile("temp-", "-testfile");
+        Path tempFile = createTempFile(tempDirPath, "temp-", "-testfile");
         tempFile.toFile().deleteOnExit();
         String fullPath = tempFile.toString();
 
@@ -47,20 +52,21 @@ public class ResponderTest {
 
     @Test
     public void listsDirectoryContentsForDir() throws Exception {
-        Path subTempdir = createTempDirectory("temp-dir");
+        Path subTempdir = createTempDirectory(tempDirPath, "aaaaaa");
         subTempdir.toFile().deleteOnExit();
-        Path tempFile1 = createTempFile("temp-", "-testfile");
+        Path tempFile1 = createTempFile(tempDirPath, "bbbbbb", "-testfile");
         tempFile1.toFile().deleteOnExit();
-        Path tempFile2 = createTempFile("temp-", "-testfile");
+        Path tempFile2 = createTempFile(tempDirPath, "cccccc", "-testfile");
         tempFile2.toFile().deleteOnExit();
 
-        Request request = new Request("GET", "/", new HashMap<>());
+        Request request = new Request("GET", "", new HashMap<>());
         Response response = responder.makeResponse(request);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(subTempdir)));
-        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile1)));
-        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile2)));
+        String expected = htmlLinkForPath(subTempdir) + "\r\n" +
+                htmlLinkForPath(tempFile1) + "\r\n" +
+                htmlLinkForPath(tempFile2) + "\r\n";
+        assertEquals(expected, new String(response.getPayload()));
     }
 
     private String relativePath(Path file) {
@@ -68,6 +74,12 @@ public class ResponderTest {
     }
     
     private String htmlLinkForPath(Path file) {
-        return "<a href=\"" + relativePath(file) + "\">" + relativePath(file) + "</a>";
+        String relativePath;
+        if (Files.isDirectory(file)) {
+            relativePath = relativePath(file) + "/";
+        } else {
+            relativePath = relativePath(file);
+        }
+        return "<div><a href=\"" + relativePath + "\">" + relativePath + "</a></div>";
     }
 }

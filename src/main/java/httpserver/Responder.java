@@ -10,7 +10,7 @@ public class Responder {
     }
 
     public Response makeResponse(Request request) {
-        File file = new File(fileDirectory + request.getPath());
+        File file = new File(fileDirectory + "/" + request.getPath());
         byte[] payload;
         int status_code;
 
@@ -32,15 +32,26 @@ public class Responder {
 
     private byte[] getDirectoryListingBytes(File directory) {
         String output = "";
-        String[] files = directory.list();
-        for (String f : files) {
+        File[] files = directory.listFiles();
+        for (File f : files) {
             output = output + makeLinkForFile(f);
         }
         return output.getBytes();
     }
 
-    private String makeLinkForFile(String filepath) {
-        return "<div><a href=\"" + filepath + "\">" + filepath + "</a></div>\r\n";
+    private String makeLinkForFile(File file) {
+        String href;
+        if (file.isDirectory()) {
+            href = relativePath(file) + "/";
+        } else {
+            href = relativePath(file);
+        }
+        return "<div><a href=\"" + href + "\">" + href + "</a></div>\r\n";
+    }
+
+
+    private String relativePath(File file) {
+        return file.toString().substring(fileDirectory.length());
     }
 
     private byte[] readFileContents(File file) {
