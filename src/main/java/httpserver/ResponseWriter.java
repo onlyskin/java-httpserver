@@ -1,8 +1,8 @@
 package httpserver;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.io.OutputStream;
 import java.util.HashMap;
 
 public class ResponseWriter {
@@ -14,7 +14,7 @@ public class ResponseWriter {
         statuses.put(404, "Not Found");
     }
 
-    public void write(Response response, ByteArrayOutputStream outputStream) throws IOException {
+    public void write(Response response, OutputStream outputStream) throws IOException {
         int statusCode = response.getStatusCode();
         outputStream.write(("HTTP/1.1 " + statusCode
                     + " " + statuses.get(statusCode)
