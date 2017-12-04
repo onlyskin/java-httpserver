@@ -16,23 +16,30 @@ public class ResponderTest {
     private final String tempdir;
     private final Responder responder;
     private final Path tempDirPath;
+    private final Path subTempdir;
+    private final Path tempFile1;
+    private final Path tempFile2;
 
     public ResponderTest() throws IOException {
         this.tempDirPath = createTempDirectory("temp-dir");
         tempDirPath.toFile().deleteOnExit();
         this.tempdir = tempDirPath.toString() + "/";
         responder = new Responder(tempdir);
+
+        this.subTempdir = createTempDirectory(tempDirPath, "aaaaaa");
+        subTempdir.toFile().deleteOnExit();
+        this.tempFile1 = createTempFile(tempDirPath, "bbbbbb", "-testfile");
+        tempFile1.toFile().deleteOnExit();
+        this.tempFile2 = createTempFile(tempDirPath, "cccccc", "-testfile");
+        tempFile2.toFile().deleteOnExit();
     }
 
     @Test
     public void makesResponseForFile() throws Exception {
-        Path tempFile = createTempFile(tempDirPath, "temp-", "-testfile");
-        tempFile.toFile().deleteOnExit();
-        String fullPath = tempFile.toString();
-
+        String fullPath = tempFile1.toString();
         FileOutputStream fileOutputStream = new FileOutputStream(fullPath);
         fileOutputStream.write("Test file contents.".getBytes());
-        Request request = new Request("GET", relativePath(tempFile), new HashMap<>());
+        Request request = new Request("GET", relativePath(tempFile1), new HashMap<>());
 
         Response response = responder.makeResponse(request);
 
@@ -52,14 +59,8 @@ public class ResponderTest {
 
     @Test
     public void listsDirectoryContentsForDir() throws Exception {
-        Path subTempdir = createTempDirectory(tempDirPath, "aaaaaa");
-        subTempdir.toFile().deleteOnExit();
-        Path tempFile1 = createTempFile(tempDirPath, "bbbbbb", "-testfile");
-        tempFile1.toFile().deleteOnExit();
-        Path tempFile2 = createTempFile(tempDirPath, "cccccc", "-testfile");
-        tempFile2.toFile().deleteOnExit();
-
         Request request = new Request("GET", "", new HashMap<>());
+
         Response response = responder.makeResponse(request);
 
         assertEquals(200, response.getStatusCode());
