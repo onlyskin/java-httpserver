@@ -40,7 +40,7 @@ public class Responder {
     }
 
     private String makeLinkForFile(String filepath) {
-        return "<a href=\"" + filepath + "\">" + filepath + "</a>\r\n";
+        return "<div><a href=\"" + filepath + "\">" + filepath + "</a></div>\r\n";
     }
 
     private byte[] readFileContents(File file) {
