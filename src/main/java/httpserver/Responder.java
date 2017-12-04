@@ -4,10 +4,8 @@ import java.io.*;
 
 public class Responder {
     private final String fileDirectory;
-    private final int port;
 
-    public Responder(int port, String fileDirectory) {
-        this.port = port;
+    public Responder(String fileDirectory) {
         this.fileDirectory = fileDirectory;
     }
 
@@ -42,8 +40,7 @@ public class Responder {
     }
 
     private String makeLinkForFile(String filepath) {
-        String serverPath = port + ":" + filepath;
-        return "<a href=\"" + serverPath + "\">" + filepath + "</a>";
+        return "<a href=\"" + filepath + "\">" + filepath + "</a>\r\n";
     }
 
     private byte[] readFileContents(File file) {

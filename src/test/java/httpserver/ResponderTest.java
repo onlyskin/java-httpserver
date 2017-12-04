@@ -1,6 +1,5 @@
 package httpserver;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.FileOutputStream;
@@ -14,12 +13,10 @@ import static org.junit.Assert.*;
 public class ResponderTest {
     private final String tempdir;
     private final Responder responder;
-    private final int port;
 
     public ResponderTest() {
         this.tempdir = System.getProperty("java.io.tmpdir");
-        this.port = 3000;
-        responder = new Responder(port, tempdir);
+        responder = new Responder(tempdir);
     }
 
     @Test
@@ -61,9 +58,6 @@ public class ResponderTest {
         Response response = responder.makeResponse(request);
 
         assertEquals(200, response.getStatusCode());
-        String inspect = new String(response.getPayload());
-        String y = htmlLinkForPath(subTempdir);
-        String x = "";
         assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(subTempdir)));
         assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile1)));
         assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile2)));
@@ -74,7 +68,6 @@ public class ResponderTest {
     }
     
     private String htmlLinkForPath(Path file) {
-        String serverPath = port + ":" + relativePath(file);
-        return "<a href=\"" + serverPath + "\">" + relativePath(file) + "</a>";
+        return "<a href=\"" + relativePath(file) + "\">" + relativePath(file) + "</a>";
     }
 }
