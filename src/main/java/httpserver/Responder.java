@@ -18,12 +18,25 @@ public class Responder {
             payload = readFileContents(file);
             status_code = 200;
         }
+        else if (file.isDirectory()) {
+            status_code = 200;
+            payload = getDirectoryListingBytes(file);
+        }
         else {
             payload = "".getBytes();
             status_code = 404;
         }
 
         return new Response(status_code, payload);
+    }
+
+    private byte[] getDirectoryListingBytes(File directory) {
+        String output = "";
+        String[] files = directory.list();
+        for (String f : files) {
+            output = output + f + "\r\n";
+        }
+        return output.getBytes();
     }
 
     private byte[] readFileContents(File file) {
