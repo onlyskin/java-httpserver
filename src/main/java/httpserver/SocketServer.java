@@ -17,7 +17,7 @@ public class SocketServer {
     public void run() throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
         Socket clientSocket = serverSocket.accept();
-        IoProcessor ioProcessor = new IoProcessor(fileDirectory);
+        IoProcessor ioProcessor = new IoProcessor(port, fileDirectory);
         ioProcessor.process(clientSocket.getInputStream(), clientSocket.getOutputStream());
     }
 }

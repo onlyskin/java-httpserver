@@ -9,9 +9,9 @@ public class IoProcessor {
     private final Responder responder;
     private final ResponseWriter responseWriter;
 
-    public IoProcessor(String fileDirectory) {
+    public IoProcessor(int port, String fileDirectory) {
         this.requestParser = new RequestParser();
-        this.responder = new Responder(fileDirectory);
+        this.responder = new Responder(port, fileDirectory);
         this.responseWriter = new ResponseWriter();
     }
 

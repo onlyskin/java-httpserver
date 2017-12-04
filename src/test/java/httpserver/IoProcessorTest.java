@@ -8,9 +8,11 @@ import static org.junit.Assert.*;
 
 public class IoProcessorTest {
     private final String tempdir;
+    private final int port;
 
     public IoProcessorTest() {
         this.tempdir = System.getProperty("java.io.tmpdir");
+        this.port = 400;
     }
 
     @Test
@@ -25,7 +27,7 @@ public class IoProcessorTest {
         byte[] request = ("GET " + relativePath + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IoProcessor ioProcessor = new IoProcessor(tempdir);
+        IoProcessor ioProcessor = new IoProcessor(port, tempdir);
 
         ioProcessor.process(inputStream, outputStream);
 

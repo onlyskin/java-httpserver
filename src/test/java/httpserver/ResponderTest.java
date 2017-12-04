@@ -14,10 +14,12 @@ import static org.junit.Assert.*;
 public class ResponderTest {
     private final String tempdir;
     private final Responder responder;
+    private final int port;
 
     public ResponderTest() {
         this.tempdir = System.getProperty("java.io.tmpdir");
-        responder = new Responder(tempdir);
+        this.port = 3000;
+        responder = new Responder(port, tempdir);
     }
 
     @Test
@@ -28,7 +30,7 @@ public class ResponderTest {
 
         FileOutputStream fileOutputStream = new FileOutputStream(fullPath);
         fileOutputStream.write("Test file contents.".getBytes());
-        Request request = new Request("GET", makeRelativePath(tempFile), new HashMap<>());
+        Request request = new Request("GET", relativePath(tempFile), new HashMap<>());
 
         Response response = responder.makeResponse(request);
 
@@ -56,19 +58,23 @@ public class ResponderTest {
         tempFile2.toFile().deleteOnExit();
 
         Request request = new Request("GET", "/", new HashMap<>());
-
         Response response = responder.makeResponse(request);
-        String subDirPath = makeRelativePath(subTempdir);
-        String tempFile1Path = makeRelativePath(tempFile1);
-        String tempFile2Path = makeRelativePath(tempFile2);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(new String(response.getPayload()).contains(subDirPath));
-        assertTrue(new String(response.getPayload()).contains(tempFile1Path));
-        assertTrue(new String(response.getPayload()).contains(tempFile2Path));
+        String inspect = new String(response.getPayload());
+        String y = htmlLinkForPath(subTempdir);
+        String x = "";
+        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(subTempdir)));
+        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile1)));
+        assertTrue(new String(response.getPayload()).contains(htmlLinkForPath(tempFile2)));
     }
 
-    private String makeRelativePath(Path file) {
+    private String relativePath(Path file) {
         return file.toString().substring(tempdir.length());
+    }
+    
+    private String htmlLinkForPath(Path file) {
+        String serverPath = port + ":" + relativePath(file);
+        return "<a href=\"" + serverPath + "\">" + relativePath(file) + "</a>";
     }
 }
