@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class IoProcessor {
+public class SocketHandler {
     private final RequestParser requestParser;
     private final Responder responder;
     private final ResponseWriter responseWriter;
 
-    public IoProcessor(String fileDirectory) {
+    public SocketHandler(String fileDirectory) {
         this.requestParser = new RequestParser();
         this.responder = new Responder(fileDirectory);
         this.responseWriter = new ResponseWriter();

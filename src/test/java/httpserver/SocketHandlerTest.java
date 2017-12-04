@@ -6,10 +6,10 @@ import java.io.*;
 
 import static org.junit.Assert.*;
 
-public class IoProcessorTest {
+public class SocketHandlerTest {
     private final String tempdir;
 
-    public IoProcessorTest() {
+    public SocketHandlerTest() {
         this.tempdir = System.getProperty("java.io.tmpdir");
     }
 
@@ -25,9 +25,9 @@ public class IoProcessorTest {
         byte[] request = ("GET " + relativePath + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IoProcessor ioProcessor = new IoProcessor(tempdir);
+        SocketHandler socketHandler = new SocketHandler(tempdir);
 
-        ioProcessor.process(inputStream, outputStream);
+        socketHandler.process(inputStream, outputStream);
 
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: 35\r\n\r\nTest file contents for GET request.";
         assertEquals(expected, outputStream.toString());
