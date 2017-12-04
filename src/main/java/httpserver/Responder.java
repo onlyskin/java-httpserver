@@ -46,7 +46,7 @@ public class Responder {
         } else {
             href = relativePath(file);
         }
-        return "<div><a href=\"" + href + "\">" + href + "</a></div>\r\n";
+        return "<div><a href=\"/" + href + "\">" + href + "</a></div>\r\n";
     }
 
 

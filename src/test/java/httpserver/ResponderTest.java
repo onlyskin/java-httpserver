@@ -80,6 +80,6 @@ public class ResponderTest {
         } else {
             relativePath = relativePath(file);
         }
-        return "<div><a href=\"" + relativePath + "\">" + relativePath + "</a></div>";
+        return "<div><a href=\"/" + relativePath + "\">" + relativePath + "</a></div>";
     }
 }

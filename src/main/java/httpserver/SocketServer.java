@@ -16,8 +16,10 @@ public class SocketServer {
 
     public void run() throws IOException {
         ServerSocket serverSocket = new ServerSocket(port);
-        Socket clientSocket = serverSocket.accept();
-        IoProcessor ioProcessor = new IoProcessor(fileDirectory);
-        ioProcessor.process(clientSocket.getInputStream(), clientSocket.getOutputStream());
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            IoProcessor ioProcessor = new IoProcessor(fileDirectory);
+            ioProcessor.process(clientSocket.getInputStream(), clientSocket.getOutputStream());
+        }
     }
 }
