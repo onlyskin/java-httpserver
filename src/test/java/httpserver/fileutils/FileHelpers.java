@@ -13,6 +13,12 @@ public class FileHelpers {
         return dir;
     }
 
+    public static Path tempDirOptions(Path rootDir) throws IOException {
+        Path dir = createTempDirectory(rootDir, "dir");
+        dir.toFile().deleteOnExit();
+        return dir;
+    }
+
     public static Path tempFile() throws IOException {
         Path file = createTempFile("file", "temp");
         file.toFile().deleteOnExit();
