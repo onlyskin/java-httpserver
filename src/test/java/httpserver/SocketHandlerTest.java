@@ -54,4 +54,46 @@ public class SocketHandlerTest {
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: " + expectedBody.length() + "\r\n\r\n" + expectedBody;
         assertEquals(expected, outputStream.toString());
     }
+
+    @Test
+    public void returns405ForPOST() throws Exception {
+        Path root = tempDir();
+        byte[] request = ("POST /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+
+        String expected = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
+
+    @Test
+    public void returns405ForPUT() throws Exception {
+        Path root = tempDir();
+        byte[] request = ("PUT /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+
+        String expected = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
+
+    @Test
+    public void returns405ForUnsupportedMethod() throws Exception {
+        Path root = tempDir();
+        byte[] request = ("XYZABC /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+
+        String expected = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
 }

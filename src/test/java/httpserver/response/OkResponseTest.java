@@ -1,26 +1,27 @@
-package httpserver;
+package httpserver.response;
 
+import httpserver.response.OkResponse;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ResponseTest {
+public class OkResponseTest {
     private final byte[] payload;
-    private final Response response;
+    private final OkResponse okResponse;
 
-    public ResponseTest() {
+    public OkResponseTest() {
         this.payload = "test payload".getBytes();
-        this.response = new Response(200, payload);
+        this.okResponse = new OkResponse(payload);
     }
 
     @Test
     public void getStatusCodeReturns200() throws Exception {
-        assertEquals(200, response.getStatusCode());
+        assertEquals(200, okResponse.getStatusCode());
     }
 
     @Test
     public void getPayloadReturnsPayload() throws Exception {
-        byte[] payload = response.getPayload();
+        byte[] payload = okResponse.getPayload();
         assertEquals("test payload", new String(payload));
     }
 }

@@ -1,6 +1,7 @@
 package httpserver;
 
 import httpserver.responder.GeneralResponder;
+import httpserver.response.Response;
 
 import java.io.IOException;
 import java.io.InputStream;

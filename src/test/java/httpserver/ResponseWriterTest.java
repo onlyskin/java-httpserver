@@ -1,9 +1,10 @@
 package httpserver;
 
+import httpserver.response.NotFoundResponse;
+import httpserver.response.OkResponse;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +19,9 @@ public class ResponseWriterTest {
 
     @Test
     public void writes200RequestWithPayload() throws Exception {
-        String output = outputStreamForResponse(200, "example");
+        OkResponse okResponse = new OkResponse("example".getBytes());
+        responseWriter.write(okResponse, outputStream);
+        String output = outputStream.toString();
 
         assertEquals(output,
                 "HTTP/1.1 200 OK\r\n" +
@@ -29,15 +32,10 @@ public class ResponseWriterTest {
 
     @Test
     public void itWritesTheFirstLineFor404() throws Exception {
-        String output = outputStreamForResponse(404, "");
+        NotFoundResponse notFoundResponse = new NotFoundResponse();
+        responseWriter.write(notFoundResponse, outputStream);
+        String output = outputStream.toString();
 
         assertTrue(output.contains("HTTP/1.1 404 Not Found\r\n"));
-    }
-
-    public String outputStreamForResponse(int statusCode, String payload) throws IOException {
-        Response response = new Response(statusCode, payload.getBytes());
-        responseWriter.write(response, outputStream);
-
-        return outputStream.toString();
     }
 }
