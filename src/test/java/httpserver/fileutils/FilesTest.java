@@ -2,6 +2,7 @@ package httpserver.fileutils;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -35,10 +36,8 @@ public class FilesTest {
 
     @Test
     public void checksPathExists() throws Exception {
-        Path dir = createTempDirectory("dir");
-        dir.toFile().deleteOnExit();
-        Path file = createTempFile("file", "temp");
-        file.toFile().deleteOnExit();
+        Path dir = tempDir();
+        Path file = tempFile();
         Path nonePath = Paths.get("/var/nonePath");
 
         assertTrue(Files.pathExists(dir));
@@ -48,10 +47,8 @@ public class FilesTest {
 
     @Test
     public void checksIfPathIsDir() throws Exception {
-        Path dir = createTempDirectory("dir");
-        dir.toFile().deleteOnExit();
-        Path file = createTempFile("file", "temp");
-        file.toFile().deleteOnExit();
+        Path dir = tempDir();
+        Path file = tempFile();
         Path nonePath = Paths.get("/var/nonePath");
 
         assertTrue(Files.isDir(dir));
@@ -61,10 +58,8 @@ public class FilesTest {
 
     @Test
     public void checksIfPathIsFile() throws Exception {
-        Path dir = createTempDirectory("dir");
-        dir.toFile().deleteOnExit();
-        Path file = createTempFile("file", "temp");
-        file.toFile().deleteOnExit();
+        Path dir = tempDir();
+        Path file = tempFile();
         Path nonePath = Paths.get("/var/nonePath");
 
         assertFalse(Files.isFile(dir));
@@ -74,8 +69,7 @@ public class FilesTest {
 
     @Test
     public void readsFileContentsToBytes() throws Exception {
-        Path file = createTempFile("file", "temp");
-        file.toFile().deleteOnExit();
+        Path file = tempFile();
         write(file, "Temp file contents".getBytes());
 
         byte[] expected = "Temp file contents".getBytes();
@@ -85,17 +79,32 @@ public class FilesTest {
 
     @Test
     public void readsDirContentsToPathList() throws Exception {
-        Path dir = createTempDirectory("dir");
-        dir.toFile().deleteOnExit();
-        Path file1 = createTempFile(dir,"aaa", "temp");
-        file1.toFile().deleteOnExit();
-        Path file2 = createTempFile(dir,"bbb", "temp");
-        file2.toFile().deleteOnExit();
+        Path dir = tempDir();
+        Path file1 = tempFile(dir, "aaa");
+        Path file2 = tempFile(dir, "bbb");
 
         Path expected1 = file1;
         Path expected2 = file2;
         Path[] actual = Files.directoryContents(dir);
         assertEquals(expected1, actual[0]);
         assertEquals(expected2, actual[1]);
+    }
+
+    private Path tempFile() throws IOException {
+        Path file = createTempFile("file", "temp");
+        file.toFile().deleteOnExit();
+        return file;
+    }
+
+    private Path tempFile(Path dir, String prefix) throws IOException {
+        Path file = createTempFile(dir, prefix, "temp");
+        file.toFile().deleteOnExit();
+        return file;
+    }
+
+    private Path tempDir() throws IOException {
+        Path dir = createTempDirectory("dir");
+        dir.toFile().deleteOnExit();
+        return dir;
     }
 }
