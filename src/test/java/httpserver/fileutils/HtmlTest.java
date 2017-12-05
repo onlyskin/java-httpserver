@@ -9,14 +9,14 @@ import static httpserver.fileutils.FileHelpers.tempDir;
 import static httpserver.fileutils.FileHelpers.tempDirOptions;
 import static org.junit.Assert.*;
 
-public class UriTest {
+public class HtmlTest {
     @Test
     public void makesHrefStringFromRootPathAndFullFilePath() throws Exception {
         Path root = Paths.get("/Users", "example", "public");
         Path fullFilePath = Paths.get("/Users", "example", "public", "example.txt");
 
         String expected = "example.txt";
-        String actual = Uri.hrefString(root, fullFilePath);
+        String actual = Html.hrefString(root, fullFilePath);
         assertEquals(expected, actual);
     }
 
@@ -28,7 +28,7 @@ public class UriTest {
         String rootString = root.toString();
         String fullDirString = fullDirPath.toString();
         String expected = fullDirString.substring(rootString.length() + 1) + "/";
-        String actual = Uri.hrefString(root, fullDirPath);
+        String actual = Html.hrefString(root, fullDirPath);
         assertEquals(expected, actual);
     }
 }
