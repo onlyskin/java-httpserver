@@ -14,23 +14,23 @@ import static org.junit.Assert.*;
 
 public class FilesTest {
     @Test
-    public void makesFilePathFromRootPathAndRequestPathString() throws Exception {
+    public void makesFullPathFromRootPathAndRequestPathString() throws Exception {
         Path root = Paths.get("tmp/serving-dir");
-        String requestPathString = "example.txt";
+        String requestPathString = "/example.txt";
 
         Path expected = Paths.get("tmp/serving-dir/example.txt");
         assertEquals(expected,
-                Files.getRequestPath(root, requestPathString));
+                Files.fullPathForRequestPath(root, requestPathString));
     }
 
     @Test
-    public void makesFilePathCorrectlyWhenRequestPathIsSlash() throws Exception {
+    public void makesFullPathCorrectlyWhenRequestPathIsSlash() throws Exception {
         Path root = Paths.get("tmp/serving-dir");
         String requestPathString = "/";
 
         Path expected = Paths.get("tmp/serving-dir");
         assertEquals(expected,
-                Files.getRequestPath(root, requestPathString));
+                Files.fullPathForRequestPath(root, requestPathString));
     }
 
     @Test

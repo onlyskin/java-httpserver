@@ -12,11 +12,8 @@ import static java.nio.file.Files.*;
 
 public class Files {
 
-    public static Path getRequestPath(Path root, String requestPathString) {
-        if (requestPathString.equals("/")) {
-            return root;
-        }
-        return root.resolve(requestPathString);
+    public static Path fullPathForRequestPath(Path root, String requestPathString) {
+        return root.resolve(requestPathString.substring(1));
     }
 
     public static Path getPath(String input) {
