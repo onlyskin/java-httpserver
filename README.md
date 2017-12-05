@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/onlyskin/java-httpserver.svg?branch=master)](https://travis-ci.org/onlyskin/java-httpserver)
+
 # HTTP Server application written in Java
 
 ## Building
