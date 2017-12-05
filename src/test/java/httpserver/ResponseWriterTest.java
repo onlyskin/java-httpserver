@@ -1,9 +1,10 @@
 package httpserver;
 
+import httpserver.response.NotFoundResponse;
+import httpserver.response.OkResponse;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 

@@ -1,9 +1,9 @@
-package httpserver;
+package httpserver.response;
 
-public class NotFoundResponse implements Response {
+public class MethodNotAllowedResponse implements Response {
     @Override
     public int getStatusCode() {
-        return 404;
+        return 405;
     }
 
     @Override

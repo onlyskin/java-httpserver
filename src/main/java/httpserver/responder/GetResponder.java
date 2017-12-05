@@ -1,9 +1,9 @@
 package httpserver.responder;
 
-import httpserver.NotFoundResponse;
+import httpserver.response.NotFoundResponse;
 import httpserver.Request;
-import httpserver.OkResponse;
-import httpserver.Response;
+import httpserver.response.OkResponse;
+import httpserver.response.Response;
 import httpserver.fileutils.Files;
 
 import java.nio.file.Path;

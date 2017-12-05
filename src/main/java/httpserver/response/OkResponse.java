@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.response;
 
 public class OkResponse implements Response {
     private final byte[] payload;

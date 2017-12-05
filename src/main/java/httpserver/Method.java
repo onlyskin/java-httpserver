@@ -3,6 +3,7 @@ package httpserver;
 import httpserver.responder.GetResponder;
 import httpserver.responder.PostResponder;
 import httpserver.responder.Responder;
+import httpserver.response.Response;
 
 import java.nio.file.Path;
 

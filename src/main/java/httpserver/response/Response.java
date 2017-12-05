@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.response;
 
 public interface Response {
     int getStatusCode();

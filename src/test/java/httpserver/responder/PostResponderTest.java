@@ -1,7 +1,7 @@
 package httpserver.responder;
 
 import httpserver.Request;
-import httpserver.Response;
+import httpserver.response.Response;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -22,12 +22,12 @@ public class PostResponderTest {
     }
 
     @Test
-    public void returns404IfNotFormUrl() throws Exception {
+    public void returns405IfNotFormUrl() throws Exception {
         Path root = Paths.get("test");
         Request request = new Request("POST", "/file1.txt", new HashMap<>());
         PostResponder postResponder = new PostResponder();
 
         Response response = postResponder.respond(root, request);
-        assertEquals(404, response.getStatusCode());
+        assertEquals(405, response.getStatusCode());
     }
 }
