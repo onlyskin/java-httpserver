@@ -11,7 +11,7 @@ import static httpserver.fileutils.Html.linkString;
 public class GetResponder implements Responder {
     @Override
     public Response respond(Path root, Request request) {
-        Path path = Files.getRequestPath(root, request.getPath());
+        Path path = Files.fullPathForRequestPath(root, request.getPath());
 
         if (Files.pathExists(path)) {
             if (Files.isFile(path)) {
