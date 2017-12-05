@@ -3,29 +3,27 @@ package httpserver;
 import org.junit.Test;
 
 import java.io.*;
+import java.nio.file.Path;
 
+import static httpserver.fileutils.FileHelpers.tempDir;
+import static httpserver.fileutils.FileHelpers.tempFileOptions;
+import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
 
 public class SocketHandlerTest {
-    private final String tempdir;
-
-    public SocketHandlerTest() {
-        this.tempdir = System.getProperty("java.io.tmpdir");
-    }
 
     @Test
     public void writesRequestedFileContentsToOutputStreamForGET() throws Exception {
-        File tempFile = File.createTempFile("temp-", "-testfile");
-        tempFile.deleteOnExit();
-        String fullPath = tempFile.toString();
-        String relativePath = fullPath.substring(tempdir.length());
-        FileOutputStream fileOutputStream = new FileOutputStream(fullPath);
-        fileOutputStream.write("Test file contents for GET request.".getBytes());
+        Path root = tempDir();
+        Path file = tempFileOptions(root, "aaa");
+        write(file, "Test file contents for GET request.".getBytes());
 
-        byte[] request = ("GET " + relativePath + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+        Path relativePath = root.relativize(file);
+        byte[] request = ("GET " + relativePath.toString() + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        SocketHandler socketHandler = new SocketHandler(tempdir);
+        SocketHandler socketHandler = new SocketHandler(root);
 
         socketHandler.process(inputStream, outputStream);
 
