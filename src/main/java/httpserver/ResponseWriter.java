@@ -15,12 +15,20 @@ public class ResponseWriter {
     }
 
     public void write(Response response, OutputStream outputStream) throws IOException {
-        int statusCode = response.getStatusCode();
-        outputStream.write(("HTTP/1.1 " + statusCode
-                    + " " + statuses.get(statusCode)
-                    + "\r\n").getBytes());
-        outputStream.write(("Content-Length: " + response.getPayload().length + "\r\n").getBytes());
+        outputStream.write(statusLine(response.getStatusCode()).getBytes());
+        outputStream.write(contentLengthHeader(response.getPayload()).getBytes());
         outputStream.write(("\r\n").getBytes());
         outputStream.write(response.getPayload());
     }
+
+    private String contentLengthHeader(byte[] payload) {
+        return "Content-Length: " + payload.length + "\r\n";
+    }
+
+    private String statusLine(int statusCode) {
+        return ("HTTP/1.1 " + statusCode
+                    + " " + statuses.get(statusCode)
+                    + "\r\n");
+    }
+
 }
