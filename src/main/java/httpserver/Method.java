@@ -2,6 +2,7 @@ package httpserver;
 
 import httpserver.responder.GetResponder;
 import httpserver.responder.PostResponder;
+import httpserver.responder.PutResponder;
 import httpserver.responder.Responder;
 import httpserver.response.Response;
 
@@ -11,7 +12,7 @@ public enum Method {
     GET(new GetResponder()),
     HEAD(null),
     POST(new PostResponder()),
-    PUT(null),
+    PUT(new PutResponder()),
     DELETE(null),
     OPTIONS(null);
 
