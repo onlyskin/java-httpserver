@@ -1,9 +1,6 @@
 package httpserver;
 
-import httpserver.responder.GetResponder;
-import httpserver.responder.PostResponder;
-import httpserver.responder.PutResponder;
-import httpserver.responder.Responder;
+import httpserver.responder.*;
 import httpserver.response.Response;
 
 import java.nio.file.Path;
@@ -14,7 +11,8 @@ public enum Method {
     POST(new PostResponder()),
     PUT(new PutResponder()),
     DELETE(null),
-    OPTIONS(null);
+    OPTIONS(null),
+    INVALID(new InvalidMethodResponder());
 
     private final Responder responder;
 

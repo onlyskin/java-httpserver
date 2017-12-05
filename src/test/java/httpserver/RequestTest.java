@@ -9,28 +9,20 @@ import static org.junit.Assert.*;
 
 public class RequestTest {
 
-    private final Request request;
-
-    public RequestTest() {
+    @Test
+    public void hasCorrectMethodPathAndHeaders() throws Exception {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("test-header", "test-value");
 
-        this.request = new Request("GET", "example.txt", headers);
-    }
-
-    @Test
-    public void getMethodReturnsGet() throws Exception {
+        Request request = new Request("GET", "/example.txt", headers);
         assertEquals(Method.GET, request.getMethod());
-    }
-
-    @Test
-    public void getPathReturnsPath() throws Exception {
-        assertEquals("example.txt", request.getPath());
-    }
-
-    @Test
-    public void getHeadersReturnsHeaders() throws Exception {
-        HashMap<String, String> headers = request.getHeaders();
+        assertEquals("/example.txt", request.getPath());
         assertEquals("test-value", headers.get("test-header"));
+    }
+
+    @Test
+    public void getMethodReturnsInvalidWhenBadMethod() throws Exception {
+        Request request = new Request("ABCDEF", "/example.txt", new HashMap<>());
+        assertEquals(Method.INVALID, request.getMethod());
     }
 }

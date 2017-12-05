@@ -3,12 +3,16 @@ package httpserver;
 import java.util.HashMap;
 
 public class Request {
-    private final Method method;
+    private Method method;
     private final String path;
     private final HashMap<String, String> headers;
 
     public Request(String method, String path, HashMap<String, String> headers) {
-        this.method = Method.valueOf(method);
+        try {
+            this.method = Method.valueOf(method);
+        } catch (IllegalArgumentException e) {
+            this.method = Method.INVALID;
+        }
         this.path = path;
         this.headers = headers;
     }
