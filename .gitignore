@@ -46,3 +46,4 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/java,gradle
 
 *.DS_Store
+.idea/workspace.xml
