@@ -49,9 +49,9 @@ public class SocketHandlerTest {
 
         socketHandler.process(inputStream, outputStream);
 
-        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 156\r\n\r\n" +
-                "<div><a href=\"" + relativePath1 + "\">" + relativePath1 + "</a></div>" +
-                "<div><a href=\"" + relativePath2 + "\">" + relativePath2 + "</a></div>";
+        String expectedBody = "<div><a href=\"" + relativePath1 + "\">" + relativePath1 + "</a></div>" +
+                        "<div><a href=\"" + relativePath2 + "\">" + relativePath2 + "</a></div>";
+        String expected = "HTTP/1.1 200 OK\r\nContent-Length: " + expectedBody.length() + "\r\n\r\n" + expectedBody;
         assertEquals(expected, outputStream.toString());
     }
 }
