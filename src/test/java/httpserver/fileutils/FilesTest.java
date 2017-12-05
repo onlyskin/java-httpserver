@@ -24,6 +24,16 @@ public class FilesTest {
     }
 
     @Test
+    public void makesFilePathCorrectlyWhenRequestPathIsSlash() throws Exception {
+        Path root = Paths.get("tmp/serving-dir");
+        String requestPathString = "/";
+
+        Path expected = Paths.get("tmp/serving-dir");
+        assertEquals(expected,
+                Files.getRequestPath(root, requestPathString));
+    }
+
+    @Test
     public void makesRootPathFromStringInput() throws Exception {
         String input1 = "/Users/example/public/";
         String input2 = "/Users/example/public";

@@ -1,11 +1,13 @@
 package httpserver;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Path;
 
 import static httpserver.fileutils.FileHelpers.tempDir;
+import static httpserver.fileutils.FileHelpers.tempDirOptions;
 import static httpserver.fileutils.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
@@ -29,5 +31,16 @@ public class SocketHandlerTest {
 
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: 35\r\n\r\nTest file contents for GET request.";
         assertEquals(expected, outputStream.toString());
+    }
+
+    @Ignore
+    @Test
+    public void writesRequestedDirContentsAsHtmlToOutputStreamForGET() throws Exception {
+        Path root = tempDir();
+        Path dir = tempDirOptions(root);
+        Path file1 = tempFileOptions(root, "aaa");
+        Path file2 = tempFileOptions(root, "bbb");
+
+        byte[] request = ("GET / HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
     }
 }

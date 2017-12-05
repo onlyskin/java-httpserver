@@ -44,9 +44,9 @@ public class HtmlTest {
                 .substring(root.toString().length() + 1) + "/";
 
         String expectedFileLink = "<div><a href=\"" + expectedFilePath +
-                "\"></a>" + expectedFilePath + "</div>";
+                "\">" + expectedFilePath + "</a></div>";
         String expectedDirLink = "<div><a href=\"" + expectedDirPath +
-                "\"></a>" + expectedDirPath + "</div>";
+                "\">" + expectedDirPath + "</a></div>";
 
         String actualFileLink = Html.linkString(root, fullFilePath);
         String actualDirLink = Html.linkString(root, fullDirPath);

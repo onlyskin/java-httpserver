@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.responder;
 
 public class ResponderTest {
 }

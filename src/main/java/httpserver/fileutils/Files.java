@@ -13,6 +13,9 @@ import static java.nio.file.Files.*;
 public class Files {
 
     public static Path getRequestPath(Path root, String requestPathString) {
+        if (requestPathString.equals("/")) {
+            return root;
+        }
         return root.resolve(requestPathString);
     }
 
