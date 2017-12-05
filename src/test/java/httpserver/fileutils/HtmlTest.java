@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 
 import static httpserver.fileutils.FileHelpers.tempDir;
 import static httpserver.fileutils.FileHelpers.tempDirOptions;
+import static httpserver.fileutils.FileHelpers.tempFileOptions;
 import static org.junit.Assert.*;
 
 public class HtmlTest {
@@ -25,10 +26,32 @@ public class HtmlTest {
         Path root = tempDir();
         Path fullDirPath = tempDirOptions(root);
 
-        String rootString = root.toString();
-        String fullDirString = fullDirPath.toString();
-        String expected = fullDirString.substring(rootString.length() + 1) + "/";
+        String expected = fullDirPath.toString()
+                .substring(root.toString().length() + 1) + "/";
         String actual = Html.hrefString(root, fullDirPath);
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void makesHtmlLinkFromRootPathAndDirPath() throws Exception {
+        Path root = tempDir();
+        Path fullFilePath = tempFileOptions(root, "aaa");
+        Path fullDirPath = tempDirOptions(root);
+
+        String expectedFilePath = fullFilePath.toString()
+                .substring(root.toString().length() + 1);
+        String expectedDirPath = fullDirPath.toString()
+                .substring(root.toString().length() + 1) + "/";
+
+        String expectedFileLink = "<div><a href=\"" + expectedFilePath +
+                "\"></a>" + expectedFilePath + "</div>";
+        String expectedDirLink = "<div><a href=\"" + expectedDirPath +
+                "\"></a>" + expectedDirPath + "</div>";
+
+        String actualFileLink = Html.linkString(root, fullFilePath);
+        String actualDirLink = Html.linkString(root, fullDirPath);
+
+        assertEquals(expectedFileLink, actualFileLink);
+        assertEquals(expectedDirLink, actualDirLink);
     }
 }
