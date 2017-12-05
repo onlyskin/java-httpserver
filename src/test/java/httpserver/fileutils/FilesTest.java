@@ -2,13 +2,13 @@ package httpserver.fileutils;
 
 import org.junit.Test;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static java.nio.file.Files.createTempDirectory;
-import static java.nio.file.Files.createTempFile;
+import static httpserver.fileutils.FileHelpers.tempDir;
+import static httpserver.fileutils.FileHelpers.tempFile;
+import static httpserver.fileutils.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
 
@@ -80,31 +80,13 @@ public class FilesTest {
     @Test
     public void readsDirContentsToPathList() throws Exception {
         Path dir = tempDir();
-        Path file1 = tempFile(dir, "aaa");
-        Path file2 = tempFile(dir, "bbb");
+        Path file1 = tempFileOptions(dir, "aaa");
+        Path file2 = tempFileOptions(dir, "bbb");
 
         Path expected1 = file1;
         Path expected2 = file2;
         Path[] actual = Files.directoryContents(dir);
         assertEquals(expected1, actual[0]);
         assertEquals(expected2, actual[1]);
-    }
-
-    private Path tempFile() throws IOException {
-        Path file = createTempFile("file", "temp");
-        file.toFile().deleteOnExit();
-        return file;
-    }
-
-    private Path tempFile(Path dir, String prefix) throws IOException {
-        Path file = createTempFile(dir, prefix, "temp");
-        file.toFile().deleteOnExit();
-        return file;
-    }
-
-    private Path tempDir() throws IOException {
-        Path dir = createTempDirectory("dir");
-        dir.toFile().deleteOnExit();
-        return dir;
     }
 }
