@@ -1,6 +1,8 @@
 package httpserver.responder;
 
+import httpserver.NotFoundResponse;
 import httpserver.Request;
+import httpserver.OkResponse;
 import httpserver.Response;
 import httpserver.fileutils.Files;
 
@@ -16,17 +18,17 @@ public class GetResponder implements Responder {
         if (Files.pathExists(path)) {
             if (Files.isFile(path)) {
                 byte[] payload = Files.fileContents(path);
-                return new Response(200, payload);
+                return new OkResponse(payload);
             } else {
                 Path[] paths = Files.directoryContents(path);
                 String result = "";
                 for (Path subPath: paths) {
                     result = result + linkString(root, subPath);
                 }
-                return new Response(200, result.getBytes());
+                return new OkResponse(result.getBytes());
             }
         } else {
-            return new Response(404, "".getBytes());
+            return new NotFoundResponse();
         }
     }
 }

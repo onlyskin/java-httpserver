@@ -2,12 +2,8 @@ package httpserver.responder;
 
 import httpserver.Request;
 import httpserver.Response;
-import httpserver.SocketHandler;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
