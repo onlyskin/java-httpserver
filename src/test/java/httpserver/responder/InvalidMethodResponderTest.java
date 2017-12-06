@@ -8,9 +8,8 @@ import static org.junit.Assert.*;
 public class InvalidMethodResponderTest {
     @Test
     public void returns405Response() throws Exception {
-        InvalidMethodResponder invalidMethodResponder = new InvalidMethodResponder();
+        Response response = new InvalidMethodResponder().respond(null, null);
 
-        Response response = invalidMethodResponder.respond(null, null);
         assertEquals(405, response.getStatusCode());
     }
 }

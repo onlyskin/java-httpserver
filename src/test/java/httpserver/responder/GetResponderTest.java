@@ -4,6 +4,7 @@ import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -17,14 +18,22 @@ import static org.junit.Assert.assertEquals;
 public class GetResponderTest {
 
     private final GetResponder getResponder;
+    private final Path root;
+    private final Path file1;
+    private final Path file2;
+    private final Path fileWithContents;
 
-    public GetResponderTest() {
+    public GetResponderTest() throws IOException {
         getResponder = new GetResponder();
+        root = tempDir();
+        file1 = tempFileOptions(root, "aaa");
+        file2 = tempFileOptions(root, "bbb");
+        fileWithContents = tempFileOptions(root, "aaa");
+        write(fileWithContents, "Test file contents".getBytes());
     }
 
     @Test
     public void returns404ForBadPath() throws Exception {
-        Path root = Paths.get("456");
         Request request = new Request("GET",
                 "nonexistentfile123",
                 new HashMap<>());
@@ -37,10 +46,7 @@ public class GetResponderTest {
 
     @Test
     public void returnsFileContentsWhenFile() throws Exception {
-        Path root = tempDir();
-        Path file = tempFileOptions(root, "aaa");
-        write(file, "Test file contents".getBytes());
-        String fileName = file.toString().substring(root.toString().length());
+        String fileName = fileWithContents.toString().substring(root.toString().length());
         Request request = new Request("GET", fileName,
                 new HashMap<>());
 
@@ -52,11 +58,6 @@ public class GetResponderTest {
 
     @Test
     public void returnsLinksWhenDir() throws Exception {
-        Path root = tempDir();
-        Path file1 = tempFileOptions(root, "aaa");
-        Path file2 = tempFileOptions(root, "bbb");
-        String fileName1 = file1.toString().substring(root.toString().length());
-        String fileName2 = file1.toString().substring(root.toString().length());
         Request request = new Request("GET", "/",
                 new HashMap<>());
 

@@ -11,23 +11,30 @@ import java.util.HashMap;
 import static junit.framework.TestCase.*;
 
 public class PostResponderTest {
+
+    private final PostResponder postResponder;
+    private final Path root;
+
+    public PostResponderTest() {
+        postResponder = new PostResponder();
+        root = Paths.get("test");
+    }
+
     @Test
     public void gets200StatusCode() throws Exception {
-        Path root = Paths.get("test");
         Request request = new Request("POST", "/form", new HashMap<>());
-        PostResponder postResponder = new PostResponder();
 
         Response response = postResponder.respond(root, request);
+
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void returns405IfNotFormUrl() throws Exception {
-        Path root = Paths.get("test");
         Request request = new Request("POST", "/file1.txt", new HashMap<>());
-        PostResponder postResponder = new PostResponder();
 
         Response response = postResponder.respond(root, request);
+
         assertEquals(405, response.getStatusCode());
     }
 }

@@ -12,23 +12,30 @@ import java.util.HashMap;
 import static org.junit.Assert.*;
 
 public class PutResponderTest {
+
+    private final Path root;
+    private final PutResponder putResponder;
+
+    public PutResponderTest() {
+        root = Paths.get("test");
+        putResponder = new PutResponder();
+    }
+
     @Test
     public void gets200StatusCode() throws Exception {
-        Path root = Paths.get("test");
         Request request = new Request("PUT", "/form", new HashMap<>());
-        PutResponder putResponder = new PutResponder();
 
         Response response = putResponder.respond(root, request);
+
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void returns405IfNotFormUrl() throws Exception {
-        Path root = Paths.get("test");
         Request request = new Request("POST", "/file1.txt", new HashMap<>());
-        PostResponder postResponder = new PostResponder();
 
-        Response response = postResponder.respond(root, request);
+        Response response = putResponder.respond(root, request);
+
         assertEquals(405, response.getStatusCode());
     }
 }
