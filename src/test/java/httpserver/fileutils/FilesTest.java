@@ -20,6 +20,7 @@ public class FilesTest {
     private final Path file2;
     private final Path fileWithContents;
     private final Path nonePath;
+    private final Path path;
 
     public FilesTest() throws IOException {
         root = Paths.get("tmp/serving-dir");
@@ -28,6 +29,7 @@ public class FilesTest {
         file2 = tempFileOptions(dir, "bbb");
         fileWithContents = fileWithContents("Temp file contents");
         nonePath = Paths.get("/var/nonePath");
+        path = Paths.get(dir.toString(), "/example.txt");
     }
 
     @Test
@@ -69,7 +71,6 @@ public class FilesTest {
 
     @Test
     public void createsFileAtPath() throws Exception {
-        Path path = Paths.get(dir.toString(), "/example.txt");
         Files.createFileAtPath(path);
 
         assertTrue(exists(path));
@@ -77,7 +78,6 @@ public class FilesTest {
 
     @Test
     public void deletesFileAtPath() throws Exception {
-        Path path = Paths.get(dir.toString(), "/example.txt");
         Files.createFileAtPath(path);
         Files.deleteFileAtPath(path);
 
@@ -86,36 +86,28 @@ public class FilesTest {
 
     @Test
     public void appendsToFileContentsAtPath() throws Exception {
-        Path path = Paths.get(dir.toString(), "/example.txt");
-
         Files.createFileAtPath(path);
-        String contents = new String(readAllBytes(path));
-        assertEquals("", contents);
+        assertEquals("", fileContents(path));
 
         Files.appendToFile(path, "first line\r\n".getBytes());
-        String newContents1 = new String(readAllBytes(path));
-        assertEquals("first line\r\n", newContents1);
+        assertEquals("first line\r\n",
+                fileContents(path));
 
         Files.appendToFile(path, "second line\r\n".getBytes());
-        String newContents2 = new String(readAllBytes(path));
-        assertEquals("first line\r\nsecond line\r\n", newContents2);
+        assertEquals("first line\r\nsecond line\r\n",
+                fileContents(path));
     }
 
     @Test
     public void replacesFileContentsAtPath() throws Exception {
-        Path path = Paths.get(dir.toString(), "/example.txt");
-
         Files.createFileAtPath(path);
-        String contents = new String(readAllBytes(path));
-        assertEquals("", contents);
+        assertEquals("", fileContents(path));
 
         Files.replaceContents(path, "first line\r\n".getBytes());
-        String newContents1 = new String(readAllBytes(path));
-        assertEquals("first line\r\n", newContents1);
+        assertEquals("first line\r\n", fileContents(path));
 
         Files.replaceContents(path, "second line\r\n".getBytes());
-        String newContents2 = new String(readAllBytes(path));
-        assertEquals("second line\r\n", newContents2);
+        assertEquals("second line\r\n", fileContents(path));
     }
 
     @Test
@@ -145,5 +137,9 @@ public class FilesTest {
                 Files.getPath(input1));
         assertEquals(Paths.get("/Users", "example", "public"),
                 Files.getPath(input2));
+    }
+
+    private String fileContents(Path path) throws IOException {
+        return new String(readAllBytes(path));
     }
 }
