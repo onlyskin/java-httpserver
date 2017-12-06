@@ -7,11 +7,11 @@ import java.nio.file.Path;
 
 public enum Method {
     GET(new GetResponder()),
-    HEAD(null),
+    //HEAD(null),
     POST(new PostResponder()),
     PUT(new PutResponder()),
-    DELETE(null),
-    OPTIONS(null),
+    //DELETE(null),
+    //OPTIONS(null),
     INVALID(new InvalidMethodResponder());
 
     private final Responder responder;
