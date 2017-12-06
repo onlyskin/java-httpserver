@@ -1,6 +1,7 @@
 package httpserver;
 
 import httpserver.responder.GeneralResponder;
+import httpserver.response.NotFoundResponse;
 import httpserver.response.Response;
 
 import java.io.IOException;
@@ -16,8 +17,13 @@ public class SocketHandler {
     }
 
     public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
-        Request request = new RequestParser().parse(inputStream);
-        Response response = new GeneralResponder().respond(root, request);
+        Response response;
+        try {
+            Request request = new RequestParser().parse(inputStream);
+            response = new GeneralResponder().respond(root, request);
+        } catch (Exception e) {
+            response = new NotFoundResponse();
+        }
         new ResponseWriter().write(response, outputStream);
     }
 }

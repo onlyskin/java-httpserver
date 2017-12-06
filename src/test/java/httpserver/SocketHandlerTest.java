@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static httpserver.fileutils.FileHelpers.tempDir;
 import static httpserver.fileutils.FileHelpers.tempFileOptions;
@@ -12,6 +13,19 @@ import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
 
 public class SocketHandlerTest {
+    @Test
+    public void returns404ForMalformedRequestLine() throws Exception {
+        Path root = Paths.get("test");
+        byte[] request = ("".getBytes());
+
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+        String expected = "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
 
     @Test
     public void writesRequestedFileContentsToOutputStreamForGET() throws Exception {
