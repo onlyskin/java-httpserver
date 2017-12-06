@@ -17,18 +17,32 @@ public class GetResponder implements Responder {
 
         if (Files.pathExists(path)) {
             if (Files.isFile(path)) {
-                byte[] payload = Files.fileContents(path);
-                return new OkResponse(payload);
+                return responseForFile(path);
             } else {
-                Path[] paths = Files.directoryContents(path);
-                String result = "";
-                for (Path subPath: paths) {
-                    result = result + linkString(root, subPath);
-                }
-                return new OkResponse(result.getBytes());
+                return responseForDir(root, path);
             }
         } else {
             return new NotFoundResponse();
         }
     }
+
+    private Response responseForDir(Path root, Path path) {
+        Path[] paths = Files.directoryContents(path);
+        String result = htmlLinksForContents(root, paths);
+        return new OkResponse(result.getBytes());
+    }
+
+    private String htmlLinksForContents(Path root, Path[] paths) {
+        String result = "";
+        for (Path subPath: paths) {
+            result = result + linkString(root, subPath);
+        }
+        return result;
+    }
+
+    private Response responseForFile(Path path) {
+        byte[] payload = Files.fileContents(path);
+        return new OkResponse(payload);
+    }
+
 }

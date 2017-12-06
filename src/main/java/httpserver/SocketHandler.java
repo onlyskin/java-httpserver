@@ -18,12 +18,14 @@ public class SocketHandler {
 
     public void process(InputStream inputStream, OutputStream outputStream) throws IOException {
         Response response;
+
         try {
             Request request = new RequestParser().parse(inputStream);
             response = new GeneralResponder().respond(root, request);
         } catch (Exception e) {
             response = new NotFoundResponse();
         }
+
         new ResponseWriter().write(response, outputStream);
     }
 }

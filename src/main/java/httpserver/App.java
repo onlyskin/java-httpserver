@@ -12,6 +12,7 @@ public class App {
         int port = Integer.parseInt(args[1]);
         String fileDirectory = args[3];
         Path root = Files.getPath(fileDirectory);
+
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             while (true) {
