@@ -1,17 +1,14 @@
 package httpserver.response;
 
-import httpserver.response.OkResponse;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class OkResponseTest {
-    private final byte[] payload;
     private final OkResponse okResponse;
 
     public OkResponseTest() {
-        this.payload = "test payload".getBytes();
-        this.okResponse = new OkResponse(payload);
+        this.okResponse = new OkResponse("test payload".getBytes());
     }
 
     @Test

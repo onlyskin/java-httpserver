@@ -8,15 +8,20 @@ import java.util.Arrays;
 import static junit.framework.TestCase.*;
 
 public class NotFoundResponseTest {
+
+    private final NotFoundResponse notFoundResponse;
+
+    public NotFoundResponseTest() {
+        notFoundResponse = new NotFoundResponse();
+    }
+
     @Test
     public void hasStatuscode404() throws Exception {
-        NotFoundResponse notFoundResponse = new NotFoundResponse();
         assertEquals(404, notFoundResponse.getStatusCode());
     }
 
     @Test
     public void hasEmptyPayload() throws Exception {
-        NotFoundResponse notFoundResponse = new NotFoundResponse();
         assertTrue(Arrays.equals(new byte[0], notFoundResponse.getPayload()));
     }
 }
