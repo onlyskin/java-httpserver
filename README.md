@@ -2,6 +2,13 @@
 
 # HTTP Server application written in Java
 
+This is an HTTP Server application, written to conform to the 8th Light cob spec test suite, which can be found at
+[https://github.com/8thlight/cob_spec](https://github.com/8thlight/cob_spec)
+
+You can run the test suite by following the instructions at the above URL, editing the user-defined variables
+to match the compiled jar file from building the server in this repository, and the path to your cloned
+cob_spec repo.
+
 ## Building
 
 ### To build the server, run:
