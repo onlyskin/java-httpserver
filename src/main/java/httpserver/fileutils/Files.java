@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,5 +54,37 @@ public class Files {
             e.printStackTrace();
         }
         return result.toArray(new Path[0]);
+    }
+
+    public static void createFileAtPath(Path path) {
+        try {
+            createFile(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteFileAtPath(Path path) {
+        try {
+            deleteIfExists(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void appendToFile(Path path, byte[] contents) {
+        try {
+            write(path, contents, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void replaceContents(Path path, byte[] contents) {
+        try {
+            write(path, contents);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
