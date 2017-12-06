@@ -56,6 +56,20 @@ public class SocketHandlerTest {
     }
 
     @Test
+    public void returns200ForPOSTToForm() throws  Exception {
+        Path root = tempDir();
+        byte[] request = ("POST /form HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\nMy=Data").getBytes();
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+
+        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
+
+    @Test
     public void returns405ForPOST() throws Exception {
         Path root = tempDir();
         byte[] request = ("POST /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
@@ -66,6 +80,20 @@ public class SocketHandlerTest {
         socketHandler.process(inputStream, outputStream);
 
         String expected = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
+        assertEquals(expected, outputStream.toString());
+    }
+
+    @Test
+    public void returns200ForPUTToForm() throws  Exception {
+        Path root = tempDir();
+        byte[] request = ("PUT /form HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\nMy=Data").getBytes();
+        InputStream inputStream = new ByteArrayInputStream(request);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        SocketHandler socketHandler = new SocketHandler(root);
+
+        socketHandler.process(inputStream, outputStream);
+
+        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n";
         assertEquals(expected, outputStream.toString());
     }
 
