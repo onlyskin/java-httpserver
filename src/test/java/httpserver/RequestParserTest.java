@@ -1,6 +1,5 @@
 package httpserver;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -18,20 +17,12 @@ public class RequestParserTest {
     }
 
     @Test
-    public void parsesMethod() throws Exception {
+    public void parsesMethodAndPath() throws Exception {
         String input = "GET /text-file.txt HTTP/1.1\r\nHost: 0.0.0.0:5000\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\n\r\n";
 
         Request request = requestForInput(input);
 
         assertEquals(Method.GET, request.getMethod());
-    }
-
-    @Test
-    public void parsesPath() throws Exception {
-        String input = "GET /text-file.txt HTTP/1.1\r\nHost: 0.0.0.0:5000\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\n\r\n";
-
-        Request request = requestForInput(input);
-
         assertEquals("/text-file.txt", request.getPath());
     }
 
