@@ -13,13 +13,11 @@ import static org.junit.Assert.*;
 public class SocketHandlerTest {
 
     private final Path root;
-    private final SocketHandler socketHandler;
     private final Path relativePath1;
     private final Path relativePath2;
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
-        socketHandler = new SocketHandler(root);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb"));
     }
@@ -99,7 +97,8 @@ public class SocketHandlerTest {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        socketHandler.process(inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandler(root, inputStream, outputStream);
+        socketHandler.run();
 
         return outputStream.toString();
     }

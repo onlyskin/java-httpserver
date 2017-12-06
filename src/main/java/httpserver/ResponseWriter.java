@@ -17,11 +17,15 @@ public class ResponseWriter {
         statuses.put(405, "Method Not Allowed");
     }
 
-    public void write(Response response, OutputStream outputStream) throws IOException {
-        outputStream.write(statusLine(response.getStatusCode()).getBytes());
-        outputStream.write(contentLengthHeader(response.getPayload()).getBytes());
-        outputStream.write(("\r\n").getBytes());
-        outputStream.write(response.getPayload());
+    public void write(Response response, OutputStream outputStream) {
+        try {
+            outputStream.write(statusLine(response.getStatusCode()).getBytes());
+            outputStream.write(contentLengthHeader(response.getPayload()).getBytes());
+            outputStream.write(("\r\n").getBytes());
+            outputStream.write(response.getPayload());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String contentLengthHeader(byte[] payload) {
