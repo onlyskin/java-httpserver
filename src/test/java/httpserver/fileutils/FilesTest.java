@@ -2,20 +2,34 @@ package httpserver.fileutils;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import static httpserver.fileutils.FileHelpers.tempDir;
-import static httpserver.fileutils.FileHelpers.tempFile;
-import static httpserver.fileutils.FileHelpers.tempFileOptions;
-import static java.nio.file.Files.write;
+import static httpserver.fileutils.FileHelpers.*;
 import static org.junit.Assert.*;
 
 public class FilesTest {
+
+    private final Path root;
+    private final Path dir;
+    private final Path file1;
+    private final Path file2;
+    private final Path fileWithContents;
+    private final Path nonePath;
+
+    public FilesTest() throws IOException {
+        root = Paths.get("tmp/serving-dir");
+        dir = tempDir();
+        file1 = tempFileOptions(dir, "aaa");
+        file2 = tempFileOptions(dir, "bbb");
+        fileWithContents = fileWithContents("Temp file contents");
+        nonePath = Paths.get("/var/nonePath");
+    }
+
     @Test
     public void makesFullPathFromRootPathAndRequestPathString() throws Exception {
-        Path root = Paths.get("tmp/serving-dir");
         String requestPathString = "/example.txt";
 
         Path expected = Paths.get("tmp/serving-dir/example.txt");
@@ -25,7 +39,6 @@ public class FilesTest {
 
     @Test
     public void makesFullPathCorrectlyWhenRequestPathIsSlash() throws Exception {
-        Path root = Paths.get("tmp/serving-dir");
         String requestPathString = "/";
 
         Path expected = Paths.get("tmp/serving-dir");
@@ -46,57 +59,38 @@ public class FilesTest {
 
     @Test
     public void checksPathExists() throws Exception {
-        Path dir = tempDir();
-        Path file = tempFile();
-        Path nonePath = Paths.get("/var/nonePath");
-
         assertTrue(Files.pathExists(dir));
-        assertTrue(Files.pathExists(file));
+        assertTrue(Files.pathExists(file1));
         assertFalse(Files.pathExists(nonePath));
     }
 
     @Test
     public void checksIfPathIsDir() throws Exception {
-        Path dir = tempDir();
-        Path file = tempFile();
-        Path nonePath = Paths.get("/var/nonePath");
-
         assertTrue(Files.isDir(dir));
-        assertFalse(Files.isDir(file));
+        assertFalse(Files.isDir(file1));
         assertFalse(Files.isDir(nonePath));
     }
 
     @Test
     public void checksIfPathIsFile() throws Exception {
-        Path dir = tempDir();
-        Path file = tempFile();
-        Path nonePath = Paths.get("/var/nonePath");
-
         assertFalse(Files.isFile(dir));
-        assertTrue(Files.isFile(file));
+        assertTrue(Files.isFile(file1));
         assertFalse(Files.isFile(nonePath));
     }
 
     @Test
     public void readsFileContentsToBytes() throws Exception {
-        Path file = tempFile();
-        write(file, "Temp file contents".getBytes());
-
         byte[] expected = "Temp file contents".getBytes();
-        byte[] actual = Files.fileContents(file);
+        byte[] actual = Files.fileContents(fileWithContents);
+
         assertTrue(Arrays.equals(expected, actual));
     }
 
     @Test
     public void readsDirContentsToPathList() throws Exception {
-        Path dir = tempDir();
-        Path file1 = tempFileOptions(dir, "aaa");
-        Path file2 = tempFileOptions(dir, "bbb");
-
-        Path expected1 = file1;
-        Path expected2 = file2;
         Path[] actual = Files.directoryContents(dir);
-        assertEquals(expected1, actual[0]);
-        assertEquals(expected2, actual[1]);
+
+        assertEquals(file1, actual[0]);
+        assertEquals(file2, actual[1]);
     }
 }

@@ -5,6 +5,7 @@ import java.nio.file.Path;
 
 import static java.nio.file.Files.createTempDirectory;
 import static java.nio.file.Files.createTempFile;
+import static java.nio.file.Files.write;
 
 public class FileHelpers {
     public static Path tempDir() throws IOException {
@@ -28,6 +29,12 @@ public class FileHelpers {
     public static Path tempFileOptions(Path dir, String prefix) throws IOException {
         Path file = createTempFile(dir, prefix, "temp");
         file.toFile().deleteOnExit();
+        return file;
+    }
+
+    public static Path fileWithContents(String contents) throws IOException {
+        Path file = tempFile();
+        write(file, contents.getBytes());
         return file;
     }
 }
