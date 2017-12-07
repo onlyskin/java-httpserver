@@ -14,11 +14,10 @@ import static org.junit.Assert.*;
 public class FileOperatorTest {
 
     private final Path path;
-    private final Path dir;
     private FileOperator fileOperator;
 
     public FileOperatorTest() throws IOException {
-        dir = tempDir();
+        Path dir = tempDir();
         path = Paths.get(dir.toString(), "/example.txt");
         fileOperator = new FileOperator();
     }
