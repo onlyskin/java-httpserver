@@ -1,5 +1,6 @@
 package httpserver;
 
+import httpserver.file.FileOperator;
 import org.junit.Test;
 
 import java.io.*;
@@ -96,8 +97,9 @@ public class SocketHandlerTest {
     private String stringOutputForRequestBytes(byte[] request) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        FileLogger fileLogger = new FileLogger(root, new FileOperator());
 
-        SocketHandler socketHandler = new SocketHandler(root, inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandler(root, fileLogger, inputStream, outputStream);
         socketHandler.run();
 
         return outputStream.toString();

@@ -1,11 +1,13 @@
 package httpserver;
 
+import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -15,13 +17,17 @@ public class App {
         String fileDirectory = args[3];
 
         Path root = new PathExaminer().getPath(fileDirectory);
+        ServerSocket serverSocket = new ServerSocket(port);
+        Path logPath = Paths.get(root.toString(), "logs");
 
         ExecutorService pool = Executors.newFixedThreadPool(16);
-        ServerSocket serverSocket = new ServerSocket(port);
+
         while (true) {
             Socket clientSocket = serverSocket.accept();
             SocketHandler socketHandler = new SocketHandler(root,
-                    clientSocket.getInputStream(), clientSocket.getOutputStream());
+                    new FileLogger(logPath, new FileOperator()),
+                    clientSocket.getInputStream(),
+                    clientSocket.getOutputStream());
             pool.execute(socketHandler);
         }
     }
