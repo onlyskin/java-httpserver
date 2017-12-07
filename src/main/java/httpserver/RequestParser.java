@@ -7,10 +7,19 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class RequestParser {
+    private final Logger logger;
+
+    public RequestParser(Logger logger) {
+        this.logger = logger;
+    }
+
     public Request parse(InputStream inputStream) throws IOException {
         BufferedReader in = new BufferedReader( new InputStreamReader(inputStream));
 
-        String[] requestParams = in.readLine().split(" ");
+        String firstLine = in.readLine();
+        logger.log(firstLine);
+
+        String[] requestParams = firstLine.split(" ");
         HashMap<String, String> headers = parseHeaders(in);
 
         return new Request(requestParams[0], requestParams[1], headers);

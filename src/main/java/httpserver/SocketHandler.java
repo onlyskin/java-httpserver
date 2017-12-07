@@ -10,11 +10,13 @@ import java.nio.file.Path;
 
 public class SocketHandler implements Runnable {
     private final Path root;
+    private final Logger logger;
     private final InputStream inputStream;
     private final OutputStream outputStream;
 
-    public SocketHandler(Path root, InputStream inputStream, OutputStream outputStream) {
+    public SocketHandler(Path root, Logger logger, InputStream inputStream, OutputStream outputStream) {
         this.root = root;
+        this.logger = logger;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }
@@ -23,7 +25,7 @@ public class SocketHandler implements Runnable {
         Response response;
 
         try {
-            Request request = new RequestParser().parse(inputStream);
+            Request request = new RequestParser(logger).parse(inputStream);
             response = new GeneralResponder().respond(root, request);
         } catch (Exception e) {
             response = new NotFoundResponse();

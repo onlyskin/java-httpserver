@@ -11,9 +11,11 @@ import static org.junit.Assert.*;
 
 public class RequestParserTest {
     private final RequestParser requestParser;
+    private final LoggerStub loggerStub;
 
     public RequestParserTest() {
-        this.requestParser = new RequestParser();
+        this.loggerStub = new LoggerStub();
+        this.requestParser = new RequestParser(loggerStub);
     }
 
     @Test
@@ -44,6 +46,14 @@ public class RequestParserTest {
 
         assertEquals(1, headers.size());
         assertEquals("example", headers.get("Extra-space"));
+    }
+
+    @Test
+    public void callsLogOnLogger() throws Exception {
+        InputStream inputStream = new ByteArrayInputStream("GET /text-file.txt HTTP/1.1\r\n\r\n".getBytes());
+        requestParser.parse(inputStream);
+
+        assertEquals("GET /text-file.txt HTTP/1.1", loggerStub.logCalledWith);
     }
 
     private Request requestForInput(String input) throws IOException {
