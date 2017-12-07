@@ -1,4 +1,4 @@
-package httpserver.fileutils;
+package httpserver.file;
 
 import org.junit.Test;
 
@@ -6,9 +6,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static httpserver.fileutils.FileHelpers.tempDir;
-import static httpserver.fileutils.FileHelpers.tempDirOptions;
-import static httpserver.fileutils.FileHelpers.tempFileOptions;
+import static httpserver.file.FileHelpers.tempDir;
+import static httpserver.file.FileHelpers.tempDirOptions;
+import static httpserver.file.FileHelpers.tempFileOptions;
 import static org.junit.Assert.*;
 
 public class HtmlTest {
