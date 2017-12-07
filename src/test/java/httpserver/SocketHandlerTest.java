@@ -5,8 +5,8 @@ import org.junit.Test;
 import java.io.*;
 import java.nio.file.Path;
 
-import static httpserver.fileutils.FileHelpers.tempDir;
-import static httpserver.fileutils.FileHelpers.tempFileOptions;
+import static httpserver.file.FileHelpers.tempDir;
+import static httpserver.file.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
 

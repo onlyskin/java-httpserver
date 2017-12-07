@@ -1,4 +1,4 @@
-package httpserver.fileutils;
+package httpserver.file;
 
 import java.io.IOException;
 import java.nio.file.Path;

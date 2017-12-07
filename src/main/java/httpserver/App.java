@@ -1,6 +1,6 @@
 package httpserver;
 
-import httpserver.fileutils.Files;
+import httpserver.file.PathExaminer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -13,7 +13,8 @@ public class App {
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(args[1]);
         String fileDirectory = args[3];
-        Path root = Files.getPath(fileDirectory);
+
+        Path root = new PathExaminer().getPath(fileDirectory);
 
         ExecutorService pool = Executors.newFixedThreadPool(16);
         ServerSocket serverSocket = new ServerSocket(port);

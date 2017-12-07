@@ -4,19 +4,26 @@ import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
-import httpserver.fileutils.Files;
+import httpserver.file.PathExaminer;
 
 import java.nio.file.Path;
 
-import static httpserver.fileutils.Html.linkString;
+import static httpserver.file.Html.linkString;
 
 public class GetResponder implements Responder {
+
+    private final PathExaminer pathExaminer;
+
+    public GetResponder() {
+        pathExaminer = new PathExaminer();
+    }
+
     @Override
     public Response respond(Path root, Request request) {
-        Path path = Files.fullPathForRequestPath(root, request.getPath());
+        Path path = pathExaminer.fullPathForRequestPath(root, request.getPath());
 
-        if (Files.pathExists(path)) {
-            if (Files.isFile(path)) {
+        if (pathExaminer.pathExists(path)) {
+            if (pathExaminer.isFile(path)) {
                 return responseForFile(path);
             } else {
                 return responseForDir(root, path);
@@ -27,7 +34,7 @@ public class GetResponder implements Responder {
     }
 
     private Response responseForDir(Path root, Path path) {
-        Path[] paths = Files.directoryContents(path);
+        Path[] paths = pathExaminer.directoryContents(path);
         String result = htmlLinksForContents(root, paths);
         return new OkResponse(result.getBytes());
     }
@@ -41,7 +48,7 @@ public class GetResponder implements Responder {
     }
 
     private Response responseForFile(Path path) {
-        byte[] payload = Files.fileContents(path);
+        byte[] payload = pathExaminer.fileContents(path);
         return new OkResponse(payload);
     }
 
