@@ -21,11 +21,7 @@ public class FileOperator {
         write(path, contents, StandardOpenOption.APPEND);
     }
 
-    public void replaceContents(Path path, byte[] contents) {
-        try {
-            write(path, contents);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void replaceContents(Path path, byte[] contents) throws IOException {
+        write(path, contents);
     }
 }
