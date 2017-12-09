@@ -97,9 +97,9 @@ public class SocketHandlerTest {
     private String stringOutputForRequestBytes(byte[] request) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        FileLogger fileLogger = new FileLogger(root, new FileOperator());
+        Logger logger = new Logger(root, new FileOperator());
 
-        SocketHandler socketHandler = new SocketHandler(root, fileLogger, inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandler(root, logger, inputStream, outputStream);
         socketHandler.run();
 
         return outputStream.toString();
