@@ -95,4 +95,13 @@ public class PathExaminerTest {
         assertEquals(Paths.get("/Users", "example", "public"),
                 pathExaminer.getPath(input2));
     }
+
+    @Test
+    public void concatenatesTwoPaths() throws Exception {
+        Path path = Paths.get("/example", "test");
+        String suffix = "logs";
+
+        String expected = "/example/test/logs";
+        assertEquals(expected, pathExaminer.concatenate(path, suffix).toString());
+    }
 }

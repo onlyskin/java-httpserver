@@ -54,4 +54,8 @@ public class PathExaminer {
         }
         return result.toArray(new Path[0]);
     }
+
+    public Path concatenate(Path root, String suffix) {
+        return Paths.get(root.toString(), suffix);
+    }
 }

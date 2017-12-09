@@ -1,34 +1,28 @@
 package httpserver;
 
-import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class App {
+
+    private static ExecutorService threadPool;
+    private static ServerFactory serverFactory;
+    private static SocketHandlerFactory socketHandlerFactory;
+
     public static void main(String[] args) throws IOException {
+        threadPool = Executors.newFixedThreadPool(16);
+        serverFactory = new ServerFactory(new PathExaminer(), new ServerSocketFactory());
+        socketHandlerFactory = new SocketHandlerFactory();
+
         int port = Integer.parseInt(args[1]);
         String fileDirectory = args[3];
 
-        Path root = new PathExaminer().getPath(fileDirectory);
-        ServerSocket serverSocket = new ServerSocket(port);
-        Path logPath = Paths.get(root.toString(), "logs");
-
-        ExecutorService pool = Executors.newFixedThreadPool(16);
-
+        Server server = serverFactory.makeServer(port, fileDirectory);
         while (true) {
-            Socket clientSocket = serverSocket.accept();
-            SocketHandler socketHandler = new SocketHandler(root,
-                    new FileLogger(logPath, new FileOperator()),
-                    clientSocket.getInputStream(),
-                    clientSocket.getOutputStream());
-            pool.execute(socketHandler);
+            server.acceptConnection(threadPool, socketHandlerFactory);
         }
     }
 }
