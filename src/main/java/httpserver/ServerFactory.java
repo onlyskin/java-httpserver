@@ -5,7 +5,6 @@ import httpserver.file.PathExaminer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class ServerFactory {
     private ServerSocketFactory serverSocketFactory;
@@ -17,7 +16,7 @@ public class ServerFactory {
     }
     public Server makeServer(int port, String fileDirectory) throws IOException {
         Path root = pathExaminer.getPath(fileDirectory);
-        Path logPath = Paths.get(root.toString(), "logs");
+        Path logPath = pathExaminer.concatenate(root,"logs");
         ServerSocket serverSocket = serverSocketFactory.newServerSocket(port);
 
         return new Server(serverSocket, root, logPath);
