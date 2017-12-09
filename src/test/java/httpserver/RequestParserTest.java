@@ -8,14 +8,15 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class RequestParserTest {
     private final RequestParser requestParser;
-    private final LoggerStub loggerStub;
+    private final Logger loggerMock;
 
     public RequestParserTest() {
-        this.loggerStub = new LoggerStub();
-        this.requestParser = new RequestParser(loggerStub);
+        this.loggerMock = mock(Logger.class);
+        this.requestParser = new RequestParser(loggerMock);
     }
 
     @Test
@@ -53,7 +54,7 @@ public class RequestParserTest {
         InputStream inputStream = new ByteArrayInputStream("GET /text-file.txt HTTP/1.1\r\n\r\n".getBytes());
         requestParser.parse(inputStream);
 
-        assertEquals("GET /text-file.txt HTTP/1.1", loggerStub.logCalledWith);
+        verify(loggerMock).log("GET /text-file.txt HTTP/1.1");
     }
 
     private Request requestForInput(String input) throws IOException {

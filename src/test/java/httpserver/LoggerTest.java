@@ -13,19 +13,19 @@ import static java.nio.file.Files.write;
 import static java.nio.file.Files.exists;
 import static org.junit.Assert.*;
 
-public class FileLoggerTest {
+public class LoggerTest {
     @Test
     public void createsLogFileOnConstructDoesntOverwrite() throws Exception {
         Path logPath = Paths.get(tempDir().toString(), "logs");
 
-        new FileLogger(logPath, new FileOperator());
+        new Logger(logPath, new FileOperator());
 
         assertTrue(exists(logPath));
 
         write(logPath, "fake log line\r\n".getBytes(),
                 StandardOpenOption.APPEND);
 
-        new FileLogger(logPath, new FileOperator());
+        new Logger(logPath, new FileOperator());
 
         assertEquals("fake log line\r\n", new String(readAllBytes(logPath)));
     }
@@ -33,10 +33,10 @@ public class FileLoggerTest {
     @Test
     public void onLogCallsFileOperatorAppendWithPathAndPayload() throws Exception {
         Path logPath = Paths.get(tempDir().toString(), "logs");
-        FileLogger fileLogger = new FileLogger(logPath, new FileOperator());
+        Logger logger = new Logger(logPath, new FileOperator());
 
-        fileLogger.log("POST example");
-        fileLogger.log("HEAD example");
+        logger.log("POST example");
+        logger.log("HEAD example");
 
         assertEquals("POST example\r\nHEAD example\r\n", new String(readAllBytes(logPath)));
     }

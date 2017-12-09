@@ -3,55 +3,59 @@ package httpserver;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.Executor;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ServerTest {
 
     private final Path root;
     private final Path logPath;
-    private final SocketHandler socketHandler;
-    private Socket acceptResultSocket;
-    private ServerSocketSpy serverSocketSpy;
+    private final SocketHandlerFactory socketHandlerFactoryMock;
+    private final ServerSocket serverSocketMock;
+    private final Socket socket;
     private Server server;
-    private SocketHandlerFactorySpy socketHandlerFactorySpy;
-    private ExecutorSpy executorSpy;
+    private final Executor executorMock;
+    private final SocketHandler socketHandlerMock;
 
     public ServerTest() throws IOException {
-        acceptResultSocket = new Socket();
-        serverSocketSpy = new ServerSocketSpy(acceptResultSocket);
+        socket = new Socket();
+        serverSocketMock = mock(ServerSocket.class);
+        when(serverSocketMock.accept()).thenReturn(socket);
+
         root = Paths.get("root");
         logPath = Paths.get("root/logs");
-        server = new Server(serverSocketSpy, root, logPath);
+        server = new Server(serverSocketMock, root, logPath);
 
-        socketHandler = new SocketHandler(null, null, null, null);
-        socketHandlerFactorySpy = new SocketHandlerFactorySpy(socketHandler);
-        executorSpy = new ExecutorSpy();
+        socketHandlerMock = mock(SocketHandler.class);
+        socketHandlerFactoryMock = mock(SocketHandlerFactory.class);
+        when(socketHandlerFactoryMock.newSocketHandler(any(), any(), any())).thenReturn(socketHandlerMock);
+
+        executorMock = mock(Executor.class);
     }
 
     @Test
     public void callsAcceptOnServerSocket() throws Exception {
-        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
+        server.acceptConnection(executorMock, socketHandlerFactoryMock);
 
-        assertTrue(serverSocketSpy.acceptCalled);
+        verify(serverSocketMock).accept();
     }
 
     @Test
     public void callsNewSocketHandlerWithCorrectArgs() throws Exception {
-        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
+        server.acceptConnection(executorMock, socketHandlerFactoryMock);
 
-        assertEquals(root, socketHandlerFactorySpy.newSocketHandlerArg1);
-        assertEquals(logPath, socketHandlerFactorySpy.newSocketHandlerArg2);
-        assertEquals(acceptResultSocket, socketHandlerFactorySpy.newSocketHandlerArg3);
+        verify(socketHandlerFactoryMock).newSocketHandler(root, logPath, socket);
     }
 
     @Test
     public void callsExecutorExecuteWithSocketHandler() throws Exception {
-        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
+        server.acceptConnection(executorMock, socketHandlerFactoryMock);
 
-        assertEquals(socketHandler, executorSpy.executeArg);
+        verify(executorMock).execute(socketHandlerMock);
     }
 }

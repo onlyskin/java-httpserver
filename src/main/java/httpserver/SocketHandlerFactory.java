@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public class SocketHandlerFactory {
     public SocketHandler newSocketHandler(Path root, Path logPath, Socket clientSocket) throws IOException {
         return new SocketHandler(root,
-                new FileLogger(logPath, new FileOperator()),
+                new Logger(logPath, new FileOperator()),
                 clientSocket.getInputStream(),
                 clientSocket.getOutputStream());
     }
