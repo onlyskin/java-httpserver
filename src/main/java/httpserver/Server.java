@@ -10,24 +10,16 @@ public class Server {
     private final Path logPath;
     private final Path root;
     private final ServerSocket serverSocket;
-    private boolean running;
 
     public Server(ServerSocket serverSocket, Path root, Path logPath) {
         this.serverSocket = serverSocket;
         this.root = root;
         this.logPath = logPath;
-        this.running = false;
     }
 
-    public void start(Executor executor, SocketHandlerFactory socketHandlerFactory) throws IOException {
-        //while (true) {
-            Socket clientSocket = serverSocket.accept();
-            SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(root, logPath, clientSocket);
-            executor.execute(socketHandler);
-        //}
-    }
-
-    public void exit() {
-        running = false;
+    public void acceptConnection(Executor executor, SocketHandlerFactory socketHandlerFactory) throws IOException {
+        Socket clientSocket = serverSocket.accept();
+        SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(root, logPath, clientSocket);
+        executor.execute(socketHandler);
     }
 }

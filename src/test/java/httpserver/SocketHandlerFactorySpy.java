@@ -14,12 +14,19 @@ public class SocketHandlerFactorySpy extends SocketHandlerFactory {
         this.newSocketHandlerResult = newSocketHandlerResult;
 
     }
+
     public SocketHandler newSocketHandler(Path root,
                                           Path logPath,
                                           Socket clientSocket) throws IOException {
-        newSocketHandlerArg1 = root;
-        newSocketHandlerArg2 = logPath;
-        newSocketHandlerArg3 = clientSocket;
+        if (newSocketHandlerArg1 == null) {
+            newSocketHandlerArg1 = root;
+        }
+        if (newSocketHandlerArg2 == null) {
+            newSocketHandlerArg2 = logPath;
+        }
+        if (newSocketHandlerArg3 == null) {
+            newSocketHandlerArg3 = clientSocket;
+        }
         return newSocketHandlerResult;
     }
 }

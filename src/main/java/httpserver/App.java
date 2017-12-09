@@ -21,6 +21,8 @@ public class App {
         String fileDirectory = args[3];
 
         Server server = serverFactory.makeServer(port, fileDirectory);
-        server.start(threadPool, socketHandlerFactory);
+        while (true) {
+            server.acceptConnection(threadPool, socketHandlerFactory);
+        }
     }
 }

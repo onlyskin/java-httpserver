@@ -34,16 +34,14 @@ public class ServerTest {
 
     @Test
     public void callsAcceptOnServerSocket() throws Exception {
-        server.start(executorSpy, socketHandlerFactorySpy);
-        server.exit();
+        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
 
         assertTrue(serverSocketSpy.acceptCalled);
     }
 
     @Test
     public void callsNewSocketHandlerWithCorrectArgs() throws Exception {
-        server.start(executorSpy, socketHandlerFactorySpy);
-        server.exit();
+        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
 
         assertEquals(root, socketHandlerFactorySpy.newSocketHandlerArg1);
         assertEquals(logPath, socketHandlerFactorySpy.newSocketHandlerArg2);
@@ -52,8 +50,7 @@ public class ServerTest {
 
     @Test
     public void callsExecutorExecuteWithSocketHandler() throws Exception {
-        server.start(executorSpy, socketHandlerFactorySpy);
-        server.exit();
+        server.acceptConnection(executorSpy, socketHandlerFactorySpy);
 
         assertEquals(socketHandler, executorSpy.executeArg);
     }
