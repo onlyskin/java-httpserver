@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import static java.nio.file.Files.*;
 
@@ -53,5 +54,9 @@ public class PathExaminer {
             e.printStackTrace();
         }
         return result.toArray(new Path[0]);
+    }
+
+    public Path concatenate(Path root, String suffix) {
+        return Paths.get(root.toString(), suffix);
     }
 }
