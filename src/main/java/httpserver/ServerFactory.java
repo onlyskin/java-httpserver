@@ -14,6 +14,7 @@ public class ServerFactory {
         this.serverSocketFactory = serverSocketFactory;
         this.pathExaminer = pathExaminer;
     }
+
     public Server makeServer(int port, String fileDirectory) throws IOException {
         Path root = pathExaminer.getPath(fileDirectory);
         Path logPath = pathExaminer.concatenate(root,"logs");
