@@ -1,7 +1,6 @@
 package httpserver;
 
 import httpserver.file.FileOperator;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -35,17 +34,16 @@ public class SocketHandlerTest {
 
     @Test
     public void writesRequestedFileContentsToOutputStreamForGET() throws Exception {
-        Path file = tempFileOptions(root, "aaa", "temp'");
+        Path file = tempFileOptions(root, "aaa", "temp.txt");
         write(file, "Test file contents for GET request.".getBytes());
         Path relativePath = root.relativize(file);
 
         byte[] request = ("GET /" + relativePath.toString() + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
 
-        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 35\r\n\r\nTest file contents for GET request.";
+        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 35\r\nContent-Type: text/plain\r\n\r\nTest file contents for GET request.";
         assertEquals(expected, stringOutputForRequestBytes(request));
     }
 
-    @Ignore
     @Test
     public void writesContentTypeForGif() throws Exception {
         Path file = createTempFile(root,"aaa", ".gif");
