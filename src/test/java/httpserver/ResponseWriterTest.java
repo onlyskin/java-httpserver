@@ -9,14 +9,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ResponseWriterTest {
     private final ResponseWriter responseWriter;
     private final ByteArrayOutputStream outputStream;
 
     public ResponseWriterTest() {
-        this.responseWriter = new ResponseWriter();
         this.outputStream = new ByteArrayOutputStream();
+        this.responseWriter = new ResponseWriter(outputStream);
     }
 
     @Test
@@ -31,6 +32,18 @@ public class ResponseWriterTest {
     }
 
     @Test
+    public void writesResponseHeaders() throws Exception {
+        Header headerMock = mock(Header.class);
+        when(headerMock.toString()).thenReturn("example: header");
+        Header[] headers = new Header[]{headerMock};
+        Response response = new OkResponse("example".getBytes(), headers);
+
+        String output = outputForResponse(response);
+
+        assertTrue(output.contains("example: header"));
+    }
+
+    @Test
     public void itWritesTheFirstLineFor404() throws Exception {
         String output = outputForResponse(new NotFoundResponse());
 
@@ -38,7 +51,7 @@ public class ResponseWriterTest {
     }
 
     private String outputForResponse(Response response) throws IOException {
-        responseWriter.write(response, outputStream);
+        responseWriter.write(response);
         return outputStream.toString();
     }
 }
