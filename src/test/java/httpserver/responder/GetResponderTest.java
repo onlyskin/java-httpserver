@@ -1,11 +1,13 @@
 package httpserver.responder;
 
+import httpserver.Header;
 import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static httpserver.file.FileHelpers.tempDir;
@@ -18,16 +20,12 @@ public class GetResponderTest {
 
     private final GetResponder getResponder;
     private final Path root;
-    private final Path file1;
-    private final Path file2;
     private final Path fileWithContents;
 
     public GetResponderTest() throws IOException {
         getResponder = new GetResponder();
         root = tempDir();
-        file1 = tempFileOptions(root, "aaa");
-        file2 = tempFileOptions(root, "bbb");
-        fileWithContents = tempFileOptions(root, "aaa");
+        fileWithContents = tempFileOptions(root, "aaa", ".gif");
         write(fileWithContents, "Test file contents".getBytes());
     }
 
@@ -44,19 +42,21 @@ public class GetResponderTest {
     }
 
     @Test
-    public void returnsFileContentsWhenFile() throws Exception {
+    public void getRequestForFile() throws Exception {
         String fileName = fileWithContents.toString().substring(root.toString().length());
         Request request = new Request("GET", fileName,
                 new HashMap<>());
 
         Response response = getResponder.respond(root, request);
 
+        Header[] expectedHeaders = new Header[]{new Header("Content-Type", "image/gif")};
         assertEquals(200, response.getStatusCode());
         assertEquals("Test file contents", new String(response.getPayload()));
+        assertEquals(expectedHeaders, response.getHeaders());
     }
 
     @Test
-    public void returnsLinksWhenDir() throws Exception {
+    public void getRequestForDir() throws Exception {
         Request request = new Request("GET", "/",
                 new HashMap<>());
 

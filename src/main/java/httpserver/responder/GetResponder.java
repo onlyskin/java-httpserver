@@ -1,5 +1,7 @@
 package httpserver.responder;
 
+import httpserver.ContentTypeHeader;
+import httpserver.Header;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
@@ -49,7 +51,7 @@ public class GetResponder implements Responder {
 
     private Response responseForFile(Path path) {
         byte[] payload = pathExaminer.fileContents(path);
-        return new OkResponse(payload);
+        Header[] headers = new Header[]{new ContentTypeHeader(path)};
+        return new OkResponse(payload, headers);
     }
-
 }
