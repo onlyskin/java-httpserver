@@ -16,4 +16,13 @@ public class Header {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object instanceof Header) {
+            Header other = (Header)object;
+            return this.key == other.key && this.value == other.value;
+        }
+        return false;
+    }
 }
