@@ -1,5 +1,6 @@
 package httpserver.response;
 
+import httpserver.Header;
 import httpserver.response.MethodNotAllowedResponse;
 import org.junit.Test;
 
@@ -23,5 +24,10 @@ public class MethodNotAllowedResponseTest {
     @Test
     public void hasEmptyPayload() throws Exception {
         assertTrue(Arrays.equals(new byte[0], methodNotAllowedResponse.getPayload()));
+    }
+
+    @Test
+    public void hasNoHeaders() throws Exception {
+        assertTrue(Arrays.equals(new Header[0], methodNotAllowedResponse.getHeaders()));
     }
 }

@@ -21,7 +21,7 @@ public class Header {
     public boolean equals(Object object) {
         if (object instanceof Header) {
             Header other = (Header)object;
-            return this.key == other.key && this.value == other.value;
+            return this.key.equals(other.key) && this.value.equals(other.value);
         }
         return false;
     }
