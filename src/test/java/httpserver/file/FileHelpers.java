@@ -26,8 +26,8 @@ public class FileHelpers {
         return file;
     }
 
-    public static Path tempFileOptions(Path dir, String prefix) throws IOException {
-        Path file = createTempFile(dir, prefix, "temp");
+    public static Path tempFileOptions(Path dir, String prefix, String suffix) throws IOException {
+        Path file = createTempFile(dir, prefix, suffix);
         file.toFile().deleteOnExit();
         return file;
     }

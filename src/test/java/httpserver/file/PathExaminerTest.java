@@ -24,8 +24,8 @@ public class PathExaminerTest {
         pathExaminer = new PathExaminer();
         root = Paths.get("tmp/serving-dir");
         dir = tempDir();
-        file1 = tempFileOptions(dir, "aaa");
-        file2 = tempFileOptions(dir, "bbb");
+        file1 = tempFileOptions(dir, "aaa", "temp");
+        file2 = tempFileOptions(dir, "bbb", "temp");
         fileWithContents = fileWithContents("Temp file contents");
         nonePath = Paths.get("/var/nonePath");
     }

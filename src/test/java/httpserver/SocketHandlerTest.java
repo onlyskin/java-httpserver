@@ -1,6 +1,7 @@
 package httpserver;
 
 import httpserver.file.FileOperator;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.*;
@@ -8,6 +9,7 @@ import java.nio.file.Path;
 
 import static httpserver.file.FileHelpers.tempDir;
 import static httpserver.file.FileHelpers.tempFileOptions;
+import static java.nio.file.Files.createTempFile;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
 
@@ -19,8 +21,8 @@ public class SocketHandlerTest {
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
-        relativePath1 = root.relativize(tempFileOptions(root, "aaa"));
-        relativePath2 = root.relativize(tempFileOptions(root, "bbb"));
+        relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
+        relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));
     }
 
     @Test
@@ -33,7 +35,7 @@ public class SocketHandlerTest {
 
     @Test
     public void writesRequestedFileContentsToOutputStreamForGET() throws Exception {
-        Path file = tempFileOptions(root, "aaa");
+        Path file = tempFileOptions(root, "aaa", "temp'");
         write(file, "Test file contents for GET request.".getBytes());
         Path relativePath = root.relativize(file);
 
@@ -41,6 +43,17 @@ public class SocketHandlerTest {
 
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: 35\r\n\r\nTest file contents for GET request.";
         assertEquals(expected, stringOutputForRequestBytes(request));
+    }
+
+    @Ignore
+    @Test
+    public void writesContentTypeForGif() throws Exception {
+        Path file = createTempFile(root,"aaa", ".gif");
+        file.toFile().deleteOnExit();
+
+        byte[] request = ("GET /" + root.relativize(file).toString() + " HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
+
+        assertTrue(stringOutputForRequestBytes(request).contains("Content-Type: image/gif\r\n"));
     }
 
     @Test

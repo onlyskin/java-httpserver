@@ -20,7 +20,7 @@ public class HtmlTest {
     public HtmlTest() throws IOException {
         root = tempDir();
         fullDirPath = tempDirOptions(root);
-        fullFilePath = tempFileOptions(root, "aaa");
+        fullFilePath = tempFileOptions(root, "aaa", "temp");
     }
 
     @Test
