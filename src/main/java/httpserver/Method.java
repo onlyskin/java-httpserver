@@ -17,7 +17,7 @@ public enum Method {
         this.responder = responder;
     }
 
-    public Response respond(Path root, Request request) {
+    public Response respond(AppConfig root, Request request) {
         return responder.respond(root, request);
     }
 }
