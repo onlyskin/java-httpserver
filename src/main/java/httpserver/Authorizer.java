@@ -5,7 +5,9 @@ import java.util.Base64;
 public class Authorizer {
     public boolean authorize(Request request) {
         if (request.hasHeader("Authorization")) {
-            String[] credentials = decodeBasicAuthHeader(request.getHeaderValue("Authorization"));
+            String authorizationHeader = request.getHeaderValue("Authorization");
+            String[] credentials = decodeBasicAuthHeader(authorizationHeader);
+
             if (validateCredentials(credentials)) {
                 return true;
             }
