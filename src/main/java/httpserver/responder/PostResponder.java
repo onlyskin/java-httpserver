@@ -5,11 +5,9 @@ import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
-import java.nio.file.Path;
-
 public class PostResponder implements Responder {
     @Override
-    public Response respond(Path root, Request request) {
+    public Response respond(AppConfig appConfig, Request request) {
         if (request.getPathString().equals("/form")) {
             return new OkResponse(new byte[0]);
         }
