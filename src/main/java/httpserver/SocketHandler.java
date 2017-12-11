@@ -31,6 +31,6 @@ public class SocketHandler implements Runnable {
             response = new NotFoundResponse();
         }
 
-        new ResponseWriter().write(response, outputStream);
+        new ResponseWriter(outputStream).write(response);
     }
 }

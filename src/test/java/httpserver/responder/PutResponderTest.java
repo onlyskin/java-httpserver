@@ -2,7 +2,6 @@ package httpserver.responder;
 
 import httpserver.Request;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;

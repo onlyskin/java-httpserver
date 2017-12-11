@@ -1,6 +1,6 @@
 package httpserver.response;
 
-import httpserver.response.NotFoundResponse;
+import httpserver.Header;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -23,5 +23,10 @@ public class NotFoundResponseTest {
     @Test
     public void hasEmptyPayload() throws Exception {
         assertTrue(Arrays.equals(new byte[0], notFoundResponse.getPayload()));
+    }
+
+    @Test
+    public void hasNoHeaders() throws Exception {
+        assertTrue(Arrays.equals(new Header[0], notFoundResponse.getHeaders()));
     }
 }
