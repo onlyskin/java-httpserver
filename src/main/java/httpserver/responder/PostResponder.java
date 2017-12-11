@@ -10,7 +10,7 @@ import java.nio.file.Path;
 public class PostResponder implements Responder {
     @Override
     public Response respond(Path root, Request request) {
-        if (request.getPath().equals("/form")) {
+        if (request.getPathString().equals("/form")) {
             return new OkResponse(new byte[0]);
         }
         return new MethodNotAllowedResponse();

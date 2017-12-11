@@ -1,7 +1,6 @@
 package httpserver.response;
 
 import httpserver.Header;
-import httpserver.response.MethodNotAllowedResponse;
 import org.junit.Test;
 
 import java.util.Arrays;

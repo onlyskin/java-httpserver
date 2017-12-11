@@ -14,7 +14,7 @@ public class RequestTest {
 
         Request request = new Request("GET", "/example.txt", headers);
         assertEquals(Method.GET, request.getMethod());
-        assertEquals("/example.txt", request.getPath());
+        assertEquals("/example.txt", request.getPathString());
         assertEquals("test-value", request.getHeaders().get("test-header"));
     }
 

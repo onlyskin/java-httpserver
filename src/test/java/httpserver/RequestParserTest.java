@@ -26,7 +26,7 @@ public class RequestParserTest {
         Request request = requestForInput(input);
 
         assertEquals(Method.GET, request.getMethod());
-        assertEquals("/text-file.txt", request.getPath());
+        assertEquals("/text-file.txt", request.getPathString());
     }
 
     @Test

@@ -3,6 +3,7 @@ package httpserver.responder;
 import httpserver.Header;
 import httpserver.Request;
 import httpserver.response.Response;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -13,8 +14,7 @@ import java.util.HashMap;
 import static httpserver.file.FileHelpers.tempDir;
 import static httpserver.file.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.write;
-import static junit.framework.TestCase.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class GetResponderTest {
 
@@ -64,5 +64,24 @@ public class GetResponderTest {
 
         assertEquals(200, response.getStatusCode());
         assertTrue(new String(response.getPayload()).contains("<a href="));
+    }
+
+    @Test
+    public void getRequestToCoffee() throws Exception {
+        Request request = new Request("GET", "/coffee", new HashMap<>());
+
+        Response response = getResponder.respond(root, request);
+
+        assertEquals(418, response.getStatusCode());
+        assertTrue(new String(response.getPayload()).contains("I'm a teapot"));
+    }
+
+    @Test
+    public void getRequestToTea() throws Exception {
+        Request request = new Request("GET", "/tea", new HashMap<>());
+
+        Response response = getResponder.respond(root, request);
+
+        assertEquals(200, response.getStatusCode());
     }
 }

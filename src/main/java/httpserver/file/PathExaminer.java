@@ -12,7 +12,7 @@ import static java.nio.file.Files.*;
 
 public class PathExaminer {
 
-    public Path fullPathForRequestPath(Path root, String requestPathString) {
+    public Path getFullPath(Path root, String requestPathString) {
         return root.resolve(requestPathString.substring(1));
     }
 
