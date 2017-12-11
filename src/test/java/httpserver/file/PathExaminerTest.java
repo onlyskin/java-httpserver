@@ -73,7 +73,7 @@ public class PathExaminerTest {
 
         Path expected = Paths.get("tmp/serving-dir/example.txt");
         assertEquals(expected,
-                pathExaminer.fullPathForRequestPath(root, requestPathString));
+                pathExaminer.getFullPath(root, requestPathString));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class PathExaminerTest {
 
         Path expected = Paths.get("tmp/serving-dir");
         assertEquals(expected,
-                pathExaminer.fullPathForRequestPath(root, requestPathString));
+                pathExaminer.getFullPath(root, requestPathString));
     }
 
     @Test
