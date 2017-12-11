@@ -29,4 +29,11 @@ public class Logger {
             fileOperator.createFileAtPath(path);
         } catch (IOException e) {}
     }
+
+    public byte[] readLog() {
+        try {
+            return fileOperator.readContents(logPath);
+        } catch (IOException e) {}
+        return null;
+    }
 }

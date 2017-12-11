@@ -40,4 +40,15 @@ public class LoggerTest {
 
         assertEquals("POST example\r\nHEAD example\r\n", new String(readAllBytes(logPath)));
     }
+
+    @Test
+    public void readsLog() throws Exception {
+        Path logPath = Paths.get(tempDir().toString(), "logs");
+        Logger logger = new Logger(logPath, new FileOperator());
+
+        logger.log("POST example");
+        logger.log("HEAD example");
+
+        assertEquals("POST example\r\nHEAD example\r\n", new String(logger.readLog()));
+    }
 }
