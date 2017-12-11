@@ -20,10 +20,28 @@ public class RequestParser {
         String firstLine = in.readLine();
         logger.log(firstLine);
 
-        String[] requestParams = firstLine.split(" ");
+        String[] parts = parseFirstLine(firstLine);
         Header[] headers = parseHeaders(in);
 
-        return new Request(requestParams[0], requestParams[1], headers);
+        return new Request(parts[0], parts[1], headers);
+    }
+
+    private String[] parseFirstLine(String firstLine) {
+        String[] parts = firstLine.split(" ");
+        String method = parts[0];
+        String path = pathToParts(parts[1])[0];
+        String queryString = pathToParts(parts[1])[1];
+        return new String[]{method, path, queryString};
+    }
+
+    private String[] pathToParts(String pathString) {
+        String[] pathParts;
+        if (pathString.contains("?")) {
+            pathParts = pathString.split("\\?");
+        } else {
+            pathParts = new String[]{pathString, ""};
+        }
+        return pathParts;
     }
 
     private Header[] parseHeaders(BufferedReader in) throws IOException {
