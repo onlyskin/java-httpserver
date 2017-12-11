@@ -4,8 +4,13 @@ public class Request {
     private Method method;
     private final String pathString;
     private final Header[] headers;
+    private final String queryString;
 
     public Request(String method, String pathString, Header[] headers) {
+        this(method, pathString, headers, "");
+    }
+
+    public Request(String method, String pathString, Header[] headers, String queryString) {
         try {
             this.method = Method.valueOf(method);
         } catch (IllegalArgumentException e) {
@@ -13,6 +18,7 @@ public class Request {
         }
         this.pathString = pathString;
         this.headers = headers;
+        this.queryString = queryString;
     }
 
     public Method getMethod() {
@@ -41,5 +47,9 @@ public class Request {
             return false;
         }
         return true;
+    }
+
+    public String getQueryString() {
+        return queryString;
     }
 }
