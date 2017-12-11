@@ -17,6 +17,7 @@ public class ResponseWriter {
         statuses.put(200, "OK");
         statuses.put(404, "Not Found");
         statuses.put(405, "Method Not Allowed");
+        statuses.put(418, "I'm a teapot");
     }
 
     public void write(Response response) {
