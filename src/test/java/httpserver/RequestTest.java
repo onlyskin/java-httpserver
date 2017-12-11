@@ -20,11 +20,13 @@ public class RequestTest {
     }
 
     @Test
-    public void getsHeaderValue() throws Exception {
+    public void canGetHeaderValue() throws Exception {
         Header[] headers = new Header[]{new Header("test-header", "test-value")};
         Request request = new Request("GET", "/example.txt", headers);
 
-        assertEquals("test-value", request.getHeaderValue("test-header"));
+        String headerValue = request.getHeaderValue("test-header");
+
+        assertEquals("test-value", headerValue);
     }
 
     @Test
