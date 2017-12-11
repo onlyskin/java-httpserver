@@ -2,25 +2,26 @@ package httpserver;
 
 import org.junit.Test;
 
-import java.util.HashMap;
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
 public class RequestTest {
     @Test
     public void hasCorrectMethodPathAndHeaders() throws Exception {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("test-header", "test-value");
-
+        Header[] headers = new Header[]{new Header("test-header", "test-value")};
         Request request = new Request("GET", "/example.txt", headers);
+
         assertEquals(Method.GET, request.getMethod());
         assertEquals("/example.txt", request.getPathString());
-        assertEquals("test-value", request.getHeaders().get("test-header"));
+
+        Header[] expected = new Header[]{new Header("test-header", "test-value")};
+        assertTrue(Arrays.equals(expected, request.getHeaders()));
     }
 
     @Test
     public void getMethodReturnsInvalidWhenBadMethod() throws Exception {
-        Request request = new Request("ABCDEF", "/example.txt", new HashMap<>());
+        Request request = new Request("ABCDEF", "/example.txt", new Header[0]);
         assertEquals(Method.INVALID, request.getMethod());
     }
 }
