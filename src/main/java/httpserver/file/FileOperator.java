@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-import static java.nio.file.Files.createFile;
-import static java.nio.file.Files.deleteIfExists;
-import static java.nio.file.Files.write;
+import static java.nio.file.Files.*;
 
 public class FileOperator {
     public void createFileAtPath(Path path) throws IOException {
@@ -23,5 +21,9 @@ public class FileOperator {
 
     public void replaceContents(Path path, byte[] contents) throws IOException {
         write(path, contents);
+    }
+
+    public byte[] readContents(Path path) throws IOException {
+        return readAllBytes(path);
     }
 }
