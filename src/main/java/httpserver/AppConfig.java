@@ -6,7 +6,7 @@ public class AppConfig {
     private final Logger logger;
     private final Path root;
 
-    public AppConfig(Logger logger, Path root) {
+    public AppConfig(Path root, Logger logger) {
         this.logger = logger;
         this.root = root;
     }

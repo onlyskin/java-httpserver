@@ -12,7 +12,7 @@ public class AppConfigTest {
     public void itHasLoggerAndRoot() {
         Logger loggerMock = mock(Logger.class);
         Path rootMock = mock(Path.class);
-        AppConfig appConfig = new AppConfig(loggerMock, rootMock);
+        AppConfig appConfig = new AppConfig(rootMock, loggerMock);
 
         assertEquals(appConfig.getLogger(), loggerMock);
         assertEquals(appConfig.getRoot(), rootMock);
