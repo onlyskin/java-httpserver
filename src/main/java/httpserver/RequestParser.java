@@ -10,8 +10,8 @@ import java.util.List;
 public class RequestParser {
     private final Logger logger;
 
-    public RequestParser(Logger logger) {
-        this.logger = logger;
+    public RequestParser(AppConfig appConfig) {
+        this.logger = appConfig.getLogger();
     }
 
     public Request parse(InputStream inputStream) throws IOException {

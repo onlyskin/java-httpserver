@@ -16,7 +16,9 @@ public class RequestParserTest {
 
     public RequestParserTest() {
         this.loggerMock = mock(Logger.class);
-        this.requestParser = new RequestParser(loggerMock);
+        AppConfig appConfigMock = mock(AppConfig.class);
+        when(appConfigMock.getLogger()).thenReturn(loggerMock);
+        this.requestParser = new RequestParser(appConfigMock);
     }
 
     @Test
