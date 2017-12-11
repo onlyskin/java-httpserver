@@ -25,7 +25,8 @@ public class UnauthorizedResponseTest {
     }
 
     @Test
-    public void hasNoHeaders() throws Exception {
-        assertTrue(Arrays.equals(new Header[0], unauthorizedResponse.getHeaders()));
+    public void hasWWWAuthenticateHeader() throws Exception {
+        Header[] expected = new Header[]{new Header("WWW-Authenticate", "Basic realm=\"\"")};
+        assertTrue(Arrays.equals(expected, unauthorizedResponse.getHeaders()));
     }
 }

@@ -15,6 +15,6 @@ public class UnauthorizedResponse implements Response {
 
     @Override
     public Header[] getHeaders() {
-        return new Header[0];
+        return new Header[]{new Header("WWW-Authenticate", "Basic realm=\"\"")};
     }
 }
