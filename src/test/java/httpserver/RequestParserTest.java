@@ -12,10 +12,12 @@ import static org.mockito.Mockito.*;
 public class RequestParserTest {
     private final RequestParser requestParser;
     private final InputStream inputStream;
+    private final Logger loggerMock;
 
     public RequestParserTest() {
         AppConfig appConfigMock = mock(AppConfig.class);
-        when(appConfigMock.getLogger()).thenReturn(mock(Logger.class));
+        loggerMock = mock(Logger.class);
+        when(appConfigMock.getLogger()).thenReturn(loggerMock);
 
         this.requestParser = new RequestParser(appConfigMock);
 
@@ -46,7 +48,7 @@ public class RequestParserTest {
     public void callsLogOnLogger() throws Exception {
         requestParser.parse(inputStream);
 
-        verify(mock(Logger.class)).log("GET /text-file.txt HTTP/1.1");
+        verify(loggerMock).log("GET /text-file.txt HTTP/1.1");
     }
 
 }
