@@ -1,13 +1,11 @@
 package httpserver;
 
-import java.util.HashMap;
-
 public class Request {
     private Method method;
     private final String pathString;
-    private final HashMap<String, String> headers;
+    private final Header[] headers;
 
-    public Request(String method, String pathString, HashMap<String, String> headers) {
+    public Request(String method, String pathString, Header[] headers) {
         try {
             this.method = Method.valueOf(method);
         } catch (IllegalArgumentException e) {
@@ -25,7 +23,23 @@ public class Request {
         return pathString;
     }
 
-    public HashMap<String,String> getHeaders() {
+    public Header[] getHeaders() {
         return headers;
+    }
+
+    public String getHeaderValue(String key) {
+        for (Header header: headers) {
+            if (header.getKey().equals(key)) {
+                return header.getValue();
+            }
+        }
+        return null;
+    }
+
+    public boolean hasHeader(String key) {
+        if (getHeaderValue(key) == null) {
+            return false;
+        }
+        return true;
     }
 }

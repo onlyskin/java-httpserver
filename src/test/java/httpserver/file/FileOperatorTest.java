@@ -63,6 +63,15 @@ public class FileOperatorTest {
         assertEquals("second line\r\n", fileContents(path));
     }
 
+    @Test
+    public void readsFileContentsAtPath() throws Exception {
+        fileOperator.createFileAtPath(path);
+        fileOperator.appendToFile(path, "first line\r\n".getBytes());
+
+        String contentsAsString = new String(fileOperator.readContents(path));
+        assertEquals("first line\r\n", contentsAsString);
+    }
+
     private String fileContents(Path path) throws IOException {
         return new String(readAllBytes(path));
     }

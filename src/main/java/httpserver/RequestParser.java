@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RequestParser {
     private final Logger logger;
 
-    public RequestParser(Logger logger) {
-        this.logger = logger;
+    public RequestParser(AppConfig appConfig) {
+        this.logger = appConfig.getLogger();
     }
 
     public Request parse(InputStream inputStream) throws IOException {
@@ -20,24 +21,25 @@ public class RequestParser {
         logger.log(firstLine);
 
         String[] requestParams = firstLine.split(" ");
-        HashMap<String, String> headers = parseHeaders(in);
+        Header[] headers = parseHeaders(in);
 
         return new Request(requestParams[0], requestParams[1], headers);
     }
 
-    private HashMap<String, String> parseHeaders(BufferedReader in) throws IOException {
-        HashMap<String, String> headers = new HashMap<>();
+    private Header[] parseHeaders(BufferedReader in) throws IOException {
+        List<Header> headers = new ArrayList<>();
         String inputLine;
 
         while (!(inputLine = in.readLine()).equals("")) {
-            parseHeader(headers, inputLine);
+            Header header = parseHeader(inputLine);
+            headers.add(header);
         }
 
-        return headers;
+        return headers.toArray(new Header[0]);
     }
 
-    private void parseHeader(HashMap<String, String> headers, String inputLine) {
-        String[] header = inputLine.split(":\\s*", 2);
-        headers.put(header[0], header[1]);
+    private Header parseHeader(String inputLine) {
+        String[] parts = inputLine.split(":\\s*", 2);
+        return new Header(parts[0], parts[1]);
     }
 }

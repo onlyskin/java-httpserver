@@ -9,14 +9,12 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 
 public class SocketHandler implements Runnable {
-    private final Path root;
-    private final Logger logger;
+    private final AppConfig appConfig;
     private final InputStream inputStream;
     private final OutputStream outputStream;
 
     public SocketHandler(Path root, Logger logger, InputStream inputStream, OutputStream outputStream) {
-        this.root = root;
-        this.logger = logger;
+        this.appConfig = new AppConfig(root, logger);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
     }
@@ -25,8 +23,8 @@ public class SocketHandler implements Runnable {
         Response response;
 
         try {
-            Request request = new RequestParser(logger).parse(inputStream);
-            response = new GeneralResponder().respond(root, request);
+            Request request = new RequestParser(appConfig).parse(inputStream);
+            response = new GeneralResponder().respond(appConfig, request);
         } catch (Exception e) {
             response = new NotFoundResponse();
         }

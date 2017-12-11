@@ -1,8 +1,8 @@
 package httpserver.responder;
 
+import httpserver.AppConfig;
 import httpserver.ContentTypeHeader;
 import httpserver.Header;
-import httpserver.response.FourEighteenResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
@@ -18,7 +18,7 @@ import static httpserver.file.Html.linkString;
 public class GetResponder implements Responder {
 
     private final PathExaminer pathExaminer;
-    private final Map<String, Response> specialCaseRouteMap;
+    private final Map<String, Responder> specialCaseRouteMap;
 
     public GetResponder() {
         pathExaminer = new PathExaminer();
@@ -26,14 +26,16 @@ public class GetResponder implements Responder {
     }
 
     @Override
-    public Response respond(Path root, Request request) {
+    public Response respond(AppConfig appConfig, Request request) {
         String requestPathString = request.getPathString();
 
         if (specialCaseRouteMap.containsKey(requestPathString)) {
-            return specialCaseRouteMap.get(requestPathString);
+            return specialCaseRouteMap.get(requestPathString).respond(appConfig, request);
         }
 
+        Path root = appConfig.getRoot();
         Path path = pathExaminer.getFullPath(root, requestPathString);
+
         if (pathExaminer.pathExists(path)) {
             if (pathExaminer.isFile(path)) {
                 return responseForFile(path);
@@ -65,10 +67,11 @@ public class GetResponder implements Responder {
         return new OkResponse(payload, headers);
     }
 
-    private Map<String, Response> getRouteMap() {
-        Map<String, Response> routeMap = new HashMap<>();
-        routeMap.put("/coffee", new FourEighteenResponse());
-        routeMap.put("/tea", new OkResponse("".getBytes()));
+    private Map<String, Responder> getRouteMap() {
+        Map<String, Responder> routeMap = new HashMap<>();
+        routeMap.put("/coffee", new CoffeeResponder());
+        routeMap.put("/tea", new TeaResponder());
+        routeMap.put("/logs", new LogsResponder());
         return routeMap;
     }
 }

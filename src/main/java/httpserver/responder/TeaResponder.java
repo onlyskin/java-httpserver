@@ -2,12 +2,12 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.response.MethodNotAllowedResponse;
+import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
-public class InvalidMethodResponder implements Responder {
+public class TeaResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        return new MethodNotAllowedResponse();
+        return new OkResponse("".getBytes());
     }
 }

@@ -1,13 +1,13 @@
 package httpserver.responder;
 
+import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.response.Response;
 
-import java.nio.file.Path;
 
 public class GeneralResponder implements Responder {
     @Override
-    public Response respond(Path root, Request request) {
-        return request.getMethod().respond(root, request);
+    public Response respond(AppConfig appConfig, Request request) {
+        return request.getMethod().respond(appConfig, request);
     }
 }
