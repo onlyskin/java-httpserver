@@ -32,6 +32,7 @@ public class RequestParserTest {
 
         assertEquals(Method.GET, request.getMethod());
         assertEquals("/text-file", request.getPathString());
+        assertEquals("example=test", request.getQueryString());
     }
 
     @Test

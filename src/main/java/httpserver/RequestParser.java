@@ -21,9 +21,13 @@ public class RequestParser {
         logger.log(firstLine);
 
         String[] parts = parseFirstLine(firstLine);
+        String method = parts[0];
+        String path = parts[1];
+        String queryString = parts[2];
+
         Header[] headers = parseHeaders(in);
 
-        return new Request(parts[0], parts[1], headers);
+        return new Request(method, path, headers, queryString);
     }
 
     private String[] parseFirstLine(String firstLine) {
