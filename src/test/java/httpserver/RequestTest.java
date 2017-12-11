@@ -7,21 +7,27 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 public class RequestTest {
+
+    private final Header[] headers;
+
+    public RequestTest() {
+        headers = new Header[]{new Header("test-header", "test-value")};
+    }
+
     @Test
-    public void hasCorrectMethodPathAndHeaders() throws Exception {
-        Header[] headers = new Header[]{new Header("test-header", "test-value")};
-        Request request = new Request("GET", "/example.txt", headers);
+    public void hasCorrectMethodPathHeadersAndQueryString() throws Exception {
+        Request request = new Request("GET", "/example.txt", headers, "example=test");
 
         assertEquals(Method.GET, request.getMethod());
         assertEquals("/example.txt", request.getPathString());
 
         Header[] expected = new Header[]{new Header("test-header", "test-value")};
         assertTrue(Arrays.equals(expected, request.getHeaders()));
+        assertEquals("example=test", request.getQueryString());
     }
 
     @Test
     public void canGetHeaderValue() throws Exception {
-        Header[] headers = new Header[]{new Header("test-header", "test-value")};
         Request request = new Request("GET", "/example.txt", headers);
 
         String headerValue = request.getHeaderValue("test-header");
@@ -31,7 +37,6 @@ public class RequestTest {
 
     @Test
     public void testsIfHeaderPresent() throws Exception {
-        Header[] headers = new Header[]{new Header("test-header", "test-value")};
         Request request = new Request("GET", "/example.txt", headers);
 
         assertTrue(request.hasHeader("test-header"));
@@ -43,6 +48,13 @@ public class RequestTest {
         Request request = new Request("GET", "/example.txt", new Header[0]);
 
         assertNull(request.getHeaderValue("test-header"));
+    }
+
+    @Test
+    public void getsEmptyStringForNoQueryString() throws Exception {
+        Request request = new Request("GET", "/example.txt", headers);
+
+        assertEquals("", request.getQueryString());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package httpserver;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -21,16 +22,17 @@ public class RequestParserTest {
 
         this.requestParser = new RequestParser(appConfigMock);
 
-        String input = "GET /text-file.txt HTTP/1.1\r\nHost: 0.0.0.0:5000\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\n\r\n";
+        String input = "GET /text-file?example=test HTTP/1.1\r\nHost: 0.0.0.0:5000\r\nUser-Agent: curl/7.54.0\r\nAccept: */*\r\n\r\n";
         inputStream = new ByteArrayInputStream(input.getBytes());
     }
 
     @Test
-    public void parsesMethodAndPath() throws Exception {
+    public void parsesMethodPathAndQueryString() throws Exception {
         Request request = requestParser.parse(inputStream);
 
         assertEquals(Method.GET, request.getMethod());
-        assertEquals("/text-file.txt", request.getPathString());
+        assertEquals("/text-file", request.getPathString());
+        assertEquals("example=test", request.getQueryString());
     }
 
     @Test
@@ -48,7 +50,7 @@ public class RequestParserTest {
     public void callsLogOnLogger() throws Exception {
         requestParser.parse(inputStream);
 
-        verify(loggerMock).log("GET /text-file.txt HTTP/1.1");
+        verify(loggerMock).log("GET /text-file?example=test HTTP/1.1");
     }
 
 }
