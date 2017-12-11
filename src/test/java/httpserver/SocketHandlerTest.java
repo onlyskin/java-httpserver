@@ -56,8 +56,8 @@ public class SocketHandlerTest {
 
     @Test
     public void writesRequestedDirContentsAsHtmlToOutputStreamForGET() throws Exception {
-        String expectedBody = "<div><a href=\"" + relativePath1 + "\">" + relativePath1 + "</a></div>" +
-                "<div><a href=\"" + relativePath2 + "\">" + relativePath2 + "</a></div>";
+        String expectedBody = "<div><a href=\"/" + relativePath1 + "\">/" + relativePath1 + "</a></div>" +
+                "<div><a href=\"/" + relativePath2 + "\">/" + relativePath2 + "</a></div>";
 
         byte[] request = ("GET / HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
 

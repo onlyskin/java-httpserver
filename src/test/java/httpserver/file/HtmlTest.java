@@ -44,10 +44,10 @@ public class HtmlTest {
                 .substring(root.toString().length() + 1);
         String expectedDirPath = fullDirPath.toString()
                 .substring(root.toString().length() + 1) + "/";
-        String expectedFileLink = "<div><a href=\"" + expectedFilePath +
-                "\">" + expectedFilePath + "</a></div>";
-        String expectedDirLink = "<div><a href=\"" + expectedDirPath +
-                "\">" + expectedDirPath + "</a></div>";
+        String expectedFileLink = "<div><a href=\"/" + expectedFilePath +
+                "\">/" + expectedFilePath + "</a></div>";
+        String expectedDirLink = "<div><a href=\"/" + expectedDirPath +
+                "\">/" + expectedDirPath + "</a></div>";
 
         assertEquals(expectedFileLink, Html.linkString(root, fullFilePath));
         assertEquals(expectedDirLink, Html.linkString(root, fullDirPath));

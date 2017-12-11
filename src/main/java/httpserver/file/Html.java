@@ -13,7 +13,7 @@ public class Html {
 
     public static String linkString(Path root, Path fullFilePath) {
         String href = hrefString(root, fullFilePath);
-        return "<div><a href=\"" + href +
-                "\">" + href + "</a></div>";
+        return "<div><a href=\"/" + href +
+                "\">/" + href + "</a></div>";
     }
 }
