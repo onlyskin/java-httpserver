@@ -28,6 +28,15 @@ public class RequestTest {
     }
 
     @Test
+    public void testsIfHeaderPresent() throws Exception {
+        Header[] headers = new Header[]{new Header("test-header", "test-value")};
+        Request request = new Request("GET", "/example.txt", headers);
+
+        assertTrue(request.hasHeader("test-header"));
+        assertFalse(request.hasHeader("no-header"));
+    }
+
+    @Test
     public void getsNullForEmptyHeader() throws Exception {
         Request request = new Request("GET", "/example.txt", new Header[0]);
 

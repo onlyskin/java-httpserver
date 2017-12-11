@@ -35,4 +35,11 @@ public class Request {
         }
         return null;
     }
+
+    public boolean hasHeader(String key) {
+        if (getHeaderValue(key) == null) {
+            return false;
+        }
+        return true;
+    }
 }
