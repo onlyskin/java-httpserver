@@ -26,4 +26,13 @@ public class Request {
     public Header[] getHeaders() {
         return headers;
     }
+
+    public String getHeaderValue(String key) {
+        for (Header header: headers) {
+            if (header.getKey().equals(key)) {
+                return header.getValue();
+            }
+        }
+        return null;
+    }
 }
