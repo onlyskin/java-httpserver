@@ -28,6 +28,10 @@ public class RequestParser {
         String queryString = parts[2];
 
         Header[] headers = parseHeaders(in);
+        for (Header header: headers) {
+            logger.log(header.toString());
+        }
+        logger.log("");
 
         return new Request(method, path, headers, queryString);
     }
