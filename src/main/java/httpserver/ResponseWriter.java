@@ -23,7 +23,6 @@ public class ResponseWriter {
     public void write(Response response) {
         try {
             writeStatusCode(response);
-            writeContentLengthHeader(response);
             writeHeaders(response);
             writeEmptyLine();
             writePayload(response);
@@ -36,14 +35,16 @@ public class ResponseWriter {
         write(statusLine(response.getStatusCode()).getBytes());
     }
 
-    private void writeContentLengthHeader(Response response) throws IOException {
-        write(contentLengthHeader(response.getPayload()).getBytes());
-    }
-
     private void writeHeaders(Response response) throws IOException {
+        writeContentLengthHeader(response);
         for (Header header: response.getHeaders()) {
             write((header.toString() + "\r\n").getBytes());
         }
+    }
+
+    private void writeContentLengthHeader(Response response) throws IOException {
+        String header = response.getContentLengthHeader().toString() + "\r\n";
+        write(header.getBytes());
     }
 
     private void writeEmptyLine() throws IOException {
@@ -56,10 +57,6 @@ public class ResponseWriter {
 
     private void write(byte[] bytes) throws IOException {
         outputStream.write(bytes);
-    }
-
-    private String contentLengthHeader(byte[] payload) {
-        return "Content-Length: " + payload.length + "\r\n";
     }
 
     private String statusLine(int statusCode) {

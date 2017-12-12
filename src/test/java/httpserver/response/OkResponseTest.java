@@ -26,6 +26,7 @@ public class OkResponseTest {
     @Test
     public void getsPayload() throws Exception {
         byte[] payload = okResponse.getPayload();
+
         assertEquals("test payload", new String(payload));
     }
 
@@ -33,8 +34,15 @@ public class OkResponseTest {
     public void getsHeaders() throws Exception {
         Header[] expected = new Header[]{new Header("header1", "value"),
                 new Header("header2", "v")};
-        OkResponse okResponse = this.okResponse;
+
         assertTrue(Arrays.equals(expected, okResponse.getHeaders()));
+    }
+
+    @Test
+    public void getsContentLengthHeader() throws Exception {
+        Header expected = new Header("Content-Length", "12");
+
+        assertEquals(expected, okResponse.getContentLengthHeader());
     }
 
     @Test

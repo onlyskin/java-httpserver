@@ -1,5 +1,6 @@
 package httpserver.response;
 
+import httpserver.ContentLengthHeader;
 import httpserver.Header;
 
 import java.util.ArrayList;
@@ -30,5 +31,9 @@ public abstract class Response {
 
     public void setHeader(Header header) {
         headers.add(header);
+    }
+
+    public Header getContentLengthHeader() {
+        return new ContentLengthHeader(payload);
     }
 }
