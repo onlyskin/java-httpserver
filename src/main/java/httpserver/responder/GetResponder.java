@@ -1,8 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.ContentTypeHeader;
-import httpserver.Header;
+import httpserver.header.ContentTypeHeader;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;

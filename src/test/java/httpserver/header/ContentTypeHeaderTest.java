@@ -1,5 +1,7 @@
-package httpserver;
+package httpserver.header;
 
+import httpserver.header.ContentTypeHeader;
+import httpserver.header.Header;
 import org.junit.Test;
 
 import java.nio.file.Path;

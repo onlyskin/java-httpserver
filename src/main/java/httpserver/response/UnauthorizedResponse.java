@@ -1,6 +1,6 @@
 package httpserver.response;
 
-import httpserver.Header;
+import httpserver.header.Header;
 
 public class UnauthorizedResponse extends Response {
     public UnauthorizedResponse() {

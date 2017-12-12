@@ -1,8 +1,7 @@
 package httpserver.responder;
 
-import httpserver.App;
 import httpserver.AppConfig;
-import httpserver.Header;
+import httpserver.header.Header;
 import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;

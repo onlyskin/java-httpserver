@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.header;
 
 import httpserver.file.MimetypeChecker;
 

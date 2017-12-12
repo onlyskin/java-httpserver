@@ -1,5 +1,6 @@
 package httpserver;
 
+import httpserver.header.Header;
 import httpserver.response.FourEighteenResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;

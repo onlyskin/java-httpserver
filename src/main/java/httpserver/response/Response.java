@@ -1,7 +1,7 @@
 package httpserver.response;
 
-import httpserver.ContentLengthHeader;
-import httpserver.Header;
+import httpserver.header.ContentLengthHeader;
+import httpserver.header.Header;
 
 import java.util.ArrayList;
 import java.util.List;

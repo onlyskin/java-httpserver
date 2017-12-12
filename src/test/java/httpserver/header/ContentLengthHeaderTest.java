@@ -1,5 +1,7 @@
-package httpserver;
+package httpserver.header;
 
+import httpserver.header.ContentLengthHeader;
+import httpserver.header.Header;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

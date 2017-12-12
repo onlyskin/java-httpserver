@@ -1,5 +1,7 @@
 package httpserver;
 
+import httpserver.header.Header;
+
 public class Request {
     private Method method;
     private final String pathString;
