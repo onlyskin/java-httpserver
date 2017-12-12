@@ -63,8 +63,9 @@ public class GetResponder implements Responder {
 
     private Response responseForFile(Path path) {
         byte[] payload = pathExaminer.fileContents(path);
-        Header[] headers = new Header[]{new ContentTypeHeader(path)};
-        return new OkResponse(payload, headers);
+        OkResponse okResponse = new OkResponse(payload);
+        okResponse.setHeader(new ContentTypeHeader(path));
+        return okResponse;
     }
 
     private Map<String, Responder> getRouteMap() {

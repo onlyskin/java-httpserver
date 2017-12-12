@@ -13,8 +13,9 @@ public class OkResponseTest {
     public OkResponseTest() {
         Header header1 = new Header("header1", "value");
         Header header2 = new Header("header2", "v");
-        Header[] headers = new Header[]{header1, header2};
-        this.okResponse = new OkResponse("test payload".getBytes(), headers);
+        this.okResponse = new OkResponse("test payload".getBytes());
+        okResponse.setHeader(header1);
+        okResponse.setHeader(header2);
     }
 
     @Test
