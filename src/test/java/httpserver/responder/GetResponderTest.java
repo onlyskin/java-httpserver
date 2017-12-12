@@ -83,4 +83,14 @@ public class GetResponderTest {
 
         assertEquals(200, response.getStatusCode());
     }
+
+    @Test
+    public void getRequestToCookieWithQueryString() throws Exception {
+        Request request = new Request("GET", "/cookie", new Header[0], "type=chocolate");
+
+        Response response = getResponder.respond(appConfigMock, request);
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Eat", new String(response.getPayload()));
+    }
 }

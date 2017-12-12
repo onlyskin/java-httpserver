@@ -72,6 +72,7 @@ public class GetResponder implements Responder {
         routeMap.put("/coffee", new CoffeeResponder());
         routeMap.put("/tea", new TeaResponder());
         routeMap.put("/logs", new LogsResponder());
+        routeMap.put("/cookie", new CookieResponder());
         return routeMap;
     }
 }
