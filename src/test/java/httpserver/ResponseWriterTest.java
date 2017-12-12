@@ -1,5 +1,6 @@
 package httpserver;
 
+import httpserver.header.Header;
 import httpserver.response.FourEighteenResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;
@@ -36,8 +37,8 @@ public class ResponseWriterTest {
     public void writesResponseHeaders() throws Exception {
         Header headerMock = mock(Header.class);
         when(headerMock.toString()).thenReturn("example: header");
-        Header[] headers = new Header[]{headerMock};
-        Response response = new OkResponse("example".getBytes(), headers);
+        Response response = new OkResponse("example".getBytes());
+        response.setHeader(headerMock);
 
         String output = outputForResponse(response);
 

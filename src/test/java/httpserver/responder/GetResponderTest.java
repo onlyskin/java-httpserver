@@ -1,8 +1,7 @@
 package httpserver.responder;
 
-import httpserver.App;
 import httpserver.AppConfig;
-import httpserver.Header;
+import httpserver.header.Header;
 import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;
@@ -83,5 +82,25 @@ public class GetResponderTest {
         Response response = getResponder.respond(appConfigMock, request);
 
         assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
+    public void getRequestToCookieWithQueryString() throws Exception {
+        Request request = new Request("GET", "/cookie", new Header[0], "type=chocolate");
+
+        Response response = getResponder.respond(appConfigMock, request);
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals("Eat", new String(response.getPayload()));
+    }
+
+    @Test
+    public void getRequestToEatCookie() throws Exception {
+        Request request = new Request("GET", "/eat_cookie", new Header[0], "type=chocolate");
+
+        Response response = getResponder.respond(appConfigMock, request);
+
+        assertEquals(200, response.getStatusCode());
+        assertEquals("mmmm chocolate", new String(response.getPayload()));
     }
 }

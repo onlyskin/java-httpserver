@@ -1,6 +1,6 @@
 package httpserver;
 
-import org.junit.Ignore;
+import httpserver.header.Header;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;

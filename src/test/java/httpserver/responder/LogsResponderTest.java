@@ -1,7 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.Header;
+import httpserver.header.Header;
 import httpserver.Logger;
 import httpserver.Request;
 import httpserver.response.Response;

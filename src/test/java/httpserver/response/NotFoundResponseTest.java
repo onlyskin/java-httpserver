@@ -1,6 +1,6 @@
 package httpserver.response;
 
-import httpserver.Header;
+import httpserver.header.Header;
 import org.junit.Test;
 
 import java.util.Arrays;

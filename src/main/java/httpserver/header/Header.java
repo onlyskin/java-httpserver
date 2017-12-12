@@ -1,4 +1,4 @@
-package httpserver;
+package httpserver.header;
 
 public class Header {
     private String key;

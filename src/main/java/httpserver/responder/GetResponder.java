@@ -1,8 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.ContentTypeHeader;
-import httpserver.Header;
+import httpserver.header.ContentTypeHeader;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
@@ -63,8 +62,9 @@ public class GetResponder implements Responder {
 
     private Response responseForFile(Path path) {
         byte[] payload = pathExaminer.fileContents(path);
-        Header[] headers = new Header[]{new ContentTypeHeader(path)};
-        return new OkResponse(payload, headers);
+        OkResponse okResponse = new OkResponse(payload);
+        okResponse.setHeader(new ContentTypeHeader(path));
+        return okResponse;
     }
 
     private Map<String, Responder> getRouteMap() {
@@ -72,6 +72,8 @@ public class GetResponder implements Responder {
         routeMap.put("/coffee", new CoffeeResponder());
         routeMap.put("/tea", new TeaResponder());
         routeMap.put("/logs", new LogsResponder());
+        routeMap.put("/cookie", new CookieResponder());
+        routeMap.put("/eat_cookie", new EatCookieResponder());
         return routeMap;
     }
 }

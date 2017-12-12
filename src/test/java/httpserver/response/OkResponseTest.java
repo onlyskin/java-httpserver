@@ -1,6 +1,6 @@
 package httpserver.response;
 
-import httpserver.Header;
+import httpserver.header.Header;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -13,8 +13,9 @@ public class OkResponseTest {
     public OkResponseTest() {
         Header header1 = new Header("header1", "value");
         Header header2 = new Header("header2", "v");
-        Header[] headers = new Header[]{header1, header2};
-        this.okResponse = new OkResponse("test payload".getBytes(), headers);
+        this.okResponse = new OkResponse("test payload".getBytes());
+        okResponse.setHeader(header1);
+        okResponse.setHeader(header2);
     }
 
     @Test
@@ -25,6 +26,7 @@ public class OkResponseTest {
     @Test
     public void getsPayload() throws Exception {
         byte[] payload = okResponse.getPayload();
+
         assertEquals("test payload", new String(payload));
     }
 
@@ -32,8 +34,15 @@ public class OkResponseTest {
     public void getsHeaders() throws Exception {
         Header[] expected = new Header[]{new Header("header1", "value"),
                 new Header("header2", "v")};
-        OkResponse okResponse = this.okResponse;
+
         assertTrue(Arrays.equals(expected, okResponse.getHeaders()));
+    }
+
+    @Test
+    public void getsContentLengthHeader() throws Exception {
+        Header expected = new Header("Content-Length", "12");
+
+        assertEquals(expected, okResponse.getContentLengthHeader());
     }
 
     @Test
