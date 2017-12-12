@@ -74,6 +74,7 @@ public class GetResponder implements Responder {
         routeMap.put("/logs", new LogsResponder());
         routeMap.put("/cookie", new CookieResponder());
         routeMap.put("/eat_cookie", new EatCookieResponder());
+        routeMap.put("/parameters", new ParametersResponder());
         return routeMap;
     }
 }
