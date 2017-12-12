@@ -17,7 +17,6 @@ public class RequestParser {
         BufferedReader in = new BufferedReader( new InputStreamReader(inputStream));
 
         String firstLine = in.readLine();
-        logger.log(firstLine);
 
         String[] parts = parseFirstLine(firstLine);
         String method = parts[0];
@@ -25,12 +24,17 @@ public class RequestParser {
         String queryString = parts[2];
 
         Header[] headers = parseHeaders(in);
+        log(firstLine, headers);
+
+        return new Request(method, path, headers, queryString);
+    }
+
+    private void log(String firstLine, Header[] headers) {
+        logger.log(firstLine);
         for (Header header: headers) {
             logger.log(header.toString());
         }
         logger.log("");
-
-        return new Request(method, path, headers, queryString);
     }
 
     private String[] parseFirstLine(String firstLine) {
