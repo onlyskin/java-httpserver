@@ -2,6 +2,10 @@ package httpserver;
 
 import httpserver.header.Header;
 
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Request {
     private Method method;
     private final String pathString;
@@ -53,5 +57,24 @@ public class Request {
 
     public String getQueryString() {
         return queryString;
+    }
+
+    public Parameter[] getParams() {
+        List<Parameter> parameters = new ArrayList<>();
+        String[] queryStrings = queryString.split("&");
+
+        for (String queryString: queryStrings) {
+            parameters.add(queryStringToParameter(queryString));
+        }
+        return parameters.toArray(new Parameter[0]);
+    }
+
+    private Parameter queryStringToParameter(String queryString) {
+        String[] parts = queryString.split("=");
+        return new Parameter(decode(parts[0]), decode(parts[1]));
+    }
+
+    private String decode(String input) {
+        return new UrlDecoder().decode(input);
     }
 }

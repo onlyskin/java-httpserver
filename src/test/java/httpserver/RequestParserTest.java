@@ -32,7 +32,7 @@ public class RequestParserTest {
 
         assertEquals(Method.GET, request.getMethod());
         assertEquals("/text-file", request.getPathString());
-        assertEquals("key1=value1<,?&key2=value2", request.getQueryString());
+        assertEquals("key1=value1%3C%2C%3F&key2=value2", request.getQueryString());
     }
 
     @Test

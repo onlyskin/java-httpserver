@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Parameter;
 import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;
@@ -12,7 +13,9 @@ public class ParametersResponderTest {
     @Test
     public void itEchoesRequestQueryStringInBody() {
         Request requestMock = mock(Request.class);
-        when(requestMock.getQueryString()).thenReturn("key1=value1&key2=value2");
+        Parameter[] params = {new Parameter("key1", "value1"),
+                new Parameter("key2", "value2")};
+        when(requestMock.getParams()).thenReturn(params);
         ParametersResponder parametersResponder = new ParametersResponder();
 
         Response response = parametersResponder.respond(mock(AppConfig.class),

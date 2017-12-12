@@ -42,15 +42,7 @@ public class RequestParser {
         String method = parts[0];
         String path = pathToParts(parts[1])[0];
         String queryString = pathToParts(parts[1])[1];
-        return new String[]{method, decodeURLString(path), decodeURLString(queryString)};
-    }
-
-    private String decodeURLString(String urlString) {
-        try {
-            return java.net.URLDecoder.decode(urlString, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return urlString;
-        }
+        return new String[]{method, new UrlDecoder().decode(path), queryString};
     }
 
     private String[] pathToParts(String pathString) {
