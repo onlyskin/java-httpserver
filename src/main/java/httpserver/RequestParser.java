@@ -40,14 +40,17 @@ public class RequestParser {
     private String[] parseFirstLine(String firstLine) {
         String[] parts = firstLine.split(" ");
         String method = parts[0];
-        try {
-            parts[1] = java.net.URLDecoder.decode(parts[1], "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            parts[1] = parts[1];
-        }
         String path = pathToParts(parts[1])[0];
         String queryString = pathToParts(parts[1])[1];
-        return new String[]{method, path, queryString};
+        return new String[]{method, decodeURLString(path), decodeURLString(queryString)};
+    }
+
+    private String decodeURLString(String urlString) {
+        try {
+            return java.net.URLDecoder.decode(urlString, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return urlString;
+        }
     }
 
     private String[] pathToParts(String pathString) {
