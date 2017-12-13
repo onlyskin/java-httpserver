@@ -5,31 +5,36 @@ import httpserver.response.NotFoundResponse;
 import httpserver.response.Response;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 
 public class SocketHandler implements Runnable {
     private final AppConfig appConfig;
     private final InputStream inputStream;
-    private final OutputStream outputStream;
-    private final ResponderSupplier responderSupplier;
+    private final RequestParser requestParser;
+    private final GeneralResponder generalResponder;
+    private final ResponseWriter responseWriter;
 
-    public SocketHandler(AppConfig appConfig, InputStream inputStream, OutputStream outputStream) {
+    public SocketHandler(AppConfig appConfig,
+                         InputStream inputStream,
+                         RequestParser requestParser,
+                         GeneralResponder generalResponder,
+                         ResponseWriter responseWriter) {
         this.appConfig = appConfig;
         this.inputStream = inputStream;
-        this.outputStream = outputStream;
-        this.responderSupplier = new ResponderSupplierFactory().makeResponderSupplier();
+        this.requestParser = requestParser;
+        this.generalResponder = generalResponder;
+        this.responseWriter = responseWriter;
     }
 
     public void run() {
         Response response;
 
         try {
-            Request request = new RequestParser(appConfig).parse(inputStream);
-            response = new GeneralResponder(responderSupplier).respond(appConfig, request);
+            Request request = requestParser.parse(inputStream);
+            response = generalResponder.respond(appConfig, request);
         } catch (Exception e) {
             response = new NotFoundResponse();
         }
 
-        new ResponseWriter(outputStream).write(response);
+        responseWriter.write(response);
     }
 }

@@ -117,7 +117,7 @@ public class SocketHandlerTest {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-        SocketHandler socketHandler = new SocketHandler(appConfig, inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandlerFactory().newSocketHandlerFromStreams(appConfig, inputStream, outputStream);
         socketHandler.run();
 
         return outputStream.toString();
