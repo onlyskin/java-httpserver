@@ -34,7 +34,7 @@ public class GetResponderTest {
     @Test
     public void returns404ForBadPath() throws Exception {
         Request request = new Request("GET",
-                "nonexistentfile123", new Header[0]);
+                "nonexistentfile123", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -45,7 +45,7 @@ public class GetResponderTest {
     @Test
     public void getRequestForFile() throws Exception {
         String fileName = fileWithContents.toString().substring(root.toString().length());
-        Request request = new Request("GET", fileName, new Header[0]);
+        Request request = new Request("GET", fileName, new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -57,7 +57,7 @@ public class GetResponderTest {
 
     @Test
     public void getRequestForDir() throws Exception {
-        Request request = new Request("GET", "/", new Header[0]);
+        Request request = new Request("GET", "/", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -67,7 +67,7 @@ public class GetResponderTest {
 
     @Test
     public void getRequestToCoffee() throws Exception {
-        Request request = new Request("GET", "/coffee", new Header[0]);
+        Request request = new Request("GET", "/coffee", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -77,7 +77,7 @@ public class GetResponderTest {
 
     @Test
     public void getRequestToTea() throws Exception {
-        Request request = new Request("GET", "/tea", new Header[0]);
+        Request request = new Request("GET", "/tea", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 

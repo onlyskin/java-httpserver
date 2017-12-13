@@ -26,7 +26,7 @@ public class PostResponderTest {
 
     @Test
     public void gets200StatusCode() throws Exception {
-        Request request = new Request("POST", "/form", new Header[0]);
+        Request request = new Request("POST", "/form", new Header[0], "");
 
         Response response = postResponder.respond(appConfig, request);
 
@@ -35,7 +35,7 @@ public class PostResponderTest {
 
     @Test
     public void returns405IfNotFormUrl() throws Exception {
-        Request request = new Request("POST", "/file1.txt", new Header[0]);
+        Request request = new Request("POST", "/file1.txt", new Header[0], "");
 
         Response response = postResponder.respond(appConfig, request);
 

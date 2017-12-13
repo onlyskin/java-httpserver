@@ -21,7 +21,7 @@ public class PutResponderTest {
 
     @Test
     public void gets200StatusCode() throws Exception {
-        Request request = new Request("PUT", "/form", new Header[0]);
+        Request request = new Request("PUT", "/form", new Header[0], "");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -30,7 +30,7 @@ public class PutResponderTest {
 
     @Test
     public void returns405IfNotFormUrl() throws Exception {
-        Request request = new Request("POST", "/file1.txt", new Header[0]);
+        Request request = new Request("POST", "/file1.txt", new Header[0], "");
 
         Response response = putResponder.respond(appConfigMock, request);
 

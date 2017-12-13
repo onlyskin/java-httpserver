@@ -4,6 +4,7 @@ import httpserver.header.Header;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +30,7 @@ public class RequestTest {
 
     @Test
     public void canGetHeaderValue() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers);
+        Request request = new Request("GET", "/example.txt", headers, "");
 
         String headerValue = request.getHeaderValue("test-header");
 
@@ -38,7 +39,7 @@ public class RequestTest {
 
     @Test
     public void testsIfHeaderPresent() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers);
+        Request request = new Request("GET", "/example.txt", headers, "");
 
         assertTrue(request.hasHeader("test-header"));
         assertFalse(request.hasHeader("no-header"));
@@ -46,14 +47,14 @@ public class RequestTest {
 
     @Test
     public void getsNullForEmptyHeader() throws Exception {
-        Request request = new Request("GET", "/example.txt", new Header[0]);
+        Request request = new Request("GET", "/example.txt", new Header[0], "");
 
         assertNull(request.getHeaderValue("test-header"));
     }
 
     @Test
     public void getsEmptyStringForNoQueryString() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers);
+        Request request = new Request("GET", "/example.txt", headers, "");
 
         assertEquals("", request.getQueryString());
     }
@@ -65,5 +66,12 @@ public class RequestTest {
         Parameter[] expected = new Parameter[]{new Parameter("key1", "value1<,?"), new Parameter("key2", "value2")};
         Parameter[] actual = request.getParams();
         assertTrue(Arrays.equals(expected, actual));
+    }
+
+    @Test
+    public void getsBody() throws Exception {
+        Request request = new Request("GET", "/example", new Header[0], "", "body content");
+
+        assertEquals("body content", request.getBody());
     }
 }

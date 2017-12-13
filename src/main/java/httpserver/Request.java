@@ -10,16 +10,18 @@ public class Request {
     private final String pathString;
     private final Header[] headers;
     private final String queryString;
-
-    public Request(String method, String pathString, Header[] headers) {
-        this(method, pathString, headers, "");
-    }
+    private final String body;
 
     public Request(String method, String pathString, Header[] headers, String queryString) {
+        this(method, pathString, headers, queryString, "");
+    }
+
+    public Request(String method, String pathString, Header[] headers, String queryString, String body) {
         this.method = method;
         this.pathString = pathString;
         this.headers = headers;
         this.queryString = queryString;
+        this.body = body;
     }
 
     public String getMethodString() {
@@ -71,5 +73,9 @@ public class Request {
 
     private String decode(String input) {
         return new UrlDecoder().decode(input);
+    }
+
+    public String getBody() {
+        return body;
     }
 }
