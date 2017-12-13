@@ -25,6 +25,9 @@ public class SocketHandlerTest {
     }
 
     @Test
+    public void callsParseOnRequestParser() {}
+
+    @Test
     public void returns404ForMalformedRequestLine() throws Exception {
         byte[] request = ("".getBytes());
 
