@@ -7,7 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import static org.mockito.Mockito.*;
 
@@ -19,8 +20,9 @@ public class ServerTest {
     private final ServerSocket serverSocketMock;
     private final Socket socket;
     private Server server;
-    private final Executor executorMock;
+    private final ExecutorService executorServiceMock;
     private final SocketHandler socketHandlerMock;
+    private final Future futureMock;
 
     public ServerTest() throws IOException {
         socket = new Socket();
@@ -35,27 +37,36 @@ public class ServerTest {
         socketHandlerFactoryMock = mock(SocketHandlerFactory.class);
         when(socketHandlerFactoryMock.newSocketHandler(any(), any(), any())).thenReturn(socketHandlerMock);
 
-        executorMock = mock(Executor.class);
+        executorServiceMock = mock(ExecutorService.class);
+        futureMock = mock(Future.class);
+        when(executorServiceMock.submit(socketHandlerMock)).thenReturn(futureMock);
     }
 
     @Test
     public void callsAcceptOnServerSocket() throws Exception {
-        server.acceptConnection(executorMock, socketHandlerFactoryMock);
+        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
         verify(serverSocketMock).accept();
     }
 
     @Test
     public void callsNewSocketHandlerWithCorrectArgs() throws Exception {
-        server.acceptConnection(executorMock, socketHandlerFactoryMock);
+        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
         verify(socketHandlerFactoryMock).newSocketHandler(root, logPath, socket);
     }
 
     @Test
-    public void callsExecutorExecuteWithSocketHandler() throws Exception {
-        server.acceptConnection(executorMock, socketHandlerFactoryMock);
+    public void callsExecutorSubmitWithSocketHandler() throws Exception {
+        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
-        verify(executorMock).execute(socketHandlerMock);
+        verify(executorServiceMock).submit(socketHandlerMock);
+    }
+
+    @Test
+    public void callsGetOnFuture() throws Exception {
+        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
+
+        verify(futureMock).get();
     }
 }

@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Path;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class Server {
     private final Path logPath;
@@ -17,9 +19,17 @@ public class Server {
         this.logPath = logPath;
     }
 
-    public void acceptConnection(Executor executor, SocketHandlerFactory socketHandlerFactory) throws IOException {
-        Socket clientSocket = serverSocket.accept();
-        SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(root, logPath, clientSocket);
-        executor.execute(socketHandler);
+    public void acceptConnection(ExecutorService executorService, SocketHandlerFactory socketHandlerFactory){
+        try (Socket clientSocket = serverSocket.accept()) {
+            SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(root, logPath, clientSocket);
+            Future<?> future = executorService.submit(socketHandler);
+            future.get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
     }
 }
