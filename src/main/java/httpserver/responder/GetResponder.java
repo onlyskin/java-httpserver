@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
@@ -9,27 +10,25 @@ import httpserver.response.Response;
 import httpserver.file.PathExaminer;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-
-import static httpserver.file.Html.linkString;
 
 public class GetResponder implements Responder {
 
     private final PathExaminer pathExaminer;
-    private final Map<String, Responder> specialCaseRouteMap;
+    private final RouteMap specialCaseRouteMap;
+    private final Html html;
 
-    public GetResponder() {
-        pathExaminer = new PathExaminer();
-        specialCaseRouteMap = getRouteMap();
+    public GetResponder(RouteMap getRouteMap, PathExaminer pathExaminer, Html html) {
+        this.pathExaminer = pathExaminer;
+        this.specialCaseRouteMap = getRouteMap;
+        this.html = html;
     }
 
     @Override
     public Response respond(AppConfig appConfig, Request request) {
         String requestPathString = request.getPathString();
 
-        if (specialCaseRouteMap.containsKey(requestPathString)) {
-            return specialCaseRouteMap.get(requestPathString).respond(appConfig, request);
+        if (specialCaseRouteMap.contains(requestPathString)) {
+            return specialCaseRouteMap.getResponder(requestPathString).respond(appConfig, request);
         }
 
         Path root = appConfig.getRoot();
@@ -55,7 +54,7 @@ public class GetResponder implements Responder {
     private String htmlLinksForContents(Path root, Path[] paths) {
         String result = "";
         for (Path subPath: paths) {
-            result = result + linkString(root, subPath);
+            result = result + html.linkString(root, subPath);
         }
         return result;
     }
@@ -65,16 +64,5 @@ public class GetResponder implements Responder {
         OkResponse okResponse = new OkResponse(payload);
         okResponse.setHeader(new ContentTypeHeader(path));
         return okResponse;
-    }
-
-    private Map<String, Responder> getRouteMap() {
-        Map<String, Responder> routeMap = new HashMap<>();
-        routeMap.put("/coffee", new CoffeeResponder());
-        routeMap.put("/tea", new TeaResponder());
-        routeMap.put("/logs", new LogsResponder());
-        routeMap.put("/cookie", new CookieResponder());
-        routeMap.put("/eat_cookie", new EatCookieResponder());
-        routeMap.put("/parameters", new ParametersResponder());
-        return routeMap;
     }
 }

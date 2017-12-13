@@ -1,25 +1,20 @@
 package httpserver;
 
-import httpserver.file.PathExaminer;
-
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.nio.file.Path;
 
 public class ServerFactory {
-    private ServerSocketFactory serverSocketFactory;
-    private PathExaminer pathExaminer;
+    private final AppConfig appConfig;
+    private final ServerSocketFactory serverSocketFactory;
 
-    public ServerFactory(PathExaminer pathExaminer, ServerSocketFactory serverSocketFactory) {
+    public ServerFactory(ServerSocketFactory serverSocketFactory,
+                         AppConfig appConfig) {
         this.serverSocketFactory = serverSocketFactory;
-        this.pathExaminer = pathExaminer;
+        this.appConfig = appConfig;
     }
 
-    public Server makeServer(int port, String fileDirectory) throws IOException {
-        Path root = pathExaminer.getPath(fileDirectory);
-        Path logPath = pathExaminer.concatenate(root,"logs");
+    public Server makeServer(int port) throws IOException {
         ServerSocket serverSocket = serverSocketFactory.newServerSocket(port);
-
-        return new Server(serverSocket, root, logPath);
+        return new Server(serverSocket, appConfig);
     }
 }

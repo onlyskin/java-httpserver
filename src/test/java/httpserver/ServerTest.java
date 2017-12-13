@@ -5,8 +5,6 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -14,11 +12,10 @@ import static org.mockito.Mockito.*;
 
 public class ServerTest {
 
-    private final Path root;
-    private final Path logPath;
     private final SocketHandlerFactory socketHandlerFactoryMock;
     private final ServerSocket serverSocketMock;
     private final Socket socket;
+    private final AppConfig appConfigMock;
     private Server server;
     private final ExecutorService executorServiceMock;
     private final SocketHandler socketHandlerMock;
@@ -29,13 +26,12 @@ public class ServerTest {
         serverSocketMock = mock(ServerSocket.class);
         when(serverSocketMock.accept()).thenReturn(socket);
 
-        root = Paths.get("root");
-        logPath = Paths.get("root/logs");
-        server = new Server(serverSocketMock, root, logPath);
+        appConfigMock = mock(AppConfig.class);
+        server = new Server(serverSocketMock, appConfigMock);
 
         socketHandlerMock = mock(SocketHandler.class);
         socketHandlerFactoryMock = mock(SocketHandlerFactory.class);
-        when(socketHandlerFactoryMock.newSocketHandler(any(), any(), any())).thenReturn(socketHandlerMock);
+        when(socketHandlerFactoryMock.newSocketHandler(any(), any())).thenReturn(socketHandlerMock);
 
         executorServiceMock = mock(ExecutorService.class);
         futureMock = mock(Future.class);
@@ -53,7 +49,7 @@ public class ServerTest {
     public void callsNewSocketHandlerWithCorrectArgs() throws Exception {
         server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
-        verify(socketHandlerFactoryMock).newSocketHandler(root, logPath, socket);
+        verify(socketHandlerFactoryMock).newSocketHandler(appConfigMock, socket);
     }
 
     @Test

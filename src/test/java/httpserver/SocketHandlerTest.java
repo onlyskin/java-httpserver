@@ -1,6 +1,8 @@
 package httpserver;
 
 import httpserver.file.FileOperator;
+import httpserver.responder.GeneralResponder;
+import httpserver.response.Response;
 import org.junit.Test;
 
 import java.io.*;
@@ -11,17 +13,47 @@ import static httpserver.file.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.createTempFile;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class SocketHandlerTest {
 
     private final Path root;
     private final Path relativePath1;
     private final Path relativePath2;
+    private final Logger logger;
+    private final AppConfig appConfig;
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
+        logger = new Logger(root, new FileOperator());
+        appConfig = new AppConfig(root, logger);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));
+    }
+
+    @Test
+    public void callsInjectedPartsCorrectly() throws Exception {
+        AppConfig appConfigMock = mock(AppConfig.class);
+        InputStream inputStreamMock = mock(InputStream.class);
+        RequestParser requestParserMock = mock(RequestParser.class);
+        Request requestMock = mock(Request.class);
+        when(requestParserMock.parse(inputStreamMock)).thenReturn(requestMock);
+        GeneralResponder generalResponderMock = mock(GeneralResponder.class);
+        Response responseMock = mock(Response.class);
+        when(generalResponderMock.respond(appConfigMock, requestMock)).thenReturn(responseMock);
+        ResponseWriter responseWriterMock = mock(ResponseWriter.class);
+
+        SocketHandler socketHandler = new SocketHandler(appConfigMock,
+                inputStreamMock,
+                requestParserMock,
+                generalResponderMock,
+                responseWriterMock);
+
+        socketHandler.run();
+
+        verify(requestParserMock).parse(inputStreamMock);
+        verify(generalResponderMock).respond(appConfigMock, requestMock);
+        verify(responseWriterMock).write(responseMock);
     }
 
     @Test
@@ -108,9 +140,8 @@ public class SocketHandlerTest {
     private String stringOutputForRequestBytes(byte[] request) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Logger logger = new Logger(root, new FileOperator());
 
-        SocketHandler socketHandler = new SocketHandler(root, logger, inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandlerFactory().newSocketHandlerFromStreams(appConfig, inputStream, outputStream);
         socketHandler.run();
 
         return outputStream.toString();

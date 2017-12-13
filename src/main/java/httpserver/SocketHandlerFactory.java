@@ -1,16 +1,26 @@
 package httpserver;
 
-import httpserver.file.FileOperator;
+import httpserver.responder.GeneralResponder;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.file.Path;
 
 public class SocketHandlerFactory {
-    public SocketHandler newSocketHandler(Path root, Path logPath, Socket clientSocket) throws IOException {
-        return new SocketHandler(root,
-                new Logger(logPath, new FileOperator()),
+    public SocketHandler newSocketHandler(AppConfig appConfig, Socket clientSocket) throws IOException {
+        return new SocketHandler(appConfig,
                 clientSocket.getInputStream(),
-                clientSocket.getOutputStream());
+                new RequestParser(appConfig),
+                new GeneralResponder(new ResponderSupplierFactory().makeResponderSupplier()),
+                new ResponseWriter(clientSocket.getOutputStream()));
+    }
+
+    public SocketHandler newSocketHandlerFromStreams(AppConfig appConfig, InputStream inputStream, OutputStream outputStream) throws IOException {
+        return new SocketHandler(appConfig,
+                inputStream,
+                new RequestParser(appConfig),
+                new GeneralResponder(new ResponderSupplierFactory().makeResponderSupplier()),
+                new ResponseWriter(outputStream));
     }
 }

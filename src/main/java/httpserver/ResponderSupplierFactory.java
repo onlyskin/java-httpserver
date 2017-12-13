@@ -1,6 +1,6 @@
 package httpserver;
 
-import httpserver.file.FileOperator;
+import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.responder.*;
 
@@ -10,9 +10,23 @@ import java.util.Map;
 public class ResponderSupplierFactory {
     public ResponderSupplier makeResponderSupplier() {
         Map<Method, Responder> methodResponderMap = new HashMap<>();
-        methodResponderMap.put(Method.GET, new GetResponder());
+        methodResponderMap.put(Method.GET, new GetResponder(
+                getRouteMap(),
+                new PathExaminer(),
+                new Html()));
         methodResponderMap.put(Method.POST, new PostResponder());
         methodResponderMap.put(Method.PUT, new PutResponder());
         return new ResponderSupplier(methodResponderMap, new InvalidMethodResponder());
+    }
+
+    private RouteMap getRouteMap() {
+        Map<String, Responder> routeMap = new HashMap<>();
+        routeMap.put("/coffee", new CoffeeResponder());
+        routeMap.put("/tea", new TeaResponder());
+        routeMap.put("/logs", new LogsResponder());
+        routeMap.put("/cookie", new CookieResponder());
+        routeMap.put("/eat_cookie", new EatCookieResponder());
+        routeMap.put("/parameters", new ParametersResponder());
+        return new RouteMap(routeMap);
     }
 }
