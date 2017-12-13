@@ -8,6 +8,7 @@ import java.util.List;
 
 public class RequestParser {
     private final Logger logger;
+    private int contentLength;
 
     public RequestParser(AppConfig appConfig) {
         this.logger = appConfig.getLogger();
@@ -26,7 +27,19 @@ public class RequestParser {
         Header[] headers = parseHeaders(in);
         log(firstLine, headers);
 
-        return new Request(method, path, headers, queryString);
+        String body = getBody(in);
+
+        return new Request(method, path, headers, queryString, body);
+    }
+
+    private String getBody(BufferedReader bufferedReader) throws IOException {
+        String output = "";
+        int counter = 0;
+        while (counter < contentLength) {
+            output = output + (char)bufferedReader.read();
+            counter = counter + 1;
+        }
+        return output;
     }
 
     private void log(String firstLine, Header[] headers) {
@@ -69,6 +82,9 @@ public class RequestParser {
 
     private Header parseHeader(String inputLine) {
         String[] parts = inputLine.split(":\\s*", 2);
+        if (parts[0].equals("Content-Length")) {
+            contentLength = Integer.parseInt(parts[1]);
+        }
         return new Header(parts[0], parts[1]);
     }
 }
