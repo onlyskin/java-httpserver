@@ -6,7 +6,6 @@ import httpserver.response.Response;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Path;
 
 public class SocketHandler implements Runnable {
     private final AppConfig appConfig;
@@ -14,8 +13,8 @@ public class SocketHandler implements Runnable {
     private final OutputStream outputStream;
     private final ResponderSupplier responderSupplier;
 
-    public SocketHandler(Path root, Logger logger, InputStream inputStream, OutputStream outputStream) {
-        this.appConfig = new AppConfig(root, logger);
+    public SocketHandler(AppConfig appConfig, InputStream inputStream, OutputStream outputStream) {
+        this.appConfig = appConfig;
         this.inputStream = inputStream;
         this.outputStream = outputStream;
         this.responderSupplier = new ResponderSupplierFactory().makeResponderSupplier();

@@ -17,15 +17,20 @@ public class SocketHandlerTest {
     private final Path root;
     private final Path relativePath1;
     private final Path relativePath2;
+    private final Logger logger;
+    private final AppConfig appConfig;
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
+        logger = new Logger(root, new FileOperator());
+        appConfig = new AppConfig(root, logger);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));
     }
 
     @Test
-    public void callsParseOnRequestParser() {}
+    public void callsParseOnRequestParser() {
+    }
 
     @Test
     public void returns404ForMalformedRequestLine() throws Exception {
@@ -111,9 +116,8 @@ public class SocketHandlerTest {
     private String stringOutputForRequestBytes(byte[] request) throws IOException {
         InputStream inputStream = new ByteArrayInputStream(request);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Logger logger = new Logger(root, new FileOperator());
 
-        SocketHandler socketHandler = new SocketHandler(root, logger, inputStream, outputStream);
+        SocketHandler socketHandler = new SocketHandler(appConfig, inputStream, outputStream);
         socketHandler.run();
 
         return outputStream.toString();
