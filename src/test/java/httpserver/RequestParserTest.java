@@ -30,7 +30,7 @@ public class RequestParserTest {
     public void parsesMethodPathAndQueryString() throws Exception {
         Request request = requestParser.parse(inputStream);
 
-        assertEquals(Method.GET, request.getMethod());
+        assertEquals("GET", request.getMethodString());
         assertEquals("/text-file", request.getPathString());
         assertEquals("key1=value1%3C%2C%3F&key2=value2", request.getQueryString());
     }

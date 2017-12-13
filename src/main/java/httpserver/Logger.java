@@ -15,7 +15,7 @@ public class Logger {
         createFileIfDoesntExist(logPath);
     }
 
-    public void log(String logString){
+    public void log(String logString) {
         byte[] logBytes = (logString + "\r\n").getBytes();
         try {
             fileOperator.appendToFile(logPath, logBytes);

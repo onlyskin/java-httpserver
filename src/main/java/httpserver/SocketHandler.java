@@ -12,11 +12,13 @@ public class SocketHandler implements Runnable {
     private final AppConfig appConfig;
     private final InputStream inputStream;
     private final OutputStream outputStream;
+    private final ResponderSupplier responderSupplier;
 
     public SocketHandler(Path root, Logger logger, InputStream inputStream, OutputStream outputStream) {
         this.appConfig = new AppConfig(root, logger);
         this.inputStream = inputStream;
         this.outputStream = outputStream;
+        this.responderSupplier = new ResponderSupplierFactory().makeResponderSupplier();
     }
 
     public void run() {
@@ -24,7 +26,7 @@ public class SocketHandler implements Runnable {
 
         try {
             Request request = new RequestParser(appConfig).parse(inputStream);
-            response = new GeneralResponder().respond(appConfig, request);
+            response = new GeneralResponder(responderSupplier).respond(appConfig, request);
         } catch (Exception e) {
             response = new NotFoundResponse();
         }

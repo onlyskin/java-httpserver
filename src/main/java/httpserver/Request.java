@@ -2,12 +2,11 @@ package httpserver;
 
 import httpserver.header.Header;
 
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Request {
-    private Method method;
+    private final String method;
     private final String pathString;
     private final Header[] headers;
     private final String queryString;
@@ -17,17 +16,13 @@ public class Request {
     }
 
     public Request(String method, String pathString, Header[] headers, String queryString) {
-        try {
-            this.method = Method.valueOf(method);
-        } catch (IllegalArgumentException e) {
-            this.method = Method.INVALID;
-        }
+        this.method = method;
         this.pathString = pathString;
         this.headers = headers;
         this.queryString = queryString;
     }
 
-    public Method getMethod() {
+    public String getMethodString() {
         return method;
     }
 

@@ -3,8 +3,6 @@ package httpserver;
 import httpserver.responder.*;
 import httpserver.response.Response;
 
-import java.nio.file.Path;
-
 public enum Method {
     GET(new GetResponder()),
     POST(new PostResponder()),

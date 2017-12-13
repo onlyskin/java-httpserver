@@ -19,7 +19,7 @@ public class RequestTest {
     public void hasCorrectMethodPathHeadersAndQueryString() throws Exception {
         Request request = new Request("GET", "/example.txt", headers, "example=test");
 
-        assertEquals(Method.GET, request.getMethod());
+        assertEquals("GET", request.getMethodString());
         assertEquals("/example.txt", request.getPathString());
 
         Header[] expected = new Header[]{new Header("test-header", "test-value")};
@@ -65,11 +65,5 @@ public class RequestTest {
         Parameter[] expected = new Parameter[]{new Parameter("key1", "value1<,?"), new Parameter("key2", "value2")};
         Parameter[] actual = request.getParams();
         assertTrue(Arrays.equals(expected, actual));
-    }
-
-    @Test
-    public void getMethodReturnsInvalidWhenBadMethod() throws Exception {
-        Request request = new Request("ABCDEF", "/example.txt", new Header[0]);
-        assertEquals(Method.INVALID, request.getMethod());
     }
 }
