@@ -12,6 +12,7 @@ public class RequestParser {
 
     public RequestParser(AppConfig appConfig) {
         this.logger = appConfig.getLogger();
+        this.contentLength = 0;
     }
 
     public Request parse(InputStream inputStream) throws IOException {

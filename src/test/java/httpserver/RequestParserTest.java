@@ -48,6 +48,16 @@ public class RequestParserTest {
     }
 
     @Test
+    public void returnsEmptyBodyWhenNoContentLengthHeader() throws Exception {
+        String input = "GET /text-file?key1=value1%3C%2C%3F&key2=value2 HTTP/1.1\r\n" +
+                "Host: 0.0.0.0:5000\r\n\r\n";
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        Request request = requestParser.parse(inputStream);
+
+        assertEquals("", request.getBody());
+    }
+
+    @Test
     public void parsesHeadersIncludingWhitespace() throws Exception {
         Request request = requestParser.parse(inputStream);
 
