@@ -15,19 +15,19 @@ public class RequestParser {
     }
 
     public Request parse(InputStream inputStream) throws IOException {
-        BufferedReader in = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
 
-        String firstLine = in.readLine();
+        String firstLine = bufferedReader.readLine();
 
         String[] parts = parseFirstLine(firstLine);
         String method = parts[0];
         String path = parts[1];
         String queryString = parts[2];
 
-        Header[] headers = parseHeaders(in);
+        Header[] headers = parseHeaders(bufferedReader);
         log(firstLine, headers);
 
-        String body = getBody(in);
+        String body = getBody(bufferedReader);
 
         return new Request(method, path, headers, queryString, body);
     }
