@@ -1,6 +1,8 @@
 package httpserver;
 
 import httpserver.file.FileOperator;
+import httpserver.responder.GeneralResponder;
+import httpserver.response.Response;
 import org.junit.Test;
 
 import java.io.*;
@@ -11,6 +13,7 @@ import static httpserver.file.FileHelpers.tempFileOptions;
 import static java.nio.file.Files.createTempFile;
 import static java.nio.file.Files.write;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class SocketHandlerTest {
 
@@ -29,7 +32,28 @@ public class SocketHandlerTest {
     }
 
     @Test
-    public void callsParseOnRequestParser() {
+    public void callsInjectedPartsCorrectly() throws Exception {
+        AppConfig appConfigMock = mock(AppConfig.class);
+        InputStream inputStreamMock = mock(InputStream.class);
+        RequestParser requestParserMock = mock(RequestParser.class);
+        Request requestMock = mock(Request.class);
+        when(requestParserMock.parse(inputStreamMock)).thenReturn(requestMock);
+        GeneralResponder generalResponderMock = mock(GeneralResponder.class);
+        Response responseMock = mock(Response.class);
+        when(generalResponderMock.respond(appConfigMock, requestMock)).thenReturn(responseMock);
+        ResponseWriter responseWriterMock = mock(ResponseWriter.class);
+
+        SocketHandler socketHandler = new SocketHandler(appConfigMock,
+                inputStreamMock,
+                requestParserMock,
+                generalResponderMock,
+                responseWriterMock);
+
+        socketHandler.run();
+
+        verify(requestParserMock).parse(inputStreamMock);
+        verify(generalResponderMock).respond(appConfigMock, requestMock);
+        verify(responseWriterMock).write(responseMock);
     }
 
     @Test
