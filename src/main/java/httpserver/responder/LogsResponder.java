@@ -17,4 +17,9 @@ public class LogsResponder implements Responder {
             return new UnauthorizedResponse();
         }
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/logs");
+    }
 }

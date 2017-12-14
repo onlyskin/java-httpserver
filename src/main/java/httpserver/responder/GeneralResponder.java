@@ -25,4 +25,9 @@ public class GeneralResponder implements Responder {
             return new ServerErrorResponse();
         }
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return true;
+    }
 }
