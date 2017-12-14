@@ -28,8 +28,8 @@ public class GetResponder implements Responder {
     public Response respond(AppConfig appConfig, Request request) throws IOException {
         String requestPathString = request.getPathString();
 
-        if (specialCaseRouteMap.contains(requestPathString)) {
-            return specialCaseRouteMap.getResponder(requestPathString).respond(appConfig, request);
+        if (specialCaseRouteMap.hasRoute(requestPathString)) {
+            return specialCaseRouteMap.getResponderForRoute(requestPathString).respond(appConfig, request);
         }
 
         Path root = appConfig.getRoot();

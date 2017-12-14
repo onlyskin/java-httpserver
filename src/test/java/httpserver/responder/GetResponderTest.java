@@ -48,14 +48,14 @@ public class GetResponderTest {
     @Test
     public void ifPathInRouteMapGetsResponderAndCallsRespond() throws Exception {
         Responder responderMock = mock(Responder.class);
-        when(routeMapMock.contains("/example_route")).thenReturn(true);
-        when(routeMapMock.getResponder("/example_route")).thenReturn(responderMock);
+        when(routeMapMock.hasRoute("/example_route")).thenReturn(true);
+        when(routeMapMock.getResponderForRoute("/example_route")).thenReturn(responderMock);
         Request request = new Request("GET", "/example_route", new Header[0], "");
 
         getResponder.respond(appConfigMock, request);
 
-        verify(routeMapMock).contains("/example_route");
-        verify(routeMapMock).getResponder("/example_route");
+        verify(routeMapMock).hasRoute("/example_route");
+        verify(routeMapMock).getResponderForRoute("/example_route");
         verify(responderMock).respond(appConfigMock, request);
     }
 

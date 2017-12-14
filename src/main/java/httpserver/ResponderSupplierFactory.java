@@ -28,14 +28,15 @@ public class ResponderSupplierFactory {
     }
 
     private RouteMap getRouteMap() {
-        Map<String, Responder> routeMap = new HashMap<>();
-        routeMap.put("/coffee", new CoffeeResponder());
-        routeMap.put("/tea", new TeaResponder());
-        routeMap.put("/logs", new LogsResponder());
-        routeMap.put("/cookie", new CookieResponder());
-        routeMap.put("/eat_cookie", new EatCookieResponder());
-        routeMap.put("/parameters", new ParametersResponder());
-        routeMap.put("/form", new FormGetResponder(new PathExaminer(), new FileOperator()));
-        return new RouteMap(routeMap);
+        Responder[] responderList = new Responder[]{
+                new CoffeeResponder(),
+                new TeaResponder(),
+                new LogsResponder(),
+                new CookieResponder(),
+                new EatCookieResponder(),
+                new ParametersResponder(),
+                new FormGetResponder(new PathExaminer(), new FileOperator())
+        };
+        return new RouteMap(responderList);
     }
 }

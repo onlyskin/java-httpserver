@@ -1,19 +1,28 @@
 package httpserver.responder;
 
-import java.util.Map;
-
 public class RouteMap {
-    private final Map<String, Responder> routeStringToResponder;
 
-    public RouteMap(Map<String, Responder> routes) {
-        this.routeStringToResponder = routes;
+    private final Responder[] responders;
+
+    public RouteMap(Responder[] routes) {
+        this.responders = routes;
     }
 
-    public boolean contains(String routeString) {
-        return routeStringToResponder.containsKey(routeString);
+    public boolean hasRoute(String routeString) {
+        for (Responder responder: responders) {
+            if (responder.allowed(routeString)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public Responder getResponder(String routeString) {
-        return routeStringToResponder.get(routeString);
+    public Responder getResponderForRoute(String routeString) {
+        for (Responder responder: responders) {
+            if (responder.allowed(routeString)) {
+                return responder;
+            }
+        }
+        return null;
     }
 }
