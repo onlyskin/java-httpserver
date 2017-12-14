@@ -32,7 +32,7 @@ public class OptionsResponderTest {
         Response response = optionsResponder.respond(mock(AppConfig.class), request);
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(new Header("Allow", "GET, PUT, OPTIONS"), response.getHeaders()[0]);
+        assertEquals(new Header("Allow", "GET,PUT,OPTIONS"), response.getHeaders()[0]);
     }
 
     @Test

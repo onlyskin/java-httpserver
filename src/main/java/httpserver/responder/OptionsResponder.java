@@ -21,7 +21,7 @@ public class OptionsResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
         Method[] methods = Method.values();
-        StringJoiner joiner = new StringJoiner(", ");
+        StringJoiner joiner = new StringJoiner(",");
         for (Method method: methods) {
             Responder responder = responderSupplier.responderForMethodString(method.toString());
             if (responder.allowed(request.getPathString())) {
