@@ -22,8 +22,7 @@ public class PostResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
         if (allowed(request.getPathString())) {
-            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(),
-                    request.getPathString());
+            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
             if (pathExaminer.pathExists(fullPath)) {
                 fileOperator.replaceContents(fullPath, request.getBody().getBytes());
                 return new OkResponse(fileOperator.readContents(fullPath));

@@ -114,22 +114,6 @@ public class SocketHandlerTest {
     }
 
     @Test
-    public void returns200ForPUTToForm() throws  Exception {
-        byte[] request = ("PUT /form HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\nMy=Data").getBytes();
-
-        String expected = "HTTP/1.1 200 OK\r\nContent-Length: 0\r\n\r\n";
-        assertEquals(expected, stringOutputForRequestBytes(request));
-    }
-
-    @Test
-    public void returns405ForPUT() throws Exception {
-        byte[] request = ("PUT /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
-
-        String expected = "HTTP/1.1 405 Method Not Allowed\r\nContent-Length: 0\r\n\r\n";
-        assertEquals(expected, stringOutputForRequestBytes(request));
-    }
-
-    @Test
     public void returns405ForUnsupportedMethod() throws Exception {
         byte[] request = ("XYZABC /example HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
 

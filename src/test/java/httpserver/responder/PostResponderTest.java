@@ -9,7 +9,6 @@ import httpserver.response.Response;
 import org.junit.Test;
 
 import java.nio.file.Path;
-import java.util.Arrays;
 
 import static junit.framework.TestCase.*;
 import static org.mockito.Mockito.*;

@@ -18,7 +18,9 @@ public class ResponderSupplierFactory {
         methodResponderMap.put(Method.POST, new PostResponder(
                 new PathExaminer(),
                 new FileOperator()));
-        methodResponderMap.put(Method.PUT, new PutResponder());
+        methodResponderMap.put(Method.PUT, new PutResponder(
+                new PathExaminer(),
+                new FileOperator()));
         return new ResponderSupplier(methodResponderMap, new InvalidMethodResponder());
     }
 
