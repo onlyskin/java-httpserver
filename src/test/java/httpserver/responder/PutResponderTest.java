@@ -6,12 +6,11 @@ import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.Request;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -72,5 +71,11 @@ public class PutResponderTest {
         Response response = putResponder.respond(appConfigMock, request);
 
         assertEquals(405, response.getStatusCode());
+    }
+
+    @Test
+    public void formIsAllowed() throws Exception {
+        assertTrue(putResponder.allowed("/form"));
+        assertFalse(putResponder.allowed("/other"));
     }
 }

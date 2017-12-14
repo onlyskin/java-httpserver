@@ -66,4 +66,8 @@ public class GetResponder implements Responder {
         okResponse.setHeader(new ContentTypeHeader(path));
         return okResponse;
     }
+
+    public boolean allowed(String s) {
+        return true;
+    }
 }

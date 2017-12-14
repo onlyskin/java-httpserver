@@ -100,4 +100,10 @@ public class GetResponderTest {
         verify(htmlMock).linkString(rootMock, path2);
         assertEquals(200, response.getStatusCode());
     }
+
+    @Test
+    public void formIsAllowed() throws Exception {
+        assertTrue(getResponder.allowed("/form"));
+        assertTrue(getResponder.allowed("anything"));
+    }
 }

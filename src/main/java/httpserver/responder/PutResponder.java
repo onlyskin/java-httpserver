@@ -35,7 +35,7 @@ public class PutResponder implements Responder {
         return new MethodNotAllowedResponse();
     }
 
-    private boolean allowed(String pathString) {
+    public boolean allowed(String pathString) {
         return pathString.equals("/form");
     }
 }

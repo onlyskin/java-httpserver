@@ -65,4 +65,10 @@ public class DeleteResponderTest {
 
         assertEquals(405, response.getStatusCode());
     }
+
+    @Test
+    public void formIsAllowed() throws Exception {
+        assertTrue(deleteResponder.allowed("/form"));
+        assertFalse(deleteResponder.allowed("/other"));
+    }
 }
