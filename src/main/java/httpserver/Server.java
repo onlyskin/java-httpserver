@@ -17,10 +17,12 @@ public class Server {
     }
 
     public void acceptConnection(ExecutorService executorService, SocketHandlerFactory socketHandlerFactory){
-        try (Socket clientSocket = serverSocket.accept()) {
+        try {
+            Socket clientSocket = serverSocket.accept();
             SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(appConfig, clientSocket);
             Future<?> future = executorService.submit(socketHandler);
             future.get();
+            clientSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
