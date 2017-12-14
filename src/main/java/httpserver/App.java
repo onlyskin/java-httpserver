@@ -14,15 +14,18 @@ public class App {
     private static ServerFactory serverFactory;
     private static SocketHandlerFactory socketHandlerFactory;
     private static PathExaminer pathExaminer;
+    private static Path root;
 
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(args[1]);
         String fileDirectory = args[3];
 
         pathExaminer = new PathExaminer();
-        Path root = pathExaminer.getPath(fileDirectory);
+        root = pathExaminer.getPath(fileDirectory);
         Path logPath = pathExaminer.concatenate(root,"logs");
         AppConfig appConfig = new AppConfig(root, new Logger(logPath, new FileOperator()));
+
+        createFormFile();
 
         serverFactory = new ServerFactory(new ServerSocketFactory(), appConfig);
         socketHandlerFactory = new SocketHandlerFactory();
@@ -32,6 +35,14 @@ public class App {
         Server server = serverFactory.makeServer(port);
         while (true) {
             server.acceptConnection(threadPool, socketHandlerFactory);
+        }
+    }
+
+    private static void createFormFile() {
+        Path formRoot = pathExaminer.getFullPath(root, "/form");
+        try {
+            new FileOperator().createFileAtPath(formRoot);
+        } catch (IOException e) {
         }
     }
 }
