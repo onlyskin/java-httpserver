@@ -24,6 +24,7 @@ public class ResponderSupplierFactory {
         methodResponderMap.put(Method.DELETE, new DeleteResponder(
                 new PathExaminer(),
                 new FileOperator()));
+        //methodResponderMap.put(Method.OPTIONS, new OptionsResponder(this));
         return new ResponderSupplier(methodResponderMap, new InvalidMethodResponder());
     }
 
