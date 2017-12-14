@@ -9,6 +9,7 @@ import httpserver.response.OkResponse;
 import httpserver.response.Response;
 import httpserver.file.PathExaminer;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class GetResponder implements Responder {
@@ -24,7 +25,7 @@ public class GetResponder implements Responder {
     }
 
     @Override
-    public Response respond(AppConfig appConfig, Request request) {
+    public Response respond(AppConfig appConfig, Request request) throws IOException {
         String requestPathString = request.getPathString();
 
         if (specialCaseRouteMap.contains(requestPathString)) {

@@ -1,5 +1,6 @@
 package httpserver;
 
+import httpserver.file.FileOperator;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.responder.*;
@@ -14,7 +15,9 @@ public class ResponderSupplierFactory {
                 getRouteMap(),
                 new PathExaminer(),
                 new Html()));
-        methodResponderMap.put(Method.POST, new PostResponder());
+        methodResponderMap.put(Method.POST, new PostResponder(
+                new PathExaminer(),
+                new FileOperator()));
         methodResponderMap.put(Method.PUT, new PutResponder());
         return new ResponderSupplier(methodResponderMap, new InvalidMethodResponder());
     }
