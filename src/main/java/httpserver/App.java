@@ -25,8 +25,6 @@ public class App {
         Path logPath = pathExaminer.concatenate(root,"logs");
         AppConfig appConfig = new AppConfig(root, new Logger(logPath, new FileOperator()));
 
-        createFormFile();
-
         serverFactory = new ServerFactory(new ServerSocketFactory(), appConfig);
         socketHandlerFactory = new SocketHandlerFactory();
 
@@ -35,14 +33,6 @@ public class App {
         Server server = serverFactory.makeServer(port);
         while (true) {
             server.acceptConnection(threadPool, socketHandlerFactory);
-        }
-    }
-
-    private static void createFormFile() {
-        Path formRoot = pathExaminer.getFullPath(root, "/form");
-        try {
-            new FileOperator().createFileAtPath(formRoot);
-        } catch (IOException e) {
         }
     }
 }

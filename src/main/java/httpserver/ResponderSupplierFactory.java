@@ -35,6 +35,7 @@ public class ResponderSupplierFactory {
         routeMap.put("/cookie", new CookieResponder());
         routeMap.put("/eat_cookie", new EatCookieResponder());
         routeMap.put("/parameters", new ParametersResponder());
+        routeMap.put("/form", new FormGetResponder(new PathExaminer(), new FileOperator()));
         return new RouteMap(routeMap);
     }
 }
