@@ -21,6 +21,9 @@ public class ResponderSupplierFactory {
         methodResponderMap.put(Method.PUT, new PutResponder(
                 new PathExaminer(),
                 new FileOperator()));
+        methodResponderMap.put(Method.DELETE, new DeleteResponder(
+                new PathExaminer(),
+                new FileOperator()));
         return new ResponderSupplier(methodResponderMap, new InvalidMethodResponder());
     }
 
