@@ -8,28 +8,23 @@ import httpserver.header.Header;
 import httpserver.response.Response;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class OptionsResponderTest {
     @Test
     public void responderHasListOfAllowedMethodsInAllowHeader() throws Exception {
-        Map<Method, Responder> methodResponderMapMock = new HashMap<>();
         Responder trueResponderMock = mock(Responder.class);
         when(trueResponderMock.allowed(any())).thenReturn(true);
         Responder falseResponderMock = mock(Responder.class);
         when(falseResponderMock.allowed(any())).thenReturn(false);
 
-        methodResponderMapMock.put(Method.GET, trueResponderMock);
-        methodResponderMapMock.put(Method.POST, falseResponderMock);
-        methodResponderMapMock.put(Method.PUT, trueResponderMock);
-        methodResponderMapMock.put(Method.DELETE, falseResponderMock);
-        methodResponderMapMock.put(Method.OPTIONS, trueResponderMock);
-        ResponderSupplier responderSupplier = new ResponderSupplier(methodResponderMapMock,
-                mock(InvalidMethodResponder.class));
+        ResponderSupplier responderSupplier = new ResponderSupplier(mock(InvalidMethodResponder.class));
+        responderSupplier.registerResponder(Method.GET, trueResponderMock);
+        responderSupplier.registerResponder(Method.POST, falseResponderMock);
+        responderSupplier.registerResponder(Method.PUT, trueResponderMock);
+        responderSupplier.registerResponder(Method.DELETE, falseResponderMock);
+        responderSupplier.registerResponder(Method.OPTIONS, trueResponderMock);
 
         Request request = new Request("OPTIONS", "", new Header[0], "");
 
