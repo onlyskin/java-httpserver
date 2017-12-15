@@ -36,6 +36,6 @@ public class PutResponder implements Responder {
     }
 
     public boolean allowed(String pathString) {
-        return pathString.equals("/form");
+        return pathString.equals("/form") || pathString.equals("/method_options");
     }
 }

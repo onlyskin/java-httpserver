@@ -76,6 +76,7 @@ public class PutResponderTest {
     @Test
     public void formIsAllowed() throws Exception {
         assertTrue(putResponder.allowed("/form"));
+        assertTrue(putResponder.allowed("/method_options"));
         assertFalse(putResponder.allowed("/other"));
     }
 }

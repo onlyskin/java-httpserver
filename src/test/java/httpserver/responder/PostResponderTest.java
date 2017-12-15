@@ -79,6 +79,7 @@ public class PostResponderTest {
     @Test
     public void formIsAllowed() throws Exception {
         assertTrue(postResponder.allowed("/form"));
+        assertTrue(postResponder.allowed("/method_options"));
         assertFalse(postResponder.allowed("/other"));
     }
 }
