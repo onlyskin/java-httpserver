@@ -10,4 +10,9 @@ public class CoffeeResponder implements Responder {
     public Response respond(AppConfig appConfig, Request request) {
         return new FourEighteenResponse();
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/coffee");
+    }
 }

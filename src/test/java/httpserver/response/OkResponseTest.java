@@ -51,4 +51,13 @@ public class OkResponseTest {
 
         assertTrue(Arrays.equals(new Header[0], okResponse.getHeaders()));
     }
+
+    @Test
+    public void setsHeadToTrue() throws Exception {
+        OkResponse okResponse = new OkResponse("test payload".getBytes());
+        assertEquals("test payload", new String(okResponse.getPayload()));
+
+        okResponse.setHeadTrue();
+        assertEquals("", new String(okResponse.getPayload()));
+    }
 }

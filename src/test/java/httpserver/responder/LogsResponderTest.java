@@ -43,4 +43,10 @@ public class LogsResponderTest {
 
         assertEquals(401, response.getStatusCode());
     }
+
+    @Test
+    public void logsIsAllowed() throws Exception {
+        assertTrue(logsResponder.allowed("/logs"));
+        assertFalse(logsResponder.allowed("/other"));
+    }
 }

@@ -35,7 +35,7 @@ public class PostResponder implements Responder {
         return new MethodNotAllowedResponse();
     }
 
-    private boolean allowed(String pathString) {
-        return pathString.equals("/form");
+    public boolean allowed(String pathString) {
+        return pathString.equals("/form") || pathString.equals("/method_options");
     }
 }

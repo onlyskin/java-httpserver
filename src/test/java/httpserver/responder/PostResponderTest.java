@@ -75,4 +75,11 @@ public class PostResponderTest {
 
         assertEquals(405, response.getStatusCode());
     }
+
+    @Test
+    public void formIsAllowed() throws Exception {
+        assertTrue(postResponder.allowed("/form"));
+        assertTrue(postResponder.allowed("/method_options"));
+        assertFalse(postResponder.allowed("/other"));
+    }
 }

@@ -29,4 +29,9 @@ public class FormGetResponder implements Responder {
             return new OkResponse(fileOperator.readContents(fullPath));
         }
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/form");
+    }
 }

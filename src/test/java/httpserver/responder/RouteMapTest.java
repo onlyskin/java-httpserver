@@ -2,33 +2,31 @@ package httpserver.responder;
 
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class RouteMapTest {
 
-    private final Map<String, Responder> routes;
     private final Responder responderMock;
     private final RouteMap routeMap;
+    private final Responder[] routes;
 
     public RouteMapTest() {
         responderMock = mock(Responder.class);
-        routes = new HashMap<>();
-        routes.put("GET", responderMock);
+        when(responderMock.allowed("GET")).thenReturn(true);
+        when(responderMock.allowed("AAA")).thenReturn(false);
+        routes = new Responder[]{responderMock};
         routeMap = new RouteMap(routes);
     }
 
     @Test
-    public void containsRouteReturnsTrue() throws Exception {
-        assertTrue(routeMap.contains("GET"));
-        assertFalse(routeMap.contains("AAA"));
+    public void containsRoute() throws Exception {
+        assertTrue(routeMap.hasRoute("GET"));
+        assertFalse(routeMap.hasRoute("AAA"));
     }
 
     @Test
     public void returnsResponderForRoute() throws Exception {
-        assertEquals(responderMock, routeMap.getResponder("GET"));
+        assertEquals(responderMock, routeMap.getResponderForRoute("GET"));
     }
 }

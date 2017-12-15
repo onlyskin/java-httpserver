@@ -11,4 +11,9 @@ public class EatCookieResponder implements Responder {
         Response response = new OkResponse("mmmm chocolate".getBytes());
         return response;
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/eat_cookie");
+    }
 }

@@ -10,4 +10,9 @@ public class InvalidMethodResponder implements Responder {
     public Response respond(AppConfig appConfig, Request request) {
         return new MethodNotAllowedResponse();
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return true;
+    }
 }

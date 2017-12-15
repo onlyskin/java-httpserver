@@ -13,4 +13,9 @@ public class CookieResponder implements Responder {
         response.setHeader(new Header("Set-Cookie", "key=value"));
         return response;
     }
+
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/cookie");
+    }
 }

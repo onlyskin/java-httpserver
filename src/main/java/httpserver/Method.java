@@ -1,5 +1,5 @@
 package httpserver;
 
 public enum Method {
-    GET, POST, PUT, DELETE
+    GET, HEAD, POST, PUT, DELETE, OPTIONS
 }

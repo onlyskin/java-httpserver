@@ -12,6 +12,11 @@ public class ParametersResponder implements Responder {
         return new OkResponse(echoQueryString(request).getBytes());
     }
 
+    @Override
+    public boolean allowed(String pathString) {
+        return pathString.equals("/parameters");
+    }
+
     private String echoQueryString(Request request) {
         Parameter[] parameters = request.getParams();
         String payload = "";
@@ -20,4 +25,5 @@ public class ParametersResponder implements Responder {
         }
         return payload;
     }
+
 }
