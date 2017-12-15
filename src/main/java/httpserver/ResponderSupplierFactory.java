@@ -39,7 +39,8 @@ public class ResponderSupplierFactory {
                 new CookieResponder(),
                 new EatCookieResponder(),
                 new ParametersResponder(),
-                new FormGetResponder(new PathExaminer(), new FileOperator())
+                new FormGetResponder(new PathExaminer(), new FileOperator()),
+                new RedirectResponder(),
         };
         return new RouteMap(responderList);
     }
