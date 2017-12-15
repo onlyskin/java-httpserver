@@ -21,6 +21,7 @@ public class OptionsResponderTest {
 
         ResponderSupplier responderSupplier = new ResponderSupplier(mock(InvalidMethodResponder.class));
         responderSupplier.registerResponder(Method.GET, trueResponderMock);
+        responderSupplier.registerResponder(Method.HEAD, trueResponderMock);
         responderSupplier.registerResponder(Method.POST, falseResponderMock);
         responderSupplier.registerResponder(Method.PUT, trueResponderMock);
         responderSupplier.registerResponder(Method.DELETE, falseResponderMock);
@@ -32,7 +33,7 @@ public class OptionsResponderTest {
         Response response = optionsResponder.respond(mock(AppConfig.class), request);
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(new Header("Allow", "GET,PUT,OPTIONS"), response.getHeaders()[0]);
+        assertEquals(new Header("Allow", "GET,HEAD,PUT,OPTIONS"), response.getHeaders()[0]);
     }
 
     @Test
