@@ -4,6 +4,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Hasher {
+    public boolean matches(byte[] input, String hash) {
+        return getHash(input).equals(hash);
+    }
+
     public String getHash(byte[] input) {
         MessageDigest messageDigest = null;
         try {
