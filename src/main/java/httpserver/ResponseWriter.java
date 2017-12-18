@@ -20,6 +20,8 @@ public class ResponseWriter {
         statuses.put(405, "Method Not Allowed");
         statuses.put(418, "I'm a teapot");
         statuses.put(500, "Internal Server Error");
+        statuses.put(204, "No Content");
+        statuses.put(409, "Conflict");
     }
 
     public void write(Response response) {

@@ -23,11 +23,7 @@ public class Server {
             Future<?> future = executorService.submit(socketHandler);
             future.get();
             clientSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
