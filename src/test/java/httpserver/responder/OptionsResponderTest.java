@@ -24,6 +24,7 @@ public class OptionsResponderTest {
         responderSupplier.registerResponder(Method.HEAD, trueResponderMock);
         responderSupplier.registerResponder(Method.POST, falseResponderMock);
         responderSupplier.registerResponder(Method.PUT, trueResponderMock);
+        responderSupplier.registerResponder(Method.PATCH, falseResponderMock);
         responderSupplier.registerResponder(Method.DELETE, falseResponderMock);
         responderSupplier.registerResponder(Method.OPTIONS, trueResponderMock);
 

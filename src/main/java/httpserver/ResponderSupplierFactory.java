@@ -23,6 +23,10 @@ public class ResponderSupplierFactory {
         responderSupplier.registerResponder(Method.PUT, new PutResponder(
                 new PathExaminer(),
                 new FileOperator()));
+        responderSupplier.registerResponder(Method.PATCH, new PatchResponder(
+                new PathExaminer(),
+                new FileOperator(),
+                new Hasher()));
         responderSupplier.registerResponder(Method.DELETE, new DeleteResponder(
                 new PathExaminer(),
                 new FileOperator()));
