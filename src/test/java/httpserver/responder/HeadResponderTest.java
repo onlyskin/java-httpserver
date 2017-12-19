@@ -5,6 +5,7 @@ import httpserver.Request;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
+import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
 import org.junit.Test;
 

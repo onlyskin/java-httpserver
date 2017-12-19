@@ -1,7 +1,8 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
+import httpserver.responder.special.EatCookieResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 

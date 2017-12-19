@@ -1,9 +1,10 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.header.Header;
 import httpserver.Logger;
 import httpserver.Request;
+import httpserver.responder.special.LogsResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 

@@ -1,8 +1,9 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.header.Header;
+import httpserver.responder.special.CookieResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 

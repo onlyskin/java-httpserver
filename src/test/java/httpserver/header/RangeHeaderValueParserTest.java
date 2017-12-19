@@ -1,7 +1,7 @@
-package httpserver.responder;
+package httpserver.header;
 
 import httpserver.Range;
-import org.junit.Ignore;
+import httpserver.header.RangeHeaderValueParser;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.header;
 
 import httpserver.Range;
 

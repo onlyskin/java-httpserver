@@ -4,6 +4,7 @@ import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
+import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
 
 import java.io.IOException;

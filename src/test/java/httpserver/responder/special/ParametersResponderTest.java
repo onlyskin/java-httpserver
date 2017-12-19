@@ -1,8 +1,9 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Parameter;
 import httpserver.Request;
+import httpserver.responder.special.ParametersResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 

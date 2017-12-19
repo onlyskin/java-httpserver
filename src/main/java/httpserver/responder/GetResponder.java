@@ -4,6 +4,7 @@ import httpserver.AppConfig;
 import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
+import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
