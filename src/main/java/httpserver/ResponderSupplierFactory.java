@@ -11,35 +11,42 @@ public class ResponderSupplierFactory {
     public ResponderSupplier makeResponderSupplier() {
         ResponderSupplier responderSupplier = new ResponderSupplier(new InvalidMethodResponder());
 
+        PathExaminer pathExaminer = new PathExaminer();
+        FileOperator fileOperator = new FileOperator();
+        RouteMap routeMap = getRouteMap(pathExaminer, fileOperator);
+        Html html = new Html();
+        RangeHeaderValueParser rangeHeaderValueParser = new RangeHeaderValueParser();
+        Hasher hasher = new Hasher();
+
         responderSupplier.registerResponder(Method.GET, new GetResponder(
-                getRouteMap(),
-                new PathExaminer(),
-                new Html(),
-                new RangeHeaderValueParser()));
+                routeMap,
+                pathExaminer,
+                html,
+                rangeHeaderValueParser));
         responderSupplier.registerResponder(Method.HEAD, new HeadResponder(
-                getRouteMap(),
-                new PathExaminer(),
-                new Html(),
-                new RangeHeaderValueParser()));
+                routeMap,
+                pathExaminer,
+                html,
+                rangeHeaderValueParser));
         responderSupplier.registerResponder(Method.POST, new PostResponder(
-                new PathExaminer(),
-                new FileOperator()));
+                pathExaminer,
+                fileOperator));
         responderSupplier.registerResponder(Method.PUT, new PutResponder(
-                new PathExaminer(),
-                new FileOperator()));
+                pathExaminer,
+                fileOperator));
         responderSupplier.registerResponder(Method.PATCH, new PatchResponder(
-                new PathExaminer(),
-                new FileOperator(),
-                new Hasher()));
+                pathExaminer,
+                fileOperator,
+                hasher));
         responderSupplier.registerResponder(Method.DELETE, new DeleteResponder(
-                new PathExaminer(),
-                new FileOperator()));
+                pathExaminer,
+                fileOperator));
         responderSupplier.registerResponder(Method.OPTIONS, new OptionsResponder(responderSupplier));
 
         return responderSupplier;
     }
 
-    private RouteMap getRouteMap() {
+    private RouteMap getRouteMap(PathExaminer pathExaminer, FileOperator fileOperator) {
         Responder[] responderList = new Responder[]{
                 new CoffeeResponder(),
                 new TeaResponder(),
@@ -47,7 +54,7 @@ public class ResponderSupplierFactory {
                 new CookieResponder(),
                 new EatCookieResponder(),
                 new ParametersResponder(),
-                new FormGetResponder(new PathExaminer(), new FileOperator()),
+                new FormGetResponder(pathExaminer, fileOperator),
                 new RedirectResponder(),
         };
         return new RouteMap(responderList);
