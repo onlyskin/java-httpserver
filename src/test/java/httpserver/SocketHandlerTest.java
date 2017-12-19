@@ -54,6 +54,7 @@ public class SocketHandlerTest {
         verify(requestParserMock).parse(inputStreamMock);
         verify(generalResponderMock).respond(appConfigMock, requestMock);
         verify(responseWriterMock).write(responseMock);
+        verify(inputStreamMock).close();
     }
 
     @Test

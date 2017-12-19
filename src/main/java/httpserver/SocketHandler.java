@@ -4,6 +4,7 @@ import httpserver.responder.GeneralResponder;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.Response;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class SocketHandler implements Runnable {
@@ -36,5 +37,10 @@ public class SocketHandler implements Runnable {
         }
 
         responseWriter.write(response);
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
