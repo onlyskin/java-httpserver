@@ -6,6 +6,7 @@ import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.Request;
 import httpserver.response.Response;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -78,6 +79,25 @@ public class GetResponderTest {
         assertEquals(200, response.getStatusCode());
         assertEquals(payloadMock, response.getPayload());
         assertEquals("Content-Type", response.getHeaders()[0].getKey());
+    }
+
+    @Test
+    public void respondsToRangeRequest() throws Exception {
+        Path fullPathMock = mock(Path.class);
+        when(pathExaminerMock.getFullPath(rootMock, "/filename")).thenReturn(fullPathMock);
+        when(pathExaminerMock.pathExists(fullPathMock)).thenReturn(true);
+        when(pathExaminerMock.isFile(fullPathMock)).thenReturn(true);
+        byte[] payloadMock = "range test string".getBytes();
+        when(pathExaminerMock.fileContents(fullPathMock)).thenReturn(payloadMock);
+
+        Header[] headers = new Header[]{new Header("Range", "bytes=3-8")};
+        Request request = new Request("GET", "/filename", headers, "");
+
+        Response response = getResponder.respond(appConfigMock, request);
+
+        assertEquals(206, response.getStatusCode());
+        assertEquals("ge te", new String(response.getPayload()));
+        assertEquals(new Header("Content-Length", "5"), response.getContentLengthHeader());
     }
 
     @Test
