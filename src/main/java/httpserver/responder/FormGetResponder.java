@@ -4,6 +4,7 @@ import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
+import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
