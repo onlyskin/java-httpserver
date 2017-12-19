@@ -1,11 +1,13 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
+import httpserver.response.PartialContentResponse;
 import httpserver.response.Response;
 import httpserver.file.PathExaminer;
 
@@ -17,11 +19,16 @@ public class GetResponder implements Responder {
     private final PathExaminer pathExaminer;
     private final RouteMap specialCaseRouteMap;
     private final Html html;
+    private RangeHeaderValueParser rangeHeaderValueParser;
 
-    public GetResponder(RouteMap getRouteMap, PathExaminer pathExaminer, Html html) {
+    public GetResponder(RouteMap getRouteMap,
+                        PathExaminer pathExaminer,
+                        Html html,
+                        RangeHeaderValueParser rangeHeaderValueParser) {
         this.pathExaminer = pathExaminer;
         this.specialCaseRouteMap = getRouteMap;
         this.html = html;
+        this.rangeHeaderValueParser = rangeHeaderValueParser;
     }
 
     @Override
@@ -37,7 +44,7 @@ public class GetResponder implements Responder {
 
         if (pathExaminer.pathExists(path)) {
             if (pathExaminer.isFile(path)) {
-                return responseForFile(path);
+                return responseForFile(path, request);
             } else {
                 return responseForDir(root, path);
             }
@@ -60,11 +67,20 @@ public class GetResponder implements Responder {
         return result;
     }
 
-    private Response responseForFile(Path path) {
+    private Response responseForFile(Path path, Request request) {
         byte[] payload = pathExaminer.fileContents(path);
-        OkResponse okResponse = new OkResponse(payload);
-        okResponse.setHeader(new ContentTypeHeader(path));
-        return okResponse;
+
+        Response response = null;
+        if(request.hasHeader("Range")) {
+            String rangeHeaderValue = request.getHeaderValue("Range");
+            Range range = rangeHeaderValueParser.parse(rangeHeaderValue, payload.length);
+            response = new PartialContentResponse(range, payload);
+        } else {
+            response = new OkResponse(payload);
+        }
+
+        response.setHeader(new ContentTypeHeader(path));
+        return response;
     }
 
     public boolean allowed(String s) {

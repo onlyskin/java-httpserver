@@ -1,11 +1,13 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.Request;
 import httpserver.response.Response;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,13 +24,18 @@ public class GetResponderTest {
     private final PathExaminer pathExaminerMock;
     private final Path rootMock;
     private final Html htmlMock;
+    private final RangeHeaderValueParser rangeHeaderValueParserMock;
 
     public GetResponderTest() throws IOException {
         routeMapMock = mock(RouteMap.class);
         pathExaminerMock = mock(PathExaminer.class);
 
         htmlMock = mock(Html.class);
-        getResponder = new GetResponder(routeMapMock, pathExaminerMock, htmlMock);
+        rangeHeaderValueParserMock = mock(RangeHeaderValueParser.class);
+        getResponder = new GetResponder(routeMapMock,
+                pathExaminerMock,
+                htmlMock,
+                rangeHeaderValueParserMock);
         appConfigMock = mock(AppConfig.class);
         rootMock = mock(Path.class);
         when(appConfigMock.getRoot()).thenReturn(rootMock);
@@ -78,6 +85,28 @@ public class GetResponderTest {
         assertEquals(200, response.getStatusCode());
         assertEquals(payloadMock, response.getPayload());
         assertEquals("Content-Type", response.getHeaders()[0].getKey());
+    }
+
+    @Test
+    public void respondsToRangeRequest() throws Exception {
+        Path fullPathMock = mock(Path.class);
+        when(pathExaminerMock.getFullPath(rootMock, "/filename")).thenReturn(fullPathMock);
+        when(pathExaminerMock.pathExists(fullPathMock)).thenReturn(true);
+        when(pathExaminerMock.isFile(fullPathMock)).thenReturn(true);
+        byte[] payloadMock = "range test string".getBytes();
+        when(pathExaminerMock.fileContents(fullPathMock)).thenReturn(payloadMock);
+
+        String rangeHeaderValue = "bytes=3-8";
+        Header[] headers = new Header[]{new Header("Range", rangeHeaderValue)};
+        Range rangeMock = mock(Range.class);
+        when(rangeHeaderValueParserMock.parse(rangeHeaderValue, payloadMock.length)).thenReturn(rangeMock);
+
+        Request request = new Request("GET", "/filename", headers, "");
+
+        Response response = getResponder.respond(appConfigMock, request);
+
+        assertEquals(206, response.getStatusCode());
+        verify(rangeHeaderValueParserMock).parse(rangeHeaderValue, payloadMock.length);
     }
 
     @Test

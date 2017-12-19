@@ -69,7 +69,7 @@ public class PatchResponderTest {
 
         verify(pathExaminerMock).fileContents(fullPathMock);
         verify(hasherMock).matches("mock text".getBytes(), hashMock);
-        verify(fileOperatorMock).appendToFile(fullPathMock, "patch contents".getBytes());
+        verify(fileOperatorMock).replaceContents(fullPathMock, "patch contents".getBytes());
         assertEquals(204, response.getStatusCode());
         Header[] expected = new Header[]{new Header("ETag", "hash code")};
         assertTrue(Arrays.equals(expected, response.getHeaders()));

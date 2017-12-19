@@ -9,8 +9,11 @@ import httpserver.response.Response;
 import java.io.IOException;
 
 public class HeadResponder extends GetResponder {
-    public HeadResponder(RouteMap getRouteMap, PathExaminer pathExaminer, Html html) {
-        super(getRouteMap, pathExaminer, html);
+    public HeadResponder(RouteMap getRouteMap,
+                         PathExaminer pathExaminer,
+                         Html html,
+                         RangeHeaderValueParser rangeHeaderValueParser) {
+        super(getRouteMap, pathExaminer, html, rangeHeaderValueParser);
     }
 
     @Override
