@@ -25,8 +25,8 @@ public class InvalidMethodResponderTest {
     }
 
     @Test
-    public void anythingIsAllowed() throws Exception {
-        assertTrue(invalidMethodResponder.allowed("/logs"));
-        assertTrue(invalidMethodResponder.allowed("/other"));
+    public void handlesAllPaths() throws Exception {
+        assertTrue(invalidMethodResponder.handles("/logs"));
+        assertTrue(invalidMethodResponder.handles("/other"));
     }
 }

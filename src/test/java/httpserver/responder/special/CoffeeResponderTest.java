@@ -2,7 +2,6 @@ package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.responder.special.CoffeeResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -26,8 +25,8 @@ public class CoffeeResponderTest {
     }
 
     @Test
-    public void coffeeIsAllowed() throws Exception {
-        assertTrue(coffeeResponder.allowed("/coffee"));
-        assertFalse(coffeeResponder.allowed("/other"));
+    public void handlesCoffee() throws Exception {
+        assertTrue(coffeeResponder.handles("/coffee"));
+        assertFalse(coffeeResponder.handles("/other"));
     }
 }

@@ -37,7 +37,7 @@ public class PutResponderTest {
     }
 
     @Test
-    public void overwritesFileWithDataIfAllowedAndExists() throws Exception {
+    public void overwritesFileWithDataIfHandlesAndExists() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -53,7 +53,7 @@ public class PutResponderTest {
     }
 
     @Test
-    public void returns404IfAllowedButDoesntExist() throws Exception {
+    public void returns404IfHandlesButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -65,7 +65,7 @@ public class PutResponderTest {
     }
 
     @Test
-    public void returns405IfNotAllowed() throws Exception {
+    public void returns405IfNotHandles() throws Exception {
         Request request = new Request("POST", "/not_allowed", new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
@@ -74,9 +74,9 @@ public class PutResponderTest {
     }
 
     @Test
-    public void formIsAllowed() throws Exception {
-        assertTrue(putResponder.allowed("/form"));
-        assertTrue(putResponder.allowed("/method_options"));
-        assertFalse(putResponder.allowed("/other"));
+    public void handlesFormAndMethodOptions() throws Exception {
+        assertTrue(putResponder.handles("/form"));
+        assertTrue(putResponder.handles("/method_options"));
+        assertFalse(putResponder.handles("/other"));
     }
 }

@@ -23,7 +23,7 @@ public class DeleteResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (allowed(request.getPathString())) {
+        if (handles(request.getPathString())) {
             Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
             if (pathExaminer.pathExists(fullPath)) {
                 fileOperator.deleteFileAtPath(fullPath);
@@ -36,7 +36,7 @@ public class DeleteResponder implements Responder {
         }
     }
 
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/form");
     }
 }

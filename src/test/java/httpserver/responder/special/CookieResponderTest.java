@@ -3,7 +3,6 @@ package httpserver.responder.special;
 import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.header.Header;
-import httpserver.responder.special.CookieResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -32,8 +31,8 @@ public class CookieResponderTest {
     }
 
     @Test
-    public void cookieIsAllowed() throws Exception {
-        assertTrue(cookieResponder.allowed("/cookie"));
-        assertFalse(cookieResponder.allowed("/other"));
+    public void handlesCookie() throws Exception {
+        assertTrue(cookieResponder.handles("/cookie"));
+        assertFalse(cookieResponder.handles("/other"));
     }
 }

@@ -13,7 +13,7 @@ public class TeaResponder implements Responder {
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/tea");
     }
 }

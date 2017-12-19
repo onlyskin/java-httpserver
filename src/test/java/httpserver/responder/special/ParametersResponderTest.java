@@ -3,7 +3,6 @@ package httpserver.responder.special;
 import httpserver.AppConfig;
 import httpserver.Parameter;
 import httpserver.Request;
-import httpserver.responder.special.ParametersResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -34,8 +33,8 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void parametersIsAllowed() throws Exception {
-        assertTrue(parametersResponder.allowed("/parameters"));
-        assertFalse(parametersResponder.allowed("/other"));
+    public void handlesParameters() throws Exception {
+        assertTrue(parametersResponder.handles("/parameters"));
+        assertFalse(parametersResponder.handles("/other"));
     }
 }

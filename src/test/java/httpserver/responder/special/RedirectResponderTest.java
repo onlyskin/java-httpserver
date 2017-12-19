@@ -2,7 +2,6 @@ package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.responder.special.RedirectResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -27,8 +26,8 @@ public class RedirectResponderTest {
     }
 
     @Test
-    public void redirectIsAllowed() throws Exception {
-        assertTrue(redirectResponder.allowed("/redirect"));
-        assertFalse(redirectResponder.allowed("/other"));
+    public void handlesRedirect() throws Exception {
+        assertTrue(redirectResponder.handles("/redirect"));
+        assertFalse(redirectResponder.handles("/other"));
     }
 }

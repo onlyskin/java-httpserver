@@ -2,7 +2,6 @@ package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.responder.special.TeaResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -26,8 +25,8 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void teaIsAllowed() throws Exception {
-        assertTrue(teaResponder.allowed("/tea"));
-        assertFalse(teaResponder.allowed("/other"));
+    public void handlesTea() throws Exception {
+        assertTrue(teaResponder.handles("/tea"));
+        assertFalse(teaResponder.handles("/other"));
     }
 }

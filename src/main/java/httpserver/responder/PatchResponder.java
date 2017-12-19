@@ -24,7 +24,7 @@ public class PatchResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (allowed(request.getPathString())) {
+        if (handles(request.getPathString())) {
             Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
             if (pathExaminer.pathExists(fullPath)) {
                 if (noIfMatchHeader(request)) {
@@ -53,7 +53,7 @@ public class PatchResponder implements Responder {
         return hasher.matches(fileContents, ifMatchHash);
     }
 
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/patch-content.txt");
     }
 }

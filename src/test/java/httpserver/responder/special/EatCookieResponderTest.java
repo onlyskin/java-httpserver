@@ -2,7 +2,6 @@ package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.responder.special.EatCookieResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -27,8 +26,8 @@ public class EatCookieResponderTest {
     }
 
     @Test
-    public void eat_cookieIsAllowed() throws Exception {
-        assertTrue(eatCookieResponder.allowed("/eat_cookie"));
-        assertFalse(eatCookieResponder.allowed("/other"));
+    public void handlesEat_cookie() throws Exception {
+        assertTrue(eatCookieResponder.handles("/eat_cookie"));
+        assertFalse(eatCookieResponder.handles("/other"));
     }
 }

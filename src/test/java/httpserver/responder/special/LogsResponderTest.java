@@ -4,7 +4,6 @@ import httpserver.AppConfig;
 import httpserver.header.Header;
 import httpserver.Logger;
 import httpserver.Request;
-import httpserver.responder.special.LogsResponder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -46,8 +45,8 @@ public class LogsResponderTest {
     }
 
     @Test
-    public void logsIsAllowed() throws Exception {
-        assertTrue(logsResponder.allowed("/logs"));
-        assertFalse(logsResponder.allowed("/other"));
+    public void handlesLogs() throws Exception {
+        assertTrue(logsResponder.handles("/logs"));
+        assertFalse(logsResponder.handles("/other"));
     }
 }
