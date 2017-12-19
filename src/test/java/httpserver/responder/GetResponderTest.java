@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
@@ -23,13 +24,18 @@ public class GetResponderTest {
     private final PathExaminer pathExaminerMock;
     private final Path rootMock;
     private final Html htmlMock;
+    private final RangeHeaderValueParser rangeHeaderValueParserMock;
 
     public GetResponderTest() throws IOException {
         routeMapMock = mock(RouteMap.class);
         pathExaminerMock = mock(PathExaminer.class);
 
         htmlMock = mock(Html.class);
-        getResponder = new GetResponder(routeMapMock, pathExaminerMock, htmlMock);
+        rangeHeaderValueParserMock = mock(RangeHeaderValueParser.class);
+        getResponder = new GetResponder(routeMapMock,
+                pathExaminerMock,
+                htmlMock,
+                rangeHeaderValueParserMock);
         appConfigMock = mock(AppConfig.class);
         rootMock = mock(Path.class);
         when(appConfigMock.getRoot()).thenReturn(rootMock);
@@ -90,14 +96,17 @@ public class GetResponderTest {
         byte[] payloadMock = "range test string".getBytes();
         when(pathExaminerMock.fileContents(fullPathMock)).thenReturn(payloadMock);
 
-        Header[] headers = new Header[]{new Header("Range", "bytes=3-8")};
+        String rangeHeaderValue = "bytes=3-8";
+        Header[] headers = new Header[]{new Header("Range", rangeHeaderValue)};
+        Range rangeMock = mock(Range.class);
+        when(rangeHeaderValueParserMock.parse(rangeHeaderValue, payloadMock.length)).thenReturn(rangeMock);
+
         Request request = new Request("GET", "/filename", headers, "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
         assertEquals(206, response.getStatusCode());
-        assertEquals("ge te", new String(response.getPayload()));
-        assertEquals(new Header("Content-Length", "5"), response.getContentLengthHeader());
+        verify(rangeHeaderValueParserMock).parse(rangeHeaderValue, payloadMock.length);
     }
 
     @Test

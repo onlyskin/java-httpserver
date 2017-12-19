@@ -19,11 +19,16 @@ public class GetResponder implements Responder {
     private final PathExaminer pathExaminer;
     private final RouteMap specialCaseRouteMap;
     private final Html html;
+    private RangeHeaderValueParser rangeHeaderValueParser;
 
-    public GetResponder(RouteMap getRouteMap, PathExaminer pathExaminer, Html html) {
+    public GetResponder(RouteMap getRouteMap,
+                        PathExaminer pathExaminer,
+                        Html html,
+                        RangeHeaderValueParser rangeHeaderValueParser) {
         this.pathExaminer = pathExaminer;
         this.specialCaseRouteMap = getRouteMap;
         this.html = html;
+        this.rangeHeaderValueParser = rangeHeaderValueParser;
     }
 
     @Override
@@ -68,7 +73,7 @@ public class GetResponder implements Responder {
         Response response = null;
         if(request.hasHeader("Range")) {
             String rangeHeaderValue = request.getHeaderValue("Range");
-            Range range = new RangeHeaderValueParser().parse(rangeHeaderValue);
+            Range range = rangeHeaderValueParser.parse(rangeHeaderValue, payload.length);
             response = new PartialContentResponse(range, payload);
         } else {
             response = new OkResponse(payload);

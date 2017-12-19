@@ -12,11 +12,13 @@ public class ResponderSupplierFactory {
         responderSupplier.registerResponder(Method.GET, new GetResponder(
                 getRouteMap(),
                 new PathExaminer(),
-                new Html()));
+                new Html(),
+                new RangeHeaderValueParser()));
         responderSupplier.registerResponder(Method.HEAD, new HeadResponder(
                 getRouteMap(),
                 new PathExaminer(),
-                new Html()));
+                new Html(),
+                new RangeHeaderValueParser()));
         responderSupplier.registerResponder(Method.POST, new PostResponder(
                 new PathExaminer(),
                 new FileOperator()));

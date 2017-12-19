@@ -11,10 +11,7 @@ public class PartialContentResponse extends Response {
     }
 
     private byte[] getPartialPayload(Range range, byte[] payload) {
-        if (range.getEnd() > payload.length) {
-            return Arrays.copyOfRange(payload, range.getStart(), payload.length);
-        }
-        return Arrays.copyOfRange(payload, range.getStart(), range.getEnd());
+        return Arrays.copyOfRange(payload, range.getStart(), range.getEnd() + 1);
     }
 
     @Override

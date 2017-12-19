@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.Range;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -8,38 +9,40 @@ import static org.junit.Assert.*;
 public class RangeHeaderValueParserTest {
 
     private final RangeHeaderValueParser rangeHeaderValueParser;
+    private final int payloadLength;
 
     public RangeHeaderValueParserTest() {
         rangeHeaderValueParser = new RangeHeaderValueParser();
+        payloadLength = 10;
     }
 
     @Test
     public void parsesSimpleRange() throws Exception {
-        String headerValue = "bytes=6-10";
+        String headerValue = "bytes=2-3";
 
-        Range range = rangeHeaderValueParser.parse(headerValue);
+        Range range = rangeHeaderValueParser.parse(headerValue, payloadLength);
 
-        assertEquals(6, range.getStart());
-        assertEquals(10, range.getEnd());
+        assertEquals(2, range.getStart());
+        assertEquals(3, range.getEnd());
     }
 
     @Test
     public void parsesRangeWithEmptyStart() throws Exception {
-        String headerValue = "bytes=-10";
+        String headerValue = "bytes=-3";
 
-        Range range = rangeHeaderValueParser.parse(headerValue);
+        Range range = rangeHeaderValueParser.parse(headerValue, payloadLength);
 
-        assertEquals(0, range.getStart());
-        assertEquals(10, range.getEnd());
+        assertEquals(7, range.getStart());
+        assertEquals(9, range.getEnd());
     }
 
     @Test
     public void rangeWithEmptyEndHasMaxIntegerEndValue() throws Exception {
-        String headerValue = "bytes=8-";
+        String headerValue = "bytes=3-";
 
-        Range range = rangeHeaderValueParser.parse(headerValue);
+        Range range = rangeHeaderValueParser.parse(headerValue, payloadLength);
 
-        assertEquals(8, range.getStart());
-        assertEquals(Integer.MAX_VALUE, range.getEnd());
+        assertEquals(3, range.getStart());
+        assertEquals(9, range.getEnd());
     }
 }

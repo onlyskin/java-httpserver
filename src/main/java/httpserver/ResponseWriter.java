@@ -22,6 +22,7 @@ public class ResponseWriter {
         statuses.put(500, "Internal Server Error");
         statuses.put(204, "No Content");
         statuses.put(409, "Conflict");
+        statuses.put(206, "Partial Content");
     }
 
     public void write(Response response) {
