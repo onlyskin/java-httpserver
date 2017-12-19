@@ -32,7 +32,7 @@ public class ResponseWriter {
             writeEmptyLine();
             writePayload(response);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error while writing to output stream.");
         }
     }
 

@@ -40,7 +40,7 @@ public class SocketHandler implements Runnable {
         try {
             inputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("The inputStream could not be closed.");
         }
     }
 }
