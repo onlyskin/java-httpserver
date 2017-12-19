@@ -20,6 +20,7 @@ public class Server {
             SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(appConfig, clientSocket);
             executorService.submit(socketHandler);
         } catch (IOException e) {
+            System.out.println("Server socket error");
             e.printStackTrace();
         }
     }

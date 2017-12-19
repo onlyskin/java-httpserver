@@ -50,7 +50,7 @@ public class PathExaminer {
                 result.add(entry);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Couldn't retrieve directory contents for directory at " + dir.toString());
         }
         return result.toArray(new Path[0]);
     }

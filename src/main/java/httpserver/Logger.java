@@ -27,7 +27,9 @@ public class Logger {
     private void createFileIfDoesntExist(Path path) {
         try {
             fileOperator.createFileAtPath(path);
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            System.out.println("Coudln't create log file");
+        }
     }
 
     public byte[] readLog() {

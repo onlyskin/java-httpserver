@@ -9,14 +9,14 @@ public class Hasher {
     }
 
     public String getHash(byte[] input) {
-        MessageDigest messageDigest = null;
         try {
-            messageDigest = MessageDigest.getInstance("SHA1");
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
+            byte[] hash = messageDigest.digest(input);
+            return bytesToHex(hash);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println("Unable to get hash.");
+            return "";
         }
-        byte[] hash = messageDigest.digest(input);
-        return bytesToHex(hash);
     }
 
     private String bytesToHex(byte[] hash) {
