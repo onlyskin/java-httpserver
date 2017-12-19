@@ -1,7 +1,7 @@
 package httpserver;
 
 import httpserver.header.Header;
-import httpserver.response.FourEighteenResponse;
+import httpserver.response.TeapotResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
@@ -54,7 +54,7 @@ public class ResponseWriterTest {
 
     @Test
     public void itWritesTheFirstLineFor418() throws Exception {
-        String output = outputForResponse(new FourEighteenResponse());
+        String output = outputForResponse(new TeapotResponse());
 
         assertTrue(output.contains("HTTP/1.1 418 I'm a teapot\r\n"));
     }

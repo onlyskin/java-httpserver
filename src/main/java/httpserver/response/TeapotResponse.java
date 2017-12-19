@@ -1,7 +1,7 @@
 package httpserver.response;
 
-public class FourEighteenResponse extends Response {
-    public FourEighteenResponse() {
+public class TeapotResponse extends Response {
+    public TeapotResponse() {
         super.setPayload("I'm a teapot".getBytes());
     }
 
