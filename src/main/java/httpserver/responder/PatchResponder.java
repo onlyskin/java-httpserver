@@ -32,7 +32,7 @@ public class PatchResponder implements Responder {
                 }
                 if (matchingHash(fullPath, request)) {
                     byte[] newFileContents = request.getBody().getBytes();
-                    fileOperator.appendToFile(fullPath, newFileContents);
+                    fileOperator.replaceContents(fullPath, newFileContents);
                     return new NoContentResponse(hasher.getHash(newFileContents));
                 }
                 return new ConflictResponse();
