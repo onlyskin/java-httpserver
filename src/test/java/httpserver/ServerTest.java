@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 import static org.mockito.Mockito.*;
 
@@ -19,7 +18,6 @@ public class ServerTest {
     private Server server;
     private final ExecutorService executorServiceMock;
     private final SocketHandler socketHandlerMock;
-    private final Future futureMock;
 
     public ServerTest() throws IOException {
         socket = new Socket();
@@ -34,8 +32,6 @@ public class ServerTest {
         when(socketHandlerFactoryMock.newSocketHandler(any(), any())).thenReturn(socketHandlerMock);
 
         executorServiceMock = mock(ExecutorService.class);
-        futureMock = mock(Future.class);
-        when(executorServiceMock.submit(socketHandlerMock)).thenReturn(futureMock);
     }
 
     @Test
@@ -57,12 +53,5 @@ public class ServerTest {
         server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
         verify(executorServiceMock).submit(socketHandlerMock);
-    }
-
-    @Test
-    public void callsGetOnFuture() throws Exception {
-        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
-
-        verify(futureMock).get();
     }
 }
