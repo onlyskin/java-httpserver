@@ -17,7 +17,7 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void returns200() {
+    public void returns200() throws Exception {
         Response response = teaResponder.respond(mock(AppConfig.class),
                 mock(Request.class));
 

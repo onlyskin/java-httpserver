@@ -18,7 +18,7 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void itEchoesRequestQueryStringInBody() {
+    public void itEchoesRequestQueryStringInBody() throws Exception {
         Request requestMock = mock(Request.class);
         Parameter[] params = {new Parameter("key1", "value1"),
                 new Parameter("key2", "value2")};
