@@ -1,5 +1,6 @@
-package httpserver;
+package httpserver.request;
 
+import httpserver.request.UrlDecoder;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

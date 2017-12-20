@@ -1,7 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.Request;
+import httpserver.request.Request;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.RangeHeaderValueParser;

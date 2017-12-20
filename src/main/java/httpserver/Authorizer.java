@@ -1,5 +1,7 @@
 package httpserver;
 
+import httpserver.request.Request;
+
 import java.util.Base64;
 
 public class Authorizer {

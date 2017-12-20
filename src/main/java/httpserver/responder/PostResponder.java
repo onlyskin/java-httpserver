@@ -3,6 +3,7 @@ package httpserver.responder;
 import httpserver.*;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
+import httpserver.request.Request;
 import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;

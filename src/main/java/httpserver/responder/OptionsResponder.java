@@ -2,7 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Method;
-import httpserver.Request;
+import httpserver.request.Request;
 import httpserver.ResponderSupplier;
 import httpserver.header.Header;
 import httpserver.response.OkResponse;

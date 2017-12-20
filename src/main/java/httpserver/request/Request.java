@@ -1,5 +1,6 @@
-package httpserver;
+package httpserver.request;
 
+import httpserver.Parameter;
 import httpserver.header.Header;
 
 import java.util.ArrayList;

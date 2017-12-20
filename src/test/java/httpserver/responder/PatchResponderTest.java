@@ -2,7 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Hasher;
-import httpserver.Request;
+import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;

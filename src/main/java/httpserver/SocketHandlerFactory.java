@@ -1,5 +1,6 @@
 package httpserver;
 
+import httpserver.request.RequestParser;
 import httpserver.responder.GeneralResponder;
 
 import java.io.IOException;

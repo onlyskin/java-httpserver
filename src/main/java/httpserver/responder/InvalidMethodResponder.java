@@ -1,7 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.Request;
+import httpserver.request.Request;
 import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.Response;
 

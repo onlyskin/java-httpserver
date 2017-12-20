@@ -1,10 +1,11 @@
-package httpserver;
+package httpserver.request;
 
+import httpserver.Parameter;
 import httpserver.header.Header;
+import httpserver.request.Request;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
 
 import static org.junit.Assert.*;
 

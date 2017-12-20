@@ -1,5 +1,7 @@
-package httpserver;
+package httpserver.request;
 
+import httpserver.AppConfig;
+import httpserver.Logger;
 import httpserver.header.Header;
 
 import java.io.*;

@@ -1,6 +1,8 @@
 package httpserver;
 
 import httpserver.file.FileOperator;
+import httpserver.request.Request;
+import httpserver.request.RequestParser;
 import httpserver.responder.GeneralResponder;
 import httpserver.response.Response;
 import org.junit.Test;

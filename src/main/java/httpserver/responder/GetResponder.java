@@ -6,7 +6,7 @@ import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
 import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.NotFoundResponse;
-import httpserver.Request;
+import httpserver.request.Request;
 import httpserver.response.OkResponse;
 import httpserver.response.PartialContentResponse;
 import httpserver.response.Response;

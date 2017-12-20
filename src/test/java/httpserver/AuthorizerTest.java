@@ -1,6 +1,7 @@
 package httpserver;
 
 import httpserver.header.Header;
+import httpserver.request.Request;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
