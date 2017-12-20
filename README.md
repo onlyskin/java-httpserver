@@ -16,14 +16,14 @@ jar file for this server, and the path to the cloned cob_spec repo.
 gradle clean
 gradle jar
 ```
-\(There is sometimes a build error when writing the XML test results.
-If this happens, just build again.\)
+\(There is sometimes a build error related to writing the XML test results.
+If this happens, just run `gradle jar` again.\)
 
 ### To run the server, run
 ```
 java -jar build/libs/httpserver-1.0-SNAPSHOT.jar -p 5000 -d DIRECTORY_TO_SERVE
 ```
-\(Replace DIRECTORY_TO_SERVE with the cloned cob_spec/public/ folder
+\(Replace `DIRECTORY_TO_SERVE` with the absolute path to the cloned cob_spec/public/ folder
 or any other directory you want to serve.\)
 
 ## Development
