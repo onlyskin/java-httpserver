@@ -23,7 +23,7 @@ If this happens, just run `gradle jar` again.\)
 ```
 java -jar build/libs/httpserver-1.0-SNAPSHOT.jar -p 5000 -d DIRECTORY_TO_SERVE
 ```
-\(Replace `DIRECTORY_TO_SERVE` with the absolute path to the cloned cob_spec/public/ folder
+\(Replace `DIRECTORY_TO_SERVE` with the absolute path to the cloned `cob_spec/public/` folder
 or any other directory you want to serve.\)
 
 ## Development
