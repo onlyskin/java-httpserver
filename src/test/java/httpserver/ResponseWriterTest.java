@@ -35,14 +35,14 @@ public class ResponseWriterTest {
 
     @Test
     public void writesResponseHeaders() throws Exception {
-        Header headerMock = mock(Header.class);
-        when(headerMock.toString()).thenReturn("example: header");
+        Header header = new Header("example", "header");
         Response response = new OkResponse("example".getBytes());
-        response.setHeader(headerMock);
+        response.setHeader(header);
 
         String output = outputForResponse(response);
 
         assertTrue(output.contains("example: header"));
+        assertTrue(output.contains("Content-Length: 7"));
     }
 
     @Test

@@ -16,13 +16,15 @@ public class ResponseWriter {
         this.outputStream = outputStream;
         this.statuses = new HashMap<>();
         statuses.put(200, "OK");
+        statuses.put(204, "No Content");
+        statuses.put(206, "Partial Content");
+        statuses.put(302, "Found");
+        statuses.put(401, "Unauthorized");
         statuses.put(404, "Not Found");
         statuses.put(405, "Method Not Allowed");
+        statuses.put(409, "Conflict");
         statuses.put(418, "I'm a teapot");
         statuses.put(500, "Internal Server Error");
-        statuses.put(204, "No Content");
-        statuses.put(409, "Conflict");
-        statuses.put(206, "Partial Content");
     }
 
     public void write(Response response) {
@@ -37,19 +39,30 @@ public class ResponseWriter {
     }
 
     private void writeStatusCode(Response response) throws IOException {
-        write(statusLine(response.getStatusCode()).getBytes());
+        String statusLine = getStatusLine(response.getStatusCode());
+        write(statusLine.getBytes());
+    }
+
+    private String getStatusLine(int statusCode) {
+        return ("HTTP/1.1 " + statusCode
+                + " " + statuses.get(statusCode)
+                + "\r\n");
     }
 
     private void writeHeaders(Response response) throws IOException {
         writeContentLengthHeader(response);
         for (Header header: response.getHeaders()) {
-            write((header.toString() + "\r\n").getBytes());
+            write(getHeaderLineString(header).getBytes());
         }
     }
 
     private void writeContentLengthHeader(Response response) throws IOException {
-        String header = response.getContentLengthHeader().toString() + "\r\n";
-        write(header.getBytes());
+        Header contentLengthHeader = response.getContentLengthHeader();
+        write(getHeaderLineString(contentLengthHeader).getBytes());
+    }
+
+    private String getHeaderLineString(Header header) {
+        return header.getKey() + ": " + header.getValue() + "\r\n";
     }
 
     private void writeEmptyLine() throws IOException {
@@ -63,11 +76,4 @@ public class ResponseWriter {
     private void write(byte[] bytes) throws IOException {
         outputStream.write(bytes);
     }
-
-    private String statusLine(int statusCode) {
-        return ("HTTP/1.1 " + statusCode
-                    + " " + statuses.get(statusCode)
-                    + "\r\n");
-    }
-
 }
