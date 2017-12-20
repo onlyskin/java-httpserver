@@ -25,9 +25,4 @@ public class Header {
         }
         return false;
     }
-
-    @Override
-    public String toString() {
-        return this.key + ": " + this.value;
-    }
 }
