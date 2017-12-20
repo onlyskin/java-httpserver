@@ -37,6 +37,7 @@ public class SocketHandler implements Runnable {
         }
 
         responseWriter.write(response);
+
         try {
             inputStream.close();
         } catch (IOException e) {
