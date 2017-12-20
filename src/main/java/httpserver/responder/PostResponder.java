@@ -21,18 +21,18 @@ public class PostResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (handles(request.getPathString())) {
-            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
-            if (pathExaminer.pathExists(fullPath)) {
-                fileOperator.replaceContents(fullPath, request.getBody().getBytes());
-                return new OkResponse(fileOperator.readContents(fullPath));
-            } else {
-                fileOperator.createFileAtPath(fullPath);
-                fileOperator.replaceContents(fullPath, request.getBody().getBytes());
-                return new OkResponse(fileOperator.readContents(fullPath));
-            }
+        if (!handles(request.getPathString())) {
+            return new MethodNotAllowedResponse();
         }
-        return new MethodNotAllowedResponse();
+
+        Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
+
+        if (!pathExaminer.pathExists(fullPath)) {
+            fileOperator.createFileAtPath(fullPath);
+        }
+
+        fileOperator.replaceContents(fullPath, request.getBody().getBytes());
+        return new OkResponse(fileOperator.readContents(fullPath));
     }
 
     public boolean handles(String pathString) {

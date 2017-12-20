@@ -20,11 +20,14 @@ public class ParametersResponder implements Responder {
 
     private String echoQueryString(Request request) {
         Parameter[] parameters = request.getParams();
-        String payload = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (Parameter parameter: parameters) {
-            payload = payload + parameter.getKey() + " = " + parameter.getValue() + "\r\n";
+            stringBuilder.append(parameter.getKey());
+            stringBuilder.append(" = ");
+            stringBuilder.append(parameter.getValue());
+            stringBuilder.append("\r\n");
         }
-        return payload;
+        return stringBuilder.toString();
     }
 
 }

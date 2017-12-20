@@ -24,23 +24,27 @@ public class PatchResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (handles(request.getPathString())) {
-            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
-            if (pathExaminer.pathExists(fullPath)) {
-                if (noIfMatchHeader(request)) {
-                    return new ConflictResponse();
-                }
-                if (matchingHash(fullPath, request)) {
-                    byte[] newFileContents = request.getBody().getBytes();
-                    fileOperator.replaceContents(fullPath, newFileContents);
-                    return new NoContentResponse(hasher.getHash(newFileContents));
-                }
-                return new ConflictResponse();
-            } else {
-                return new NotFoundResponse();
-            }
+        if (!handles(request.getPathString())) {
+            return new MethodNotAllowedResponse();
         }
-        return new MethodNotAllowedResponse();
+
+        Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
+
+        if (!pathExaminer.pathExists(fullPath)) {
+            return new NotFoundResponse();
+        }
+
+        if (noIfMatchHeader(request)) {
+            return new ConflictResponse();
+        }
+
+        if (matchingHash(fullPath, request)) {
+            byte[] newFileContents = request.getBody().getBytes();
+            fileOperator.replaceContents(fullPath, newFileContents);
+            return new NoContentResponse(hasher.getHash(newFileContents));
+        }
+
+        return new ConflictResponse();
     }
 
     private boolean noIfMatchHeader(Request request) {

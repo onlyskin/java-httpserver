@@ -23,17 +23,17 @@ public class DeleteResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (handles(request.getPathString())) {
-            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
-            if (pathExaminer.pathExists(fullPath)) {
-                fileOperator.deleteFileAtPath(fullPath);
-                return new OkResponse("".getBytes());
-            } else {
-                return new NotFoundResponse();
-            }
-        } else {
+        if (!handles(request.getPathString())) {
             return new MethodNotAllowedResponse();
         }
+
+        Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
+        if (pathExaminer.pathExists(fullPath)) {
+            fileOperator.deleteFileAtPath(fullPath);
+            return new OkResponse("".getBytes());
+        }
+
+        return new NotFoundResponse();
     }
 
     public boolean handles(String pathString) {

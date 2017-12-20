@@ -11,12 +11,14 @@ import httpserver.response.UnauthorizedResponse;
 public class LogsResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        if (new Authorizer().authorize(request)) {
-            byte[] log = appConfig.getLogger().readLog();
-            return new OkResponse(log);
-        } else {
+        Authorizer authorizer = new Authorizer();
+
+        if (!authorizer.authorize(request)) {
             return new UnauthorizedResponse();
         }
+
+        byte[] log = appConfig.getLogger().readLog();
+        return new OkResponse(log);
     }
 
     @Override
