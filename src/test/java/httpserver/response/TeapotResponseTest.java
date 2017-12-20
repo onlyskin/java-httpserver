@@ -3,9 +3,11 @@ package httpserver.response;
 import httpserver.header.Header;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 
-import static junit.framework.TestCase.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class TeapotResponseTest {
 
@@ -22,7 +24,9 @@ public class TeapotResponseTest {
 
     @Test
     public void hasEmptyPayload() throws Exception {
-        assertEquals("I'm a teapot", new String(teapotResponse.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        teapotResponse.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("I'm a teapot".getBytes());
     }
 
     @Test

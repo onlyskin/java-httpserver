@@ -3,9 +3,11 @@ package httpserver.response;
 import httpserver.header.Header;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class UnauthorizedResponseTest {
     private final UnauthorizedResponse unauthorizedResponse;
@@ -21,7 +23,9 @@ public class UnauthorizedResponseTest {
 
     @Test
     public void hasEmptyPayload() throws Exception {
-        assertTrue(Arrays.equals(new byte[0], unauthorizedResponse.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        unauthorizedResponse.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(new byte[0]);
     }
 
     @Test

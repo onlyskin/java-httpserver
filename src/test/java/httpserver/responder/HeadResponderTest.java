@@ -9,6 +9,7 @@ import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
@@ -25,7 +26,7 @@ public class HeadResponderTest {
     }
 
     @Test
-    public void getPayloadReturnsEmptyByteArrayButContentLengthHeaderIsFull() throws Exception {
+    public void writePayloadWritesEmptyByteArrayButContentLengthHeaderIsFull() throws Exception {
         Path fullPathMock = mock(Path.class);
         when(pathExaminerMock.getFullPath(rootMock, "/filename")).thenReturn(fullPathMock);
         when(pathExaminerMock.pathExists(fullPathMock)).thenReturn(true);
@@ -46,7 +47,9 @@ public class HeadResponderTest {
 
         Response response = headResponder.respond(appConfigMock, request);
 
-        assertEquals("", new String(response.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("".getBytes());
         assertEquals("21", response.getContentLengthHeader().getValue());
     }
 }

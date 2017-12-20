@@ -8,6 +8,7 @@ import httpserver.request.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
@@ -49,7 +50,9 @@ public class PutResponderTest {
         assertEquals(200, response.getStatusCode());
         verify(fileOperatorMock).replaceContents(fullPathMock, "data=example".getBytes());
         verify(fileOperatorMock).readContents(fullPathMock);
-        assertEquals(fileContentsMock, response.getPayload());
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(fileContentsMock);
     }
 
     @Test

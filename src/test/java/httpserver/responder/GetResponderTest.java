@@ -11,6 +11,7 @@ import httpserver.response.Response;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
@@ -49,7 +50,9 @@ public class GetResponderTest {
         Response response = getResponder.respond(appConfigMock, request);
 
         assertEquals(404, response.getStatusCode());
-        assertEquals("", new String(response.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("".getBytes());
     }
 
     @Test
@@ -83,8 +86,11 @@ public class GetResponderTest {
         verify(pathExaminerMock).pathExists(fullPathMock);
         verify(pathExaminerMock).isFile(fullPathMock);
         assertEquals(200, response.getStatusCode());
-        assertEquals(payloadMock, response.getPayload());
         assertEquals("Content-Type", response.getHeaders()[0].getKey());
+
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(payloadMock);
     }
 
     @Test

@@ -3,9 +3,11 @@ package httpserver.response;
 import httpserver.header.Header;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class OkResponseTest {
     private final OkResponse okResponse;
@@ -24,10 +26,22 @@ public class OkResponseTest {
     }
 
     @Test
-    public void getsPayload() throws Exception {
-        byte[] payload = okResponse.getPayload();
+    public void writesPayloadToOutputStream() throws Exception {
+        OutputStream outputStreamMock = mock(OutputStream.class);
 
-        assertEquals("test payload", new String(payload));
+        okResponse.writePayload(outputStreamMock);
+
+        verify(outputStreamMock).write("test payload".getBytes());
+    }
+
+    @Test
+    public void doesntWritePayloadToOutputStreamWhenHEAD() throws Exception {
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        okResponse.setHeadTrue();
+
+        okResponse.writePayload(outputStreamMock);
+
+        verify(outputStreamMock).write("".getBytes());
     }
 
     @Test
@@ -55,9 +69,14 @@ public class OkResponseTest {
     @Test
     public void setsHeadToTrue() throws Exception {
         OkResponse okResponse = new OkResponse("test payload".getBytes());
-        assertEquals("test payload", new String(okResponse.getPayload()));
+
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        okResponse.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("test payload".getBytes());
 
         okResponse.setHeadTrue();
-        assertEquals("", new String(okResponse.getPayload()));
+
+        okResponse.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("".getBytes());
     }
 }

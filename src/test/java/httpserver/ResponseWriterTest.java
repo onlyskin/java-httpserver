@@ -11,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class ResponseWriterTest {
     private final ResponseWriter responseWriter;

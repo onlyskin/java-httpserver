@@ -71,7 +71,7 @@ public class ResponseWriter {
     }
 
     private void writePayload(Response response) throws IOException {
-        write(response.getPayload());
+        response.writePayload(outputStream);
     }
 
     private void write(byte[] bytes) throws IOException {

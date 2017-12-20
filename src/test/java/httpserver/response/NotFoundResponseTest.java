@@ -3,9 +3,11 @@ package httpserver.response;
 import httpserver.header.Header;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 
-import static junit.framework.TestCase.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class NotFoundResponseTest {
 
@@ -22,7 +24,9 @@ public class NotFoundResponseTest {
 
     @Test
     public void hasEmptyPayload() throws Exception {
-        assertTrue(Arrays.equals(new byte[0], notFoundResponse.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        notFoundResponse.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(new byte[0]);
     }
 
     @Test
