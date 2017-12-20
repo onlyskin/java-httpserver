@@ -11,7 +11,7 @@ jar file for this server, and the path to the cloned cob_spec repo.
 
 ## Building
 
-### To build the server, run:
+### To build the server, clone this repository, then run:
 ```
 gradle clean
 gradle jar
