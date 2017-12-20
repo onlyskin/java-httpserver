@@ -56,4 +56,4 @@ Note that when the cob_spec test suite is run, the files `public/form` and
 `public/method_options` will be created. This is because the suite specifies
 successful `POST` requests to these two routes and the server treats a `POST`
 request as a file creating operation. The server will also create a file at
-`public/logs` if it does not already exist which allows `GET` requests.
+`public/logs` if it does not already exist.
