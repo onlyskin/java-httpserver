@@ -11,7 +11,7 @@ jar file for this server, and the path to the cloned cob_spec repo.
 
 ## Building
 
-### To build the server, clone this repository, then run:
+### To build the server, clone this repository then run:
 ```
 gradle clean
 gradle jar
@@ -19,7 +19,7 @@ gradle jar
 \(There is sometimes a build error related to writing the XML test results.
 If this happens, just run `gradle jar` again.\)
 
-### To run the server, run
+### To run the server, run:
 ```
 java -jar build/libs/httpserver-1.0-SNAPSHOT.jar -p 5000 -d DIRECTORY_TO_SERVE
 ```
@@ -28,7 +28,8 @@ or any other directory you want to serve.\)
 
 ## Development
 
-### The project has continuous integration with Travis CI, you can see results at
+### The project has continuous integration with Travis CI, you can see results at:
+
 [https://travis-ci.org/onlyskin/java-httpserver/branches](https://travis-ci.org/onlyskin/java-httpserver/branches)
 
 ### To run the unit tests for the project, run:
