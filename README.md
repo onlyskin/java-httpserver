@@ -40,3 +40,14 @@ gradle test
 ```
 gradle -t test
 ```
+
+### To run the cob_spec test suite:
+
+Follow the instructions at
+[https://github.com/8thlight/cob_spec](https://github.com/8thlight/cob_spec).
+
+You will need to clone the cob_spec repository and start the testing server according
+to the instructions. You will then need to open the testing suite in your browser
+and edit the user-defined variables in the browser UI to match the start command
+for this server \(`java -jar ABSOLUTE_PATH_TO_COMPILED_JAR.jar`\), and the absolute
+path to the cloned cob_spec repo.
