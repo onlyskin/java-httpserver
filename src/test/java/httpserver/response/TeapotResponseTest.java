@@ -23,10 +23,10 @@ public class TeapotResponseTest {
     }
 
     @Test
-    public void hasEmptyPayload() throws Exception {
+    public void hasCorrectPayload() throws Exception {
         OutputStream outputStreamMock = mock(OutputStream.class);
-        teapotResponse.writePayload(outputStreamMock);
-        verify(outputStreamMock).write("I'm a teapot".getBytes());
+        teapotResponse.writePayloadStream(outputStreamMock);
+        verify(outputStreamMock, times(12)).write(anyInt());
     }
 
     @Test

@@ -17,6 +17,6 @@ public class PartialContentResponseTest {
         assertEquals(new Header("Content-Length", "6"), partialContentResponse.getContentLengthHeader());
         OutputStream outputStreamMock = mock(OutputStream.class);
         partialContentResponse.writePayload(outputStreamMock);
-        verify(outputStreamMock).write("ged te".getBytes());
+        verify(outputStreamMock, times(6)).write(anyInt());
     }
 }
