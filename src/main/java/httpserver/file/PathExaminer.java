@@ -19,8 +19,7 @@ public class PathExaminer {
     public Path getPath(String input) {
         String[] parts;
         parts = input.split("/");
-        Path path = Paths.get("/", parts);
-        return path;
+        return Paths.get("/", parts);
     }
 
     public boolean pathExists(Path path) {
