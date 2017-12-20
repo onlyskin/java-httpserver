@@ -20,10 +20,10 @@ public class Hasher {
     }
 
     private String bytesToHex(byte[] hash) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for (byte b : hash) {
-            stringBuffer.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            stringBuilder.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 }
