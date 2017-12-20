@@ -1,7 +1,8 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
+import httpserver.responder.Responder;
 import httpserver.response.FoundResponse;
 import httpserver.response.Response;
 
@@ -14,7 +15,7 @@ public class RedirectResponder implements Responder {
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/redirect");
     }
 }

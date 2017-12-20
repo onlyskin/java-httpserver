@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
@@ -17,7 +17,7 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void returns200() {
+    public void returns200() throws Exception {
         Response response = teaResponder.respond(mock(AppConfig.class),
                 mock(Request.class));
 
@@ -25,8 +25,8 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void teaIsAllowed() throws Exception {
-        assertTrue(teaResponder.allowed("/tea"));
-        assertFalse(teaResponder.allowed("/other"));
+    public void handlesTea() throws Exception {
+        assertTrue(teaResponder.handles("/tea"));
+        assertFalse(teaResponder.handles("/other"));
     }
 }

@@ -28,11 +28,4 @@ public class HeaderTest {
         assertEquals(header1, header2);
         assertNotEquals(header1, header3);
     }
-
-    @Test
-    public void getsString() throws Exception {
-        Header header = new Header("key", "value");
-
-        assertEquals("key: value", header.toString());
-    }
 }

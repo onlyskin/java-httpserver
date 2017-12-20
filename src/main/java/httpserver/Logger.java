@@ -30,10 +30,7 @@ public class Logger {
         } catch (IOException e) {}
     }
 
-    public byte[] readLog() {
-        try {
-            return fileOperator.readContents(logPath);
-        } catch (IOException e) {}
-        return null;
+    public byte[] readLog() throws IOException {
+        return fileOperator.readContents(logPath);
     }
 }

@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
@@ -26,8 +26,8 @@ public class RedirectResponderTest {
     }
 
     @Test
-    public void redirectIsAllowed() throws Exception {
-        assertTrue(redirectResponder.allowed("/redirect"));
-        assertFalse(redirectResponder.allowed("/other"));
+    public void handlesRedirect() throws Exception {
+        assertTrue(redirectResponder.handles("/redirect"));
+        assertFalse(redirectResponder.handles("/other"));
     }
 }

@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Parameter;
@@ -18,7 +18,7 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void itEchoesRequestQueryStringInBody() {
+    public void itEchoesRequestQueryStringInBody() throws Exception {
         Request requestMock = mock(Request.class);
         Parameter[] params = {new Parameter("key1", "value1"),
                 new Parameter("key2", "value2")};
@@ -33,8 +33,8 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void parametersIsAllowed() throws Exception {
-        assertTrue(parametersResponder.allowed("/parameters"));
-        assertFalse(parametersResponder.allowed("/other"));
+    public void handlesParameters() throws Exception {
+        assertTrue(parametersResponder.handles("/parameters"));
+        assertFalse(parametersResponder.handles("/other"));
     }
 }

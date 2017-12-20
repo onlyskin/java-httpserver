@@ -6,7 +6,6 @@ import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -46,7 +45,7 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns404WhenAllowedNotExists() throws Exception {
+    public void returns404WhenHandledButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -58,7 +57,7 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns405WhenNotAllowed() throws Exception {
+    public void returns405WhenNotHandled() throws Exception {
         Request request = new Request("DELETE", "/not_allowed", new Header[0], "");
 
         Response response = deleteResponder.respond(appConfigMock, request);
@@ -67,8 +66,8 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void formIsAllowed() throws Exception {
-        assertTrue(deleteResponder.allowed("/form"));
-        assertFalse(deleteResponder.allowed("/other"));
+    public void handlesForm() throws Exception {
+        assertTrue(deleteResponder.handles("/form"));
+        assertFalse(deleteResponder.handles("/other"));
     }
 }

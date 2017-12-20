@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 
 public class AppConfigTest {
     @Test
-    public void itHasLoggerAndRoot() {
+    public void itHasLoggerAndRoot() throws Exception {
         Logger loggerMock = mock(Logger.class);
         Path rootMock = mock(Path.class);
         AppConfig appConfig = new AppConfig(rootMock, loggerMock);

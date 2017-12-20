@@ -46,10 +46,7 @@ public class Request {
     }
 
     public boolean hasHeader(String key) {
-        if (getHeaderValue(key) == null) {
-            return false;
-        }
-        return true;
+        return getHeaderValue(key) != null;
     }
 
     public String getQueryString() {
@@ -63,6 +60,7 @@ public class Request {
         for (String queryString: queryStrings) {
             parameters.add(queryStringToParameter(queryString));
         }
+
         return parameters.toArray(new Parameter[0]);
     }
 

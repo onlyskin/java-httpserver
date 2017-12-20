@@ -7,7 +7,6 @@ import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Path;
@@ -93,7 +92,7 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns404IfAllowedButDoesntExist() throws Exception {
+    public void returns404IfHandlesButDoesntExist() throws Exception {
         String pathString = "/patch-content.txt";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -105,7 +104,7 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns405IfNotAllowed() throws Exception {
+    public void returns405IfNotHandles() throws Exception {
         Request request = new Request("PATCH", "/not_allowed", new Header[0], "", "data=example");
 
         Response response = patchResponder.respond(appConfigMock, request);
@@ -114,8 +113,8 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void PathContentTxtIsAllowed() throws Exception {
-        assertTrue(patchResponder.allowed("/patch-content.txt"));
-        assertFalse(patchResponder.allowed("/other"));
+    public void handlesPatchContentTxt() throws Exception {
+        assertTrue(patchResponder.handles("/patch-content.txt"));
+        assertFalse(patchResponder.handles("/other"));
     }
 }

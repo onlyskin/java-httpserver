@@ -13,8 +13,8 @@ public class RouteMapTest {
 
     public RouteMapTest() {
         responderMock = mock(Responder.class);
-        when(responderMock.allowed("GET")).thenReturn(true);
-        when(responderMock.allowed("AAA")).thenReturn(false);
+        when(responderMock.handles("GET")).thenReturn(true);
+        when(responderMock.handles("AAA")).thenReturn(false);
         routes = new Responder[]{responderMock};
         routeMap = new RouteMap(routes);
     }

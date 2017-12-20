@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
@@ -31,8 +31,8 @@ public class CookieResponderTest {
     }
 
     @Test
-    public void cookieIsAllowed() throws Exception {
-        assertTrue(cookieResponder.allowed("/cookie"));
-        assertFalse(cookieResponder.allowed("/other"));
+    public void handlesCookie() throws Exception {
+        assertTrue(cookieResponder.handles("/cookie"));
+        assertFalse(cookieResponder.handles("/other"));
     }
 }

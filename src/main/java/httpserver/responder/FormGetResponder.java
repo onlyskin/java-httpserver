@@ -22,16 +22,16 @@ public class FormGetResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
         Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
-        if (pathExaminer.pathExists(fullPath)) {
-            return new OkResponse(fileOperator.readContents(fullPath));
-        } else {
+
+        if (!pathExaminer.pathExists(fullPath)) {
             fileOperator.createFileAtPath(fullPath);
-            return new OkResponse(fileOperator.readContents(fullPath));
         }
+
+        return new OkResponse(fileOperator.readContents(fullPath));
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/form");
     }
 }

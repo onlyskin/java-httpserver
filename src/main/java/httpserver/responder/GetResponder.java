@@ -4,6 +4,7 @@ import httpserver.AppConfig;
 import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
+import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.NotFoundResponse;
 import httpserver.Request;
 import httpserver.response.OkResponse;
@@ -36,21 +37,22 @@ public class GetResponder implements Responder {
         String requestPathString = request.getPathString();
 
         if (specialCaseRouteMap.hasRoute(requestPathString)) {
-            return specialCaseRouteMap.getResponderForRoute(requestPathString).respond(appConfig, request);
+            Responder responderForRoute = specialCaseRouteMap.getResponderForRoute(requestPathString);
+            return responderForRoute.respond(appConfig, request);
         }
 
         Path root = appConfig.getRoot();
-        Path path = pathExaminer.getFullPath(root, requestPathString);
+        Path fullPath = pathExaminer.getFullPath(root, requestPathString);
 
-        if (pathExaminer.pathExists(path)) {
-            if (pathExaminer.isFile(path)) {
-                return responseForFile(path, request);
-            } else {
-                return responseForDir(root, path);
-            }
+        if (!pathExaminer.pathExists(fullPath)) {
+            return new NotFoundResponse();
         }
 
-        return new NotFoundResponse();
+        if (!pathExaminer.isFile(fullPath)) {
+            return responseForDir(root, fullPath);
+        }
+
+        return responseForFile(fullPath, request);
     }
 
     private Response responseForDir(Path root, Path path) {
@@ -60,17 +62,18 @@ public class GetResponder implements Responder {
     }
 
     private String htmlLinksForContents(Path root, Path[] paths) {
-        String result = "";
+        StringBuilder stringBuilder = new StringBuilder();
         for (Path subPath: paths) {
-            result = result + html.linkString(root, subPath);
+            stringBuilder.append(html.linkString(root, subPath));
         }
-        return result;
+        return stringBuilder.toString();
     }
 
     private Response responseForFile(Path path, Request request) {
         byte[] payload = pathExaminer.fileContents(path);
 
-        Response response = null;
+        Response response;
+
         if(request.hasHeader("Range")) {
             String rangeHeaderValue = request.getHeaderValue("Range");
             Range range = rangeHeaderValueParser.parse(rangeHeaderValue, payload.length);
@@ -83,7 +86,7 @@ public class GetResponder implements Responder {
         return response;
     }
 
-    public boolean allowed(String s) {
+    public boolean handles(String s) {
         return true;
     }
 }

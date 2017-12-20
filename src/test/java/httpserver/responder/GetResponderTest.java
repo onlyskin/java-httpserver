@@ -6,8 +6,8 @@ import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.Request;
+import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -131,8 +131,8 @@ public class GetResponderTest {
     }
 
     @Test
-    public void formIsAllowed() throws Exception {
-        assertTrue(getResponder.allowed("/form"));
-        assertTrue(getResponder.allowed("anything"));
+    public void handlesForm() throws Exception {
+        assertTrue(getResponder.handles("/form"));
+        assertTrue(getResponder.handles("anything"));
     }
 }

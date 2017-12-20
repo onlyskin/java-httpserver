@@ -9,21 +9,21 @@ public class Hasher {
     }
 
     public String getHash(byte[] input) {
-        MessageDigest messageDigest = null;
         try {
-            messageDigest = MessageDigest.getInstance("SHA1");
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
+            byte[] hash = messageDigest.digest(input);
+            return bytesToHex(hash);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println("Unable to get hash.");
+            return "";
         }
-        byte[] hash = messageDigest.digest(input);
-        return bytesToHex(hash);
     }
 
     private String bytesToHex(byte[] hash) {
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         for (byte b : hash) {
-            stringBuffer.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
+            stringBuilder.append(Integer.toString((b & 0xff) + 0x100, 16).substring(1));
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 }

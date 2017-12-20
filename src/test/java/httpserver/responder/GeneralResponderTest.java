@@ -49,8 +49,8 @@ public class GeneralResponderTest {
     }
 
     @Test
-    public void anythingIsAllowed() throws Exception {
-        assertTrue(generalResponder.allowed("/anything"));
-        assertTrue(generalResponder.allowed("/other"));
+    public void handlesAllPaths() throws Exception {
+        assertTrue(generalResponder.handles("/anything"));
+        assertTrue(generalResponder.handles("/other"));
     }
 }

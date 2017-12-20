@@ -22,14 +22,14 @@ public class ResponderSupplierTest {
     }
 
     @Test
-    public void returnsResponderForMethod() {
+    public void returnsResponderForMethod() throws Exception {
         Responder result = responderSupplier.responderForMethodString("GET");
 
         assertEquals(getResponderMock, result);
     }
 
     @Test
-    public void returnsInvalidMethodIfNotPresent() {
+    public void returnsInvalidMethodIfNotPresent() throws Exception {
         Responder result = responderSupplier.responderForMethodString("AAA");
 
         assertEquals(invalidMethodResponderMock, result);

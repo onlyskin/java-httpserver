@@ -1,7 +1,7 @@
 package httpserver;
 
 import httpserver.header.Header;
-import httpserver.response.FourEighteenResponse;
+import httpserver.response.TeapotResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
@@ -35,14 +35,14 @@ public class ResponseWriterTest {
 
     @Test
     public void writesResponseHeaders() throws Exception {
-        Header headerMock = mock(Header.class);
-        when(headerMock.toString()).thenReturn("example: header");
+        Header header = new Header("example", "header");
         Response response = new OkResponse("example".getBytes());
-        response.setHeader(headerMock);
+        response.setHeader(header);
 
         String output = outputForResponse(response);
 
         assertTrue(output.contains("example: header"));
+        assertTrue(output.contains("Content-Length: 7"));
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ResponseWriterTest {
 
     @Test
     public void itWritesTheFirstLineFor418() throws Exception {
-        String output = outputForResponse(new FourEighteenResponse());
+        String output = outputForResponse(new TeapotResponse());
 
         assertTrue(output.contains("HTTP/1.1 418 I'm a teapot\r\n"));
     }

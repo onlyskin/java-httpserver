@@ -44,5 +44,5 @@ public abstract class Response {
 
     public void setHeadTrue() {
         isHead = true;
-    };
+    }
 }

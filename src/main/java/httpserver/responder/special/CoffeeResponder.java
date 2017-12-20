@@ -1,18 +1,19 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
-import httpserver.response.FourEighteenResponse;
+import httpserver.responder.Responder;
+import httpserver.response.TeapotResponse;
 import httpserver.response.Response;
 
 public class CoffeeResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        return new FourEighteenResponse();
+        return new TeapotResponse();
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/coffee");
     }
 }

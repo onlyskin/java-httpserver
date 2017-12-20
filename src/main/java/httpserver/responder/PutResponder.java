@@ -23,19 +23,21 @@ public class PutResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (allowed(request.getPathString())) {
-            Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
-            if (pathExaminer.pathExists(fullPath)) {
-                fileOperator.replaceContents(fullPath, request.getBody().getBytes());
-                return new OkResponse(fileOperator.readContents(fullPath));
-            } else {
-                return new NotFoundResponse();
-            }
+        if (!handles(request.getPathString())) {
+            return new MethodNotAllowedResponse();
         }
-        return new MethodNotAllowedResponse();
+
+        Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
+
+        if (!pathExaminer.pathExists(fullPath)) {
+            return new NotFoundResponse();
+        }
+
+        fileOperator.replaceContents(fullPath, request.getBody().getBytes());
+        return new OkResponse(fileOperator.readContents(fullPath));
     }
 
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/form") || pathString.equals("/method_options");
     }
 }

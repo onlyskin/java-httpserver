@@ -1,25 +1,35 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Authorizer;
 import httpserver.Request;
+import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
+import httpserver.response.ServerErrorResponse;
 import httpserver.response.UnauthorizedResponse;
+
+import java.io.IOException;
 
 public class LogsResponder implements Responder {
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        if (new Authorizer().authorize(request)) {
+        Authorizer authorizer = new Authorizer();
+
+        if (!authorizer.authorize(request)) {
+            return new UnauthorizedResponse();
+        }
+
+        try {
             byte[] log = appConfig.getLogger().readLog();
             return new OkResponse(log);
-        } else {
-            return new UnauthorizedResponse();
+        } catch (IOException e) {
+            return new ServerErrorResponse();
         }
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/logs");
     }
 }

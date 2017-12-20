@@ -16,28 +16,28 @@ public class MimetypeCheckerTest {
     }
 
     @Test
-    public void returnsTypeForJpegPath() {
+    public void returnsTypeForJpegPath() throws Exception {
         Path path = Paths.get("/test/example.jpeg");
 
         assertEquals("image/jpeg", mimetypeChecker.getMimeType(path));
     }
 
     @Test
-    public void returnsTypeForPngPath() {
+    public void returnsTypeForPngPath() throws Exception {
         Path path = Paths.get("/test/example.png");
 
         assertEquals("image/png", mimetypeChecker.getMimeType(path));
     }
 
     @Test
-    public void returnsTypeForGifPath() {
+    public void returnsTypeForGifPath() throws Exception {
         Path path = Paths.get("/test/example.gif");
 
         assertEquals("image/gif", mimetypeChecker.getMimeType(path));
     }
 
     @Test
-    public void returnsTypeForTxtPath() {
+    public void returnsTypeForTxtPath() throws Exception {
         Path path = Paths.get("/test/example.txt");
 
         assertEquals("text/plain", mimetypeChecker.getMimeType(path));

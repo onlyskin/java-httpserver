@@ -1,8 +1,9 @@
-package httpserver.responder;
+package httpserver.responder.special;
 
 import httpserver.AppConfig;
 import httpserver.Request;
 import httpserver.header.Header;
+import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
@@ -15,7 +16,7 @@ public class CookieResponder implements Responder {
     }
 
     @Override
-    public boolean allowed(String pathString) {
+    public boolean handles(String pathString) {
         return pathString.equals("/cookie");
     }
 }
