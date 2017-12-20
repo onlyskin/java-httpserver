@@ -58,10 +58,10 @@ public class SocketHandlerTest {
     }
 
     @Test
-    public void returns404ForMalformedRequestLine() throws Exception {
+    public void returns400ForMalformedRequestLine() throws Exception {
         byte[] request = ("".getBytes());
 
-        String expected = "HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\n\r\n";
+        String expected = "HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\n\r\n";
         assertEquals(expected, stringOutputForRequestBytes(request));
     }
 

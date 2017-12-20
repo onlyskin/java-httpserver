@@ -1,7 +1,7 @@
 package httpserver;
 
 import httpserver.responder.GeneralResponder;
-import httpserver.response.NotFoundResponse;
+import httpserver.response.BadRequestResponse;
 import httpserver.response.Response;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class SocketHandler implements Runnable {
             Request request = requestParser.parse(inputStream);
             response = generalResponder.respond(appConfig, request);
         } catch (Exception e) {
-            response = new NotFoundResponse();
+            response = new BadRequestResponse();
         }
 
         responseWriter.write(response);
