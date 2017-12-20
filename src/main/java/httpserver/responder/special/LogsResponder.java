@@ -6,7 +6,10 @@ import httpserver.Request;
 import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
+import httpserver.response.ServerErrorResponse;
 import httpserver.response.UnauthorizedResponse;
+
+import java.io.IOException;
 
 public class LogsResponder implements Responder {
     @Override
@@ -17,8 +20,12 @@ public class LogsResponder implements Responder {
             return new UnauthorizedResponse();
         }
 
-        byte[] log = appConfig.getLogger().readLog();
-        return new OkResponse(log);
+        try {
+            byte[] log = appConfig.getLogger().readLog();
+            return new OkResponse(log);
+        } catch (IOException e) {
+            return new ServerErrorResponse();
+        }
     }
 
     @Override

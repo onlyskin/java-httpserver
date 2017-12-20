@@ -7,6 +7,8 @@ import httpserver.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -25,7 +27,7 @@ public class LogsResponderTest {
     }
 
     @Test
-    public void callsReadLogOnAppConfigLogger() {
+    public void callsReadLogOnAppConfigLogger() throws Exception {
         Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
         Request request = new Request("GET", "test", headers, "");
 
@@ -36,14 +38,20 @@ public class LogsResponderTest {
     }
 
     @Test
-    public void returnsUnauthorizedResponseWhenIncorrectAuthHeader() {
-        Request request = new Request("GET", "test", new Header[0], "");
+    public void returnsUnauthorizedResponseWhenIncorrectAuthHeader() throws Exception {
+        Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
+        Request request = new Request("GET", "test", headers, "");
+        when(loggerMock.readLog()).thenThrow(new IOException());
 
         Response response = logsResponder.respond(appConfigMock, request);
 
-        assertEquals(401, response.getStatusCode());
+        assertEquals(500, response.getStatusCode());
     }
 
+    @Test
+    public void returns500ResponseWhenLogErrors() throws Exception {
+        Request request = new Request("GET", "test", new Header[0], "");
+    }
     @Test
     public void handlesLogs() throws Exception {
         assertTrue(logsResponder.handles("/logs"));
