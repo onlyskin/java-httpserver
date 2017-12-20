@@ -3,6 +3,8 @@ package httpserver.response;
 import httpserver.header.ContentLengthHeader;
 import httpserver.header.Header;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +20,6 @@ public abstract class Response {
     }
 
     public abstract int getStatusCode();
-
-    public byte[] getPayload() {
-        if (isHead) {
-            return new byte[0];
-        }
-        return payload;
-    }
 
     public void setPayload(byte[] newPayload) {
         payload = newPayload;
@@ -44,5 +39,12 @@ public abstract class Response {
 
     public void setHeadTrue() {
         isHead = true;
+    }
+
+    public void writePayload(OutputStream outputStream) throws IOException {
+        if (isHead) {
+            outputStream.write(new byte[0]);
+        }
+        outputStream.write(payload);
     }
 }

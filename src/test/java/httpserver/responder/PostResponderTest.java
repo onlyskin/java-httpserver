@@ -8,9 +8,10 @@ import httpserver.request.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.nio.file.Path;
 
-import static junit.framework.TestCase.*;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class PostResponderTest {
@@ -47,7 +48,9 @@ public class PostResponderTest {
         assertEquals(200, response.getStatusCode());
         verify(fileOperatorMock).replaceContents(fullPathMock, "data=example".getBytes());
         verify(fileOperatorMock).readContents(fullPathMock);
-        assertEquals(fileContentsMock, response.getPayload());
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(fileContentsMock);
     }
 
     @Test
@@ -64,7 +67,9 @@ public class PostResponderTest {
         verify(fileOperatorMock).createFileAtPath(fullPathMock);
         verify(fileOperatorMock).replaceContents(fullPathMock, "data=example".getBytes());
         verify(fileOperatorMock).readContents(fullPathMock);
-        assertEquals(fileContentsMock, response.getPayload());
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(fileContentsMock);
     }
 
     @Test

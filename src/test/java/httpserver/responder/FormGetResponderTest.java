@@ -9,6 +9,7 @@ import httpserver.response.Response;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 
 import static org.junit.Assert.*;
@@ -39,7 +40,7 @@ public class FormGetResponderTest {
     }
     
     @Test
-    public void returnsOkResponse() throws Exception {
+    public void returnsOkResponseWithPayload() throws Exception {
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         Request request = new Request("GET", pathString, new Header[0], "");
 
@@ -47,7 +48,10 @@ public class FormGetResponderTest {
 
         verify(pathExaminerMock).pathExists(fullPathMock);
         assertEquals(200, response.getStatusCode());
-        assertEquals("file contents mock", new String(response.getPayload()));
+
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write(fileContentsMock);
     }
 
     @Test

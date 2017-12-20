@@ -5,6 +5,8 @@ import httpserver.request.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -22,7 +24,9 @@ public class EatCookieResponderTest {
         Response response = eatCookieResponder.respond(mock(AppConfig.class),
                 mock(Request.class));
         assertEquals(200, response.getStatusCode());
-        assertEquals("mmmm chocolate", new String(response.getPayload()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("mmmm chocolate".getBytes());
     }
 
     @Test

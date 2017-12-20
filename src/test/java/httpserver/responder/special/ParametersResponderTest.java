@@ -6,6 +6,8 @@ import httpserver.request.Request;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -28,8 +30,9 @@ public class ParametersResponderTest {
                 requestMock);
 
         assertEquals(200, response.getStatusCode());
-        assertTrue(new String(response.getPayload()).contains("key1 = value1"));
-        assertTrue(new String(response.getPayload()).contains("key2 = value2"));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("key1 = value1\r\nkey2 = value2\r\n".getBytes());
     }
 
     @Test

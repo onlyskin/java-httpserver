@@ -6,6 +6,7 @@ import httpserver.header.Header;
 import httpserver.response.Response;
 import org.junit.Test;
 
+import java.io.OutputStream;
 import java.util.Arrays;
 
 import static org.junit.Assert.*;
@@ -25,9 +26,11 @@ public class CookieResponderTest {
                 mock(Request.class));
 
         assertEquals(200, response.getStatusCode());
-        assertEquals("Eat", new String(response.getPayload()));
         Header[] expected = new Header[]{new Header("Set-Cookie", "key=value")};
         assertTrue(Arrays.equals(expected, response.getHeaders()));
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        response.writePayload(outputStreamMock);
+        verify(outputStreamMock).write("Eat".getBytes());
     }
 
     @Test
