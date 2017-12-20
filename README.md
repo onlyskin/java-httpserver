@@ -51,3 +51,9 @@ to the instructions. You will then need to open the testing suite in your browse
 and edit the user-defined variables in the browser UI to match the start command
 for this server \(`java -jar ABSOLUTE_PATH_TO_COMPILED_JAR.jar`\), and the absolute
 path to the cloned cob_spec repo.
+
+Note that when the cob_spec test suite is run, the files `public/form` and
+`public/method_options` will be created. This is because the suite specifies
+successful `POST` requests to these two routes and the server treats a `POST`
+request as a file creating operation. The server will also create a file at
+`public/logs` if it does not already exist which allows `GET` requests.
