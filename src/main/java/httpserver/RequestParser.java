@@ -16,47 +16,57 @@ public class RequestParser {
     }
 
     public Request parse(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
-        String firstLine = bufferedReader.readLine();
+        RequestLine requestLine = getRequestLine(bufferedReader);
 
-        String[] parts = parseFirstLine(firstLine);
-        String method = parts[0];
-        String path = parts[1];
-        String queryString = parts[2];
-
-        Header[] headers = parseHeaders(bufferedReader);
-        log(firstLine, headers);
+        Header[] headers = getHeaders(bufferedReader);
 
         String body = getBody(bufferedReader);
 
-        return new Request(method, path, headers, queryString, body);
+        return new Request(requestLine.getMethod(),
+                requestLine.getPath(),
+                headers,
+                requestLine.getQueryString(),
+                body);
     }
 
-    private String getBody(BufferedReader bufferedReader) throws IOException {
-        String output = "";
-        int counter = 0;
-        while (counter < contentLength) {
-            output = output + (char)bufferedReader.read();
-            counter = counter + 1;
-        }
-        return output;
-    }
-
-    private void log(String firstLine, Header[] headers) {
+    private RequestLine getRequestLine(BufferedReader bufferedReader) throws IOException {
+        String firstLine = bufferedReader.readLine();
         logger.log(firstLine);
-        for (Header header: headers) {
-            logger.log(header.toString());
-        }
-        logger.log("");
+        return parseRequestLine(firstLine);
     }
 
-    private String[] parseFirstLine(String firstLine) {
+    private class RequestLine {
+        private final String method;
+        private final String path;
+        private final String queryString;
+
+        private String getMethod() {
+            return method;
+        }
+
+        private String getPath() {
+            return path;
+        }
+
+        private String getQueryString() {
+            return queryString;
+        }
+
+        private RequestLine(String method, String path, String queryString) {
+            this.method = method;
+            this.path = path;
+            this.queryString = queryString;
+        }
+    }
+
+    private RequestLine parseRequestLine(String firstLine) {
         String[] parts = firstLine.split(" ");
         String method = parts[0];
         String path = pathToParts(parts[1])[0];
         String queryString = pathToParts(parts[1])[1];
-        return new String[]{method, new UrlDecoder().decode(path), queryString};
+        return new RequestLine(method, new UrlDecoder().decode(path), queryString);
     }
 
     private String[] pathToParts(String pathString) {
@@ -69,14 +79,16 @@ public class RequestParser {
         return pathParts;
     }
 
-    private Header[] parseHeaders(BufferedReader in) throws IOException {
+    private Header[] getHeaders(BufferedReader in) throws IOException {
         List<Header> headers = new ArrayList<>();
         String inputLine;
 
         while (!(inputLine = in.readLine()).equals("")) {
+            logger.log(inputLine);
             Header header = parseHeader(inputLine);
             headers.add(header);
         }
+        logger.log("\r\n");
 
         return headers.toArray(new Header[0]);
     }
@@ -87,5 +99,15 @@ public class RequestParser {
             contentLength = Integer.parseInt(parts[1]);
         }
         return new Header(parts[0], parts[1]);
+    }
+
+    private String getBody(BufferedReader bufferedReader) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        int counter = 0;
+        while (counter < contentLength) {
+            stringBuilder.append((char)bufferedReader.read());
+            counter = counter + 1;
+        }
+        return stringBuilder.toString();
     }
 }
