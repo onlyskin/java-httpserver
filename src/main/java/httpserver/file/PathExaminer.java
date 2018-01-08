@@ -12,8 +12,8 @@ import static java.nio.file.Files.*;
 
 public class PathExaminer {
 
-    public Path getFullPath(Path root, String requestPathString) {
-        return root.resolve(requestPathString.substring(1));
+    public Path getFullPath(Path root, String requestPath) {
+        return root.resolve(requestPath.substring(1));
     }
 
     public Path getPath(String input) {

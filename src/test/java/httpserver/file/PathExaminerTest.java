@@ -69,20 +69,20 @@ public class PathExaminerTest {
 
     @Test
     public void makesFullPathFromRootPathAndRequestPathString() throws Exception {
-        String requestPathString = "/example.txt";
+        String requestPath= "/example.txt";
 
         Path expected = Paths.get("tmp/serving-dir/example.txt");
         assertEquals(expected,
-                pathExaminer.getFullPath(root, requestPathString));
+                pathExaminer.getFullPath(root, requestPath));
     }
 
     @Test
     public void makesFullPathCorrectlyWhenRequestPathIsSlash() throws Exception {
-        String requestPathString = "/";
+        String requestPath= "/";
 
         Path expected = Paths.get("tmp/serving-dir");
         assertEquals(expected,
-                pathExaminer.getFullPath(root, requestPathString));
+                pathExaminer.getFullPath(root, requestPath));
     }
 
     @Test
