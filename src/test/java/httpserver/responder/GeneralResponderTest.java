@@ -22,7 +22,6 @@ public class GeneralResponderTest {
     public GeneralResponderTest() {
         appConfigMock = mock(AppConfig.class);
         requestMock = mock(Request.class);
-        when(requestMock.getMethodString()).thenReturn("methodString");
         methodResponderSupplierMock = mock(MethodResponderSupplier.class);
         methodResponderMock = mock(MethodResponder.class);
         generalResponder = new GeneralResponder(methodResponderSupplierMock);
