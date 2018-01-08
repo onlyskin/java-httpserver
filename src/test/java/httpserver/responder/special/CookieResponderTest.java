@@ -34,8 +34,8 @@ public class CookieResponderTest {
     }
 
     @Test
-    public void handlesCookie() throws Exception {
-        assertTrue(cookieResponder.handles("/cookie"));
-        assertFalse(cookieResponder.handles("/other"));
+    public void allowsCookie() throws Exception {
+        assertTrue(cookieResponder.allows("/cookie"));
+        assertFalse(cookieResponder.allows("/other"));
     }
 }

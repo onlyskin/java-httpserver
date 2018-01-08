@@ -86,7 +86,7 @@ public class GetResponder implements Responder {
         return response;
     }
 
-    public boolean handles(String s) {
+    public boolean allows(String s) {
         return true;
     }
 }

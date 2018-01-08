@@ -24,7 +24,7 @@ public class OptionsResponder implements Responder {
 
         for (Method method: methods) {
             Responder responder = responderSupplier.responderForMethodString(method.toString());
-            if (responder.handles(request.getPathString())) {
+            if (responder.allows(request.getPathString())) {
                 joiner.add(method.toString());
             }
         }
@@ -35,7 +35,7 @@ public class OptionsResponder implements Responder {
     }
 
     @Override
-    public boolean handles(String pathString) {
+    public boolean allows(String pathString) {
         return true;
     }
 }

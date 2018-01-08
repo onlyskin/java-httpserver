@@ -24,7 +24,7 @@ public class PatchResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (!handles(request.getPathString())) {
+        if (!allows(request.getPathString())) {
             return new MethodNotAllowedResponse();
         }
 
@@ -57,7 +57,7 @@ public class PatchResponder implements Responder {
         return hasher.matches(fileContents, ifMatchHash);
     }
 
-    public boolean handles(String pathString) {
+    public boolean allows(String pathString) {
         return pathString.equals("/patch-content.txt");
     }
 }

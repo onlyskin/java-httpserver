@@ -25,8 +25,8 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void handlesTea() throws Exception {
-        assertTrue(teaResponder.handles("/tea"));
-        assertFalse(teaResponder.handles("/other"));
+    public void allowsTea() throws Exception {
+        assertTrue(teaResponder.allows("/tea"));
+        assertFalse(teaResponder.allows("/other"));
     }
 }

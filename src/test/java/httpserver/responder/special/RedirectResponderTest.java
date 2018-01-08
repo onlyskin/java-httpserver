@@ -26,8 +26,8 @@ public class RedirectResponderTest {
     }
 
     @Test
-    public void handlesRedirect() throws Exception {
-        assertTrue(redirectResponder.handles("/redirect"));
-        assertFalse(redirectResponder.handles("/other"));
+    public void allowsRedirect() throws Exception {
+        assertTrue(redirectResponder.allows("/redirect"));
+        assertFalse(redirectResponder.allows("/other"));
     }
 }

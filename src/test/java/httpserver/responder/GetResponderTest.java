@@ -137,8 +137,8 @@ public class GetResponderTest {
     }
 
     @Test
-    public void handlesForm() throws Exception {
-        assertTrue(getResponder.handles("/form"));
-        assertTrue(getResponder.handles("anything"));
+    public void allowsForm() throws Exception {
+        assertTrue(getResponder.allows("/form"));
+        assertTrue(getResponder.allows("anything"));
     }
 }

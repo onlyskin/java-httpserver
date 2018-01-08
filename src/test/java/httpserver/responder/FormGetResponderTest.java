@@ -65,8 +65,8 @@ public class FormGetResponderTest {
     }
 
     @Test
-    public void handlesForm() throws Exception {
-        assertTrue(formGetResponder.handles("/form"));
-        assertFalse(formGetResponder.handles("/other"));
+    public void allowsForm() throws Exception {
+        assertTrue(formGetResponder.allows("/form"));
+        assertFalse(formGetResponder.allows("/other"));
     }
 }

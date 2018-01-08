@@ -15,9 +15,9 @@ public class OptionsResponderTest {
     @Test
     public void responderHasListOfAllowedMethodsInAllowHeader() throws Exception {
         Responder trueResponderMock = mock(Responder.class);
-        when(trueResponderMock.handles(any())).thenReturn(true);
+        when(trueResponderMock.allows(any())).thenReturn(true);
         Responder falseResponderMock = mock(Responder.class);
-        when(falseResponderMock.handles(any())).thenReturn(false);
+        when(falseResponderMock.allows(any())).thenReturn(false);
 
         ResponderSupplier responderSupplier = new ResponderSupplier(mock(InvalidMethodResponder.class));
         responderSupplier.registerResponder(Method.GET, trueResponderMock);
@@ -38,9 +38,9 @@ public class OptionsResponderTest {
     }
 
     @Test
-    public void handlesForm() throws Exception {
+    public void allowsForm() throws Exception {
         OptionsResponder optionsResponder = new OptionsResponder(null);
-        assertTrue(optionsResponder.handles("/form"));
-        assertTrue(optionsResponder.handles("anything"));
+        assertTrue(optionsResponder.allows("/form"));
+        assertTrue(optionsResponder.allows("anything"));
     }
 }

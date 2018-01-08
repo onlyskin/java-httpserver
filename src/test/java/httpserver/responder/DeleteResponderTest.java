@@ -45,7 +45,7 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns404WhenHandledButDoesntExist() throws Exception {
+    public void returns404WhenAllowedButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -66,8 +66,8 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void handlesForm() throws Exception {
-        assertTrue(deleteResponder.handles("/form"));
-        assertFalse(deleteResponder.handles("/other"));
+    public void allowsForm() throws Exception {
+        assertTrue(deleteResponder.allows("/form"));
+        assertFalse(deleteResponder.allows("/other"));
     }
 }

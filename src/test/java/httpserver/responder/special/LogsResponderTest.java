@@ -53,8 +53,9 @@ public class LogsResponderTest {
         Request request = new Request("GET", "test", new Header[0], "");
     }
     @Test
-    public void handlesLogs() throws Exception {
-        assertTrue(logsResponder.handles("/logs"));
-        assertFalse(logsResponder.handles("/other"));
+
+    public void allowsLogs() throws Exception {
+        assertTrue(logsResponder.allows("/logs"));
+        assertFalse(logsResponder.allows("/other"));
     }
 }

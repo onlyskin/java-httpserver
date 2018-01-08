@@ -36,8 +36,8 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void handlesParameters() throws Exception {
-        assertTrue(parametersResponder.handles("/parameters"));
-        assertFalse(parametersResponder.handles("/other"));
+    public void allowsParameters() throws Exception {
+        assertTrue(parametersResponder.allows("/parameters"));
+        assertFalse(parametersResponder.allows("/other"));
     }
 }

@@ -23,7 +23,7 @@ public class DeleteResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (!handles(request.getPathString())) {
+        if (!allows(request.getPathString())) {
             return new MethodNotAllowedResponse();
         }
 
@@ -36,7 +36,7 @@ public class DeleteResponder implements Responder {
         return new NotFoundResponse();
     }
 
-    public boolean handles(String pathString) {
+    public boolean allows(String pathString) {
         return pathString.equals("/form");
     }
 }

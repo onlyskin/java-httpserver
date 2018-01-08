@@ -47,10 +47,4 @@ public class GeneralResponderTest {
 
         assertEquals(500, response.getStatusCode());
     }
-
-    @Test
-    public void handlesAllPaths() throws Exception {
-        assertTrue(generalResponder.handles("/anything"));
-        assertTrue(generalResponder.handles("/other"));
-    }
 }

@@ -29,7 +29,7 @@ public class LogsResponder implements Responder {
     }
 
     @Override
-    public boolean handles(String pathString) {
+    public boolean allows(String pathString) {
         return pathString.equals("/logs");
     }
 }

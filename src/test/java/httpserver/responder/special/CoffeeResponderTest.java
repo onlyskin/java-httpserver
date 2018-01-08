@@ -25,8 +25,8 @@ public class CoffeeResponderTest {
     }
 
     @Test
-    public void handlesCoffee() throws Exception {
-        assertTrue(coffeeResponder.handles("/coffee"));
-        assertFalse(coffeeResponder.handles("/other"));
+    public void allowsCoffee() throws Exception {
+        assertTrue(coffeeResponder.allows("/coffee"));
+        assertFalse(coffeeResponder.allows("/other"));
     }
 }

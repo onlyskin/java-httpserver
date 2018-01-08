@@ -8,15 +8,13 @@ import httpserver.response.ServerErrorResponse;
 
 import java.io.IOException;
 
-
-public class GeneralResponder implements Responder {
+public class GeneralResponder {
     private final ResponderSupplier responderSupplier;
 
     public GeneralResponder(ResponderSupplier responderSupplier) {
         this.responderSupplier = responderSupplier;
     }
 
-    @Override
     public Response respond(AppConfig appConfig, Request request) {
         Responder responder = responderSupplier.responderForMethodString(request.getMethodString());
         try {
@@ -24,10 +22,5 @@ public class GeneralResponder implements Responder {
         } catch (IOException e) {
             return new ServerErrorResponse();
         }
-    }
-
-    @Override
-    public boolean handles(String pathString) {
-        return true;
     }
 }

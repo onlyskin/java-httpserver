@@ -92,7 +92,7 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns404IfHandlesButDoesntExist() throws Exception {
+    public void returns404IfAllowsButDoesntExist() throws Exception {
         String pathString = "/patch-content.txt";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
@@ -104,7 +104,7 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns405IfNotHandles() throws Exception {
+    public void returns405IfNotAllows() throws Exception {
         Request request = new Request("PATCH", "/not_allowed", new Header[0], "", "data=example");
 
         Response response = patchResponder.respond(appConfigMock, request);
@@ -113,8 +113,8 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void handlesPatchContentTxt() throws Exception {
-        assertTrue(patchResponder.handles("/patch-content.txt"));
-        assertFalse(patchResponder.handles("/other"));
+    public void allowsPatchContentTxt() throws Exception {
+        assertTrue(patchResponder.allows("/patch-content.txt"));
+        assertFalse(patchResponder.allows("/other"));
     }
 }

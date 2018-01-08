@@ -30,8 +30,8 @@ public class EatCookieResponderTest {
     }
 
     @Test
-    public void handlesEat_cookie() throws Exception {
-        assertTrue(eatCookieResponder.handles("/eat_cookie"));
-        assertFalse(eatCookieResponder.handles("/other"));
+    public void allowsEat_cookie() throws Exception {
+        assertTrue(eatCookieResponder.allows("/eat_cookie"));
+        assertFalse(eatCookieResponder.allows("/other"));
     }
 }

@@ -10,7 +10,7 @@ public class RouteMap {
 
     public boolean hasRoute(String routeString) {
         for (Responder responder: responders) {
-            if (responder.handles(routeString)) {
+            if (responder.allows(routeString)) {
                 return true;
             }
         }
@@ -19,7 +19,7 @@ public class RouteMap {
 
     public Responder getResponderForRoute(String routeString) {
         for (Responder responder: responders) {
-            if (responder.handles(routeString)) {
+            if (responder.allows(routeString)) {
                 return responder;
             }
         }
