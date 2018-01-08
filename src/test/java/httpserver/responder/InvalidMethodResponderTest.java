@@ -29,4 +29,10 @@ public class InvalidMethodResponderTest {
         assertTrue(invalidMethodResponder.allows("/logs"));
         assertTrue(invalidMethodResponder.allows("/other"));
     }
+
+    @Test
+    public void handlesAllRequests() throws Exception {
+        Request request = new Request("XYVABC", null, null, null);
+        assertTrue(invalidMethodResponder.handles(request));
+    }
 }

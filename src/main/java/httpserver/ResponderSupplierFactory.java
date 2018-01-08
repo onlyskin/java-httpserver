@@ -18,30 +18,30 @@ public class ResponderSupplierFactory {
         RangeHeaderValueParser rangeHeaderValueParser = new RangeHeaderValueParser();
         Hasher hasher = new Hasher();
 
-        responderSupplier.registerResponder(Method.GET, new GetResponder(
+        responderSupplier.registerResponder(new GetResponder(
                 routeMap,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
-        responderSupplier.registerResponder(Method.HEAD, new HeadResponder(
+        responderSupplier.registerResponder(new HeadResponder(
                 routeMap,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
-        responderSupplier.registerResponder(Method.POST, new PostResponder(
+        responderSupplier.registerResponder(new PostResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(Method.PUT, new PutResponder(
+        responderSupplier.registerResponder(new PutResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(Method.PATCH, new PatchResponder(
+        responderSupplier.registerResponder(new PatchResponder(
                 pathExaminer,
                 fileOperator,
                 hasher));
-        responderSupplier.registerResponder(Method.DELETE, new DeleteResponder(
+        responderSupplier.registerResponder(new DeleteResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(Method.OPTIONS, new OptionsResponder(responderSupplier));
+        responderSupplier.registerResponder(new OptionsResponder(responderSupplier));
 
         return responderSupplier;
     }

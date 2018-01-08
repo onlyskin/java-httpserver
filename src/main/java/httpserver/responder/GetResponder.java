@@ -15,7 +15,7 @@ import httpserver.file.PathExaminer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class GetResponder implements Responder {
+public class GetResponder extends MethodResponder {
 
     private final PathExaminer pathExaminer;
     private final RouteMap specialCaseRouteMap;
@@ -26,6 +26,7 @@ public class GetResponder implements Responder {
                         PathExaminer pathExaminer,
                         Html html,
                         RangeHeaderValueParser rangeHeaderValueParser) {
+        super.methodString = "GET";
         this.pathExaminer = pathExaminer;
         this.specialCaseRouteMap = getRouteMap;
         this.html = html;

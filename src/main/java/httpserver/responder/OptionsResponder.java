@@ -1,31 +1,31 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.ResponderSupplier;
 import httpserver.header.Header;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
+import java.util.List;
 import java.util.StringJoiner;
 
-public class OptionsResponder implements Responder {
+public class OptionsResponder extends MethodResponder {
     private final ResponderSupplier responderSupplier;
 
     public OptionsResponder(ResponderSupplier responderSupplier) {
         this.responderSupplier = responderSupplier;
+        super.methodString = "OPTIONS";
     }
 
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        Method[] methods = Method.values();
+        List<MethodResponder> methodResponders = responderSupplier.allResponders();
         StringJoiner joiner = new StringJoiner(",");
 
-        for (Method method: methods) {
-            Responder responder = responderSupplier.responderForMethodString(method.toString());
-            if (responder.allows(request.getPathString())) {
-                joiner.add(method.toString());
+        for (MethodResponder methodResponder: methodResponders) {
+            if (methodResponder.allows(request.getPathString())) {
+                joiner.add(methodResponder.getMethodString());
             }
         }
 

@@ -11,11 +11,12 @@ import httpserver.response.Response;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class PostResponder implements Responder {
+public class PostResponder extends MethodResponder {
     private final PathExaminer pathExaminer;
     private final FileOperator fileOperator;
 
     public PostResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
+        super.methodString = "POST";
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }

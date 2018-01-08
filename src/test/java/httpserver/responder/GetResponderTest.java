@@ -141,4 +141,10 @@ public class GetResponderTest {
         assertTrue(getResponder.allows("/form"));
         assertTrue(getResponder.allows("anything"));
     }
+
+    @Test
+    public void handlesGET() throws Exception {
+        Request getRequest = new Request("GET", "", null, null);
+        assertTrue(getResponder.handles(getRequest));
+    }
 }

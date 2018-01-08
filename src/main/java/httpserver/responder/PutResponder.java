@@ -12,11 +12,12 @@ import httpserver.response.Response;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class PutResponder implements Responder {
+public class PutResponder extends MethodResponder {
     private final PathExaminer pathExaminer;
     private final FileOperator fileOperator;
 
     public PutResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
+        super.methodString = "PUT";
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }

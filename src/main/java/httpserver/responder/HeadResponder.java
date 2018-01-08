@@ -15,6 +15,7 @@ public class HeadResponder extends GetResponder {
                          Html html,
                          RangeHeaderValueParser rangeHeaderValueParser) {
         super(getRouteMap, pathExaminer, html, rangeHeaderValueParser);
+        super.methodString = "HEAD";
     }
 
     @Override

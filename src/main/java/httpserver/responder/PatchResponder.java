@@ -10,13 +10,14 @@ import httpserver.response.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class PatchResponder implements Responder {
+public class PatchResponder extends MethodResponder {
     private PathExaminer pathExaminer;
     private final FileOperator fileOperator;
     private final Hasher hasher;
 
     public PatchResponder(PathExaminer pathExaminer,
                           FileOperator fileOperator, Hasher hasher) {
+        super.methodString = "PATCH";
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
         this.hasher = hasher;

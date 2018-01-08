@@ -52,4 +52,14 @@ public class HeadResponderTest {
         verify(outputStreamMock).write("".getBytes());
         assertEquals("21", response.getContentLengthHeader().getValue());
     }
+
+    @Test
+    public void onlyHandlesHEAD() throws Exception {
+        HeadResponder headResponder = new HeadResponder(null, null, null, null);
+        Request headRequest = new Request("HEAD", "", null, null);
+        Request getRequest = new Request("GET", "", null, null);
+
+        assertFalse(headResponder.handles(getRequest));
+        assertTrue(headResponder.handles(headRequest));
+    }
 }

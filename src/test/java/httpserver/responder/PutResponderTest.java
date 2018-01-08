@@ -82,4 +82,10 @@ public class PutResponderTest {
         assertTrue(putResponder.allows("/method_options"));
         assertFalse(putResponder.allows("/other"));
     }
+
+    @Test
+    public void handlesPUT() throws Exception {
+        Request putRequest = new Request("PUT", "", null, null);
+        assertTrue(putResponder.handles(putRequest));
+    }
 }

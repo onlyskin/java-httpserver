@@ -117,4 +117,10 @@ public class PatchResponderTest {
         assertTrue(patchResponder.allows("/patch-content.txt"));
         assertFalse(patchResponder.allows("/other"));
     }
+
+    @Test
+    public void handlesPATCH() throws Exception {
+        Request patchRequest = new Request("PATCH", "", null, null);
+        assertTrue(patchResponder.handles(patchRequest));
+    }
 }

@@ -87,4 +87,10 @@ public class PostResponderTest {
         assertTrue(postResponder.allows("/method_options"));
         assertFalse(postResponder.allows("/other"));
     }
+
+    @Test
+    public void handlesPUT() throws Exception {
+        Request postRequest = new Request("POST", "", null, null);
+        assertTrue(postResponder.handles(postRequest));
+    }
 }

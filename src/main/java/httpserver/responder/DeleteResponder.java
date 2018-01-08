@@ -12,11 +12,12 @@ import httpserver.response.Response;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class DeleteResponder implements Responder {
+public class DeleteResponder extends MethodResponder {
     private final FileOperator fileOperator;
     private final PathExaminer pathExaminer;
 
     public DeleteResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
+        super.methodString = "DELETE";
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }

@@ -16,7 +16,7 @@ public class GeneralResponder {
     }
 
     public Response respond(AppConfig appConfig, Request request) {
-        Responder responder = responderSupplier.responderForMethodString(request.getMethodString());
+        Responder responder = responderSupplier.supplyResponder(request);
         try {
             return responder.respond(appConfig, request);
         } catch (IOException e) {

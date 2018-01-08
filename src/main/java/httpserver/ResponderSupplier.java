@@ -1,30 +1,34 @@
 package httpserver;
 
-import httpserver.responder.Responder;
+import httpserver.request.Request;
+import httpserver.responder.MethodResponder;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResponderSupplier {
-    private final Responder invalidMethodResponder;
-    private final Map<Method, Responder> methodResponderMap;
+    private final MethodResponder invalidMethodResponder;
+    private final List<MethodResponder> methodResponders;
 
-    public ResponderSupplier(Responder invalidMethodResponder) {
+    public ResponderSupplier(MethodResponder invalidMethodResponder) {
         this.invalidMethodResponder = invalidMethodResponder;
-        this.methodResponderMap = new HashMap<>();
+        this.methodResponders = new ArrayList<>();
     }
 
-    public Responder responderForMethodString(String methodString) {
-        Method method;
-        try {
-            method = Method.valueOf(methodString);
-        } catch (IllegalArgumentException e) {
-            return invalidMethodResponder;
+    public MethodResponder supplyResponder(Request request) {
+        for (MethodResponder methodResponder: methodResponders) {
+            if (methodResponder.handles(request)) {
+                return methodResponder;
+            }
         }
-        return methodResponderMap.get(method);
+        return invalidMethodResponder;
     }
 
-    public void registerResponder(Method method, Responder responder) {
-        this.methodResponderMap.put(method, responder);
+    public void registerResponder(MethodResponder methodResponder) {
+        this.methodResponders.add(methodResponder);
+    }
+
+    public List<MethodResponder> allResponders() {
+        return methodResponders;
     }
 }
