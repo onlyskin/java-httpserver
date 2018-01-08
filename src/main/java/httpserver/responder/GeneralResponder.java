@@ -2,21 +2,21 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
-import httpserver.ResponderSupplier;
+import httpserver.MethodResponderSupplier;
 import httpserver.response.Response;
 import httpserver.response.ServerErrorResponse;
 
 import java.io.IOException;
 
 public class GeneralResponder {
-    private final ResponderSupplier responderSupplier;
+    private final MethodResponderSupplier methodResponderSupplier;
 
-    public GeneralResponder(ResponderSupplier responderSupplier) {
-        this.responderSupplier = responderSupplier;
+    public GeneralResponder(MethodResponderSupplier methodResponderSupplier) {
+        this.methodResponderSupplier = methodResponderSupplier;
     }
 
     public Response respond(AppConfig appConfig, Request request) {
-        Responder responder = responderSupplier.supplyResponder(request);
+        Responder responder = methodResponderSupplier.supplyResponder(request);
         try {
             return responder.respond(appConfig, request);
         } catch (IOException e) {

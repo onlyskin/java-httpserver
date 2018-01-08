@@ -1,12 +1,10 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
-import httpserver.Method;
 import httpserver.request.Request;
-import httpserver.ResponderSupplier;
+import httpserver.MethodResponderSupplier;
 import httpserver.header.Header;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,14 +24,14 @@ public class OptionsResponderTest {
         MethodResponder putResponderMock = mock(PutResponder.class);
         when(putResponderMock.allows("")).thenReturn(false);
 
-        ResponderSupplier responderSupplier = new ResponderSupplier(mock(InvalidMethodResponder.class));
-        responderSupplier.registerResponder(getResponderMock);
-        responderSupplier.registerResponder(headResponderMock);
-        responderSupplier.registerResponder(putResponderMock);
+        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier(mock(InvalidMethodResponder.class));
+        methodResponderSupplier.registerResponder(getResponderMock);
+        methodResponderSupplier.registerResponder(headResponderMock);
+        methodResponderSupplier.registerResponder(putResponderMock);
 
         Request request = new Request("OPTIONS", "", new Header[0], "");
 
-        OptionsResponder optionsResponder = new OptionsResponder(responderSupplier);
+        OptionsResponder optionsResponder = new OptionsResponder(methodResponderSupplier);
         Response response = optionsResponder.respond(mock(AppConfig.class), request);
 
         assertEquals(200, response.getStatusCode());

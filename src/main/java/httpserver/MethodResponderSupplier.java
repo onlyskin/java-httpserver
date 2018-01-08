@@ -6,11 +6,11 @@ import httpserver.responder.MethodResponder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResponderSupplier {
+public class MethodResponderSupplier {
     private final MethodResponder invalidMethodResponder;
     private final List<MethodResponder> methodResponders;
 
-    public ResponderSupplier(MethodResponder invalidMethodResponder) {
+    public MethodResponderSupplier(MethodResponder invalidMethodResponder) {
         this.invalidMethodResponder = invalidMethodResponder;
         this.methodResponders = new ArrayList<>();
     }

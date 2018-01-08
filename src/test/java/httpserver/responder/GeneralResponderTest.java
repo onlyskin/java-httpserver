@@ -2,7 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
-import httpserver.ResponderSupplier;
+import httpserver.MethodResponderSupplier;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ public class GeneralResponderTest {
 
     private final AppConfig appConfigMock;
     private final Request requestMock;
-    private final ResponderSupplier responderSupplierMock;
+    private final MethodResponderSupplier methodResponderSupplierMock;
     private final MethodResponder methodResponderMock;
     private final GeneralResponder generalResponder;
 
@@ -23,25 +23,25 @@ public class GeneralResponderTest {
         appConfigMock = mock(AppConfig.class);
         requestMock = mock(Request.class);
         when(requestMock.getMethodString()).thenReturn("methodString");
-        responderSupplierMock = mock(ResponderSupplier.class);
+        methodResponderSupplierMock = mock(MethodResponderSupplier.class);
         methodResponderMock = mock(MethodResponder.class);
-        generalResponder = new GeneralResponder(responderSupplierMock);
+        generalResponder = new GeneralResponder(methodResponderSupplierMock);
     }
 
     @Test
     public void callsSupplyResponderOnResponderSupplierWithRequest() throws Exception {
-        when(responderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
+        when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 
         generalResponder.respond(appConfigMock, requestMock);
 
-        verify(responderSupplierMock).supplyResponder(requestMock);
+        verify(methodResponderSupplierMock).supplyResponder(requestMock);
         verify(methodResponderMock).respond(appConfigMock, requestMock);
     }
 
     @Test
     public void returnsServerErrorResponseIfTheResponderCalledReturnsAnError() throws Exception {
         when(methodResponderMock.respond(any(), any())).thenThrow(new IOException());
-        when(responderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
+        when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 
         Response response = generalResponder.respond(appConfigMock, requestMock);
 

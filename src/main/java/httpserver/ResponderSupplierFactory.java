@@ -8,8 +8,8 @@ import httpserver.responder.*;
 import httpserver.responder.special.*;
 
 public class ResponderSupplierFactory {
-    public ResponderSupplier makeResponderSupplier() {
-        ResponderSupplier responderSupplier = new ResponderSupplier(new InvalidMethodResponder());
+    public MethodResponderSupplier makeResponderSupplier() {
+        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier(new InvalidMethodResponder());
 
         PathExaminer pathExaminer = new PathExaminer();
         FileOperator fileOperator = new FileOperator();
@@ -18,32 +18,32 @@ public class ResponderSupplierFactory {
         RangeHeaderValueParser rangeHeaderValueParser = new RangeHeaderValueParser();
         Hasher hasher = new Hasher();
 
-        responderSupplier.registerResponder(new GetResponder(
+        methodResponderSupplier.registerResponder(new GetResponder(
                 routeMap,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
-        responderSupplier.registerResponder(new HeadResponder(
+        methodResponderSupplier.registerResponder(new HeadResponder(
                 routeMap,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
-        responderSupplier.registerResponder(new PostResponder(
+        methodResponderSupplier.registerResponder(new PostResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(new PutResponder(
+        methodResponderSupplier.registerResponder(new PutResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(new PatchResponder(
+        methodResponderSupplier.registerResponder(new PatchResponder(
                 pathExaminer,
                 fileOperator,
                 hasher));
-        responderSupplier.registerResponder(new DeleteResponder(
+        methodResponderSupplier.registerResponder(new DeleteResponder(
                 pathExaminer,
                 fileOperator));
-        responderSupplier.registerResponder(new OptionsResponder(responderSupplier));
+        methodResponderSupplier.registerResponder(new OptionsResponder(methodResponderSupplier));
 
-        return responderSupplier;
+        return methodResponderSupplier;
     }
 
     private RouteMap getRouteMap(PathExaminer pathExaminer, FileOperator fileOperator) {
