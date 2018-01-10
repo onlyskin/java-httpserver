@@ -2,6 +2,7 @@ package httpserver.request;
 
 import httpserver.AppConfig;
 import httpserver.Logger;
+import httpserver.Method;
 import httpserver.header.Header;
 
 import java.io.*;
@@ -21,6 +22,12 @@ public class RequestParser {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         RequestLine requestLine = getRequestLine(bufferedReader);
+
+        try {
+            Method.valueOf(requestLine.getMethod());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
+        }
 
         Header[] headers = getHeaders(bufferedReader);
 

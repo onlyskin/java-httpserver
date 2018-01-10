@@ -4,6 +4,7 @@ import httpserver.request.Request;
 import httpserver.request.RequestParser;
 import httpserver.responder.GeneralResponder;
 import httpserver.response.BadRequestResponse;
+import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.Response;
 
 import java.io.IOException;
@@ -34,6 +35,8 @@ public class SocketHandler implements Runnable {
         try {
             Request request = requestParser.parse(inputStream);
             response = generalResponder.respond(appConfig, request);
+        } catch (IllegalArgumentException e) {
+            response = new MethodNotAllowedResponse();
         } catch (Exception e) {
             response = new BadRequestResponse();
         }
