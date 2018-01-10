@@ -79,4 +79,11 @@ public class RequestParserTest {
         verify(loggerMock).log("GET /text-file?key1=value1%3C%2C%3F&key2=value2 HTTP/1.1");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsIllegalArgumentExceptionWhenBadMethod() throws Exception {
+        String input = "ABCXYZ /text-file HTTP/1.1\r\n" +
+                "Host: 0.0.0.0:5000\r\n\r\n";
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        requestParser.parse(inputStream);
+    }
 }
