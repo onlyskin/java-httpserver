@@ -88,7 +88,7 @@ public class GetResponder extends MethodResponder {
         return response;
     }
 
-    public boolean allows(String s) {
+    public boolean allows(Request request) {
         return true;
     }
 }

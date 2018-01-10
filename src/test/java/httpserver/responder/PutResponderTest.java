@@ -69,19 +69,10 @@ public class PutResponderTest {
     }
 
     @Test
-    public void returns405IfNotAllows() throws Exception {
-        Request request = new Request(Method.POST, "/not_allowed", new Header[0], "", "data=example");
-
-        Response response = putResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
-    }
-
-    @Test
     public void allowsFormAndMethodOptions() throws Exception {
-        assertTrue(putResponder.allows("/form"));
-        assertTrue(putResponder.allows("/method_options"));
-        assertFalse(putResponder.allows("/other"));
+        assertTrue(putResponder.allows(new Request(null, "/form", null, null)));
+        assertTrue(putResponder.allows(new Request(null, "/method_options", null, null)));
+        assertFalse(putResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test

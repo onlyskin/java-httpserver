@@ -105,18 +105,9 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns405IfNotAllows() throws Exception {
-        Request request = new Request(Method.PATCH, "/not_allowed", new Header[0], "", "data=example");
-
-        Response response = patchResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
-    }
-
-    @Test
     public void allowsPatchContentTxt() throws Exception {
-        assertTrue(patchResponder.allows("/patch-content.txt"));
-        assertFalse(patchResponder.allows("/other"));
+        assertTrue(patchResponder.allows(new Request(null, "/patch-content.txt", null, null)));
+        assertFalse(patchResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test

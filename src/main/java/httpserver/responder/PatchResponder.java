@@ -26,10 +26,6 @@ public class PatchResponder extends MethodResponder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (!allows(request.getPathString())) {
-            return new MethodNotAllowedResponse();
-        }
-
         Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
 
         if (!pathExaminer.pathExists(fullPath)) {
@@ -59,7 +55,7 @@ public class PatchResponder extends MethodResponder {
         return hasher.matches(fileContents, ifMatchHash);
     }
 
-    public boolean allows(String pathString) {
-        return pathString.equals("/patch-content.txt");
+    public boolean allows(Request request) {
+        return request.getPathString().equals("/patch-content.txt");
     }
 }

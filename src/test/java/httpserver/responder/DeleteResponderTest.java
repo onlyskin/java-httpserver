@@ -58,18 +58,9 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns405WhenNotAllowed() throws Exception {
-        Request request = new Request(Method.DELETE, "/not_allowed", new Header[0], "");
-
-        Response response = deleteResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
-    }
-
-    @Test
     public void allowsForm() throws Exception {
-        assertTrue(deleteResponder.allows("/form"));
-        assertFalse(deleteResponder.allows("/other"));
+        assertTrue(deleteResponder.allows(new Request(null, "/form", null, null)));
+        assertFalse(deleteResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test

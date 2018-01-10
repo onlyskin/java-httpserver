@@ -12,6 +12,10 @@ public class InvalidMethodResponder extends MethodResponder {
     }
 
     @Override
+    public boolean allows(Request request) {
+        return true;
+    }
+
     public boolean allows(String pathString) {
         return true;
     }

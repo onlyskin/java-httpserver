@@ -25,7 +25,7 @@ public class OptionsResponder extends MethodResponder {
         StringJoiner joiner = new StringJoiner(",");
 
         for (MethodResponder methodResponder: methodResponders) {
-            if (methodResponder.allows(request.getPathString())) {
+            if (methodResponder.allows(request)) {
                 joiner.add(methodResponder.getMethod().toString());
             }
         }
@@ -35,8 +35,7 @@ public class OptionsResponder extends MethodResponder {
         return response;
     }
 
-    @Override
-    public boolean allows(String pathString) {
+    public boolean allows(Request request) {
         return true;
     }
 }

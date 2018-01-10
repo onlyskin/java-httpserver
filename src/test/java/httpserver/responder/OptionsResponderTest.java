@@ -15,15 +15,15 @@ public class OptionsResponderTest {
     @Test
     public void responderHasListOfAllowedMethodsInAllowHeader() throws Exception {
         MethodResponder getResponderMock = mock(GetResponder.class);
-        when(getResponderMock.allows("")).thenReturn(true);
+        when(getResponderMock.allows(any())).thenReturn(true);
         when(getResponderMock.getMethod()).thenReturn(Method.GET);
 
         MethodResponder headResponderMock = mock(HeadResponder.class);
-        when(headResponderMock.allows("")).thenReturn(true);
+        when(headResponderMock.allows(any())).thenReturn(true);
         when(headResponderMock.getMethod()).thenReturn(Method.HEAD);
 
         MethodResponder putResponderMock = mock(PutResponder.class);
-        when(putResponderMock.allows("")).thenReturn(false);
+        when(putResponderMock.allows(any())).thenReturn(false);
 
         MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier(mock(InvalidMethodResponder.class));
         methodResponderSupplier.registerResponder(getResponderMock);
@@ -42,8 +42,8 @@ public class OptionsResponderTest {
     @Test
     public void allowsForm() throws Exception {
         OptionsResponder optionsResponder = new OptionsResponder(null);
-        assertTrue(optionsResponder.allows("/form"));
-        assertTrue(optionsResponder.allows("anything"));
+        assertTrue(optionsResponder.allows(new Request(null, "/form", null, null)));
+        assertTrue(optionsResponder.allows(new Request(null, "anything", null, null)));
     }
 
     @Test

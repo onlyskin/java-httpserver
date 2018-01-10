@@ -5,7 +5,6 @@ import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
-import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.NotFoundResponse;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
@@ -25,10 +24,6 @@ public class DeleteResponder extends MethodResponder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (!allows(request.getPathString())) {
-            return new MethodNotAllowedResponse();
-        }
-
         Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
         if (pathExaminer.pathExists(fullPath)) {
             fileOperator.deleteFileAtPath(fullPath);
@@ -38,7 +33,7 @@ public class DeleteResponder extends MethodResponder {
         return new NotFoundResponse();
     }
 
-    public boolean allows(String pathString) {
-        return pathString.equals("/form");
+    public boolean allows(Request request) {
+        return request.getPathString().equals("/form");
     }
 }
