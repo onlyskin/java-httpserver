@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Request {
-    private final String method;
+    private final Method method;
     private final String pathString;
     private final Header[] headers;
     private final String queryString;
@@ -19,7 +19,7 @@ public class Request {
     }
 
     public Request(Method method, String pathString, Header[] headers, String queryString, String body) {
-        this.method = method.toString();
+        this.method = method;
         this.pathString = pathString;
         this.headers = headers;
         this.queryString = queryString;
@@ -27,7 +27,7 @@ public class Request {
     }
 
     public Method getMethod() {
-        return Method.valueOf(method);
+        return method;
     }
 
     public String getPathString() {
