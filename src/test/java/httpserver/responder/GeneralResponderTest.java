@@ -4,7 +4,6 @@ import httpserver.AppConfig;
 import httpserver.request.Request;
 import httpserver.MethodResponderSupplier;
 import httpserver.response.Response;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -43,6 +42,15 @@ public class GeneralResponderTest {
     public void returns405IfTheResponderCalledDoesntAllowTheRequest() throws Exception {
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
         when(methodResponderMock.allows(any(Request.class))).thenReturn(false);
+
+        Response response = generalResponder.respond(appConfigMock, requestMock);
+
+        assertEquals(405, response.getStatusCode());
+    }
+
+    @Test
+    public void returns405IfTheMethodSupplierThrowsAnException() throws Exception {
+        when(methodResponderSupplierMock.supplyResponder(any())).thenThrow(new Exception());
 
         Response response = generalResponder.respond(appConfigMock, requestMock);
 

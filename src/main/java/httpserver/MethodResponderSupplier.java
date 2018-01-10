@@ -7,21 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MethodResponderSupplier {
-    private final MethodResponder invalidMethodResponder;
     private final List<MethodResponder> methodResponders;
 
-    public MethodResponderSupplier(MethodResponder invalidMethodResponder) {
-        this.invalidMethodResponder = invalidMethodResponder;
+    public MethodResponderSupplier() {
         this.methodResponders = new ArrayList<>();
     }
 
-    public MethodResponder supplyResponder(Request request) {
+    public MethodResponder supplyResponder(Request request) throws Exception {
         for (MethodResponder methodResponder: methodResponders) {
             if (methodResponder.handles(request)) {
                 return methodResponder;
             }
         }
-        return invalidMethodResponder;
+        throw new Exception();
     }
 
     public void registerResponder(MethodResponder methodResponder) {

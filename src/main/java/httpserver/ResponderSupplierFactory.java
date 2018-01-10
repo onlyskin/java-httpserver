@@ -9,7 +9,7 @@ import httpserver.responder.special.*;
 
 public class ResponderSupplierFactory {
     public MethodResponderSupplier makeResponderSupplier() {
-        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier(new InvalidMethodResponder());
+        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier();
 
         PathExaminer pathExaminer = new PathExaminer();
         FileOperator fileOperator = new FileOperator();

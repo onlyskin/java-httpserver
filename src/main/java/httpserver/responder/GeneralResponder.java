@@ -17,7 +17,13 @@ public class GeneralResponder {
     }
 
     public Response respond(AppConfig appConfig, Request request) {
-        MethodResponder responder = methodResponderSupplier.supplyResponder(request);
+        MethodResponder responder;
+
+        try {
+            responder = methodResponderSupplier.supplyResponder(request);
+        } catch (Exception e) {
+            return new MethodNotAllowedResponse();
+        }
 
         if (!responder.allows(request)) {
             return new MethodNotAllowedResponse();

@@ -2,7 +2,6 @@ package httpserver;
 
 import httpserver.request.Request;
 import httpserver.responder.GetResponder;
-import httpserver.responder.InvalidMethodResponder;
 import httpserver.responder.MethodResponder;
 import httpserver.responder.PostResponder;
 import org.junit.Test;
@@ -15,15 +14,13 @@ import static org.mockito.Mockito.*;
 public class MethodResponderSupplierTest {
 
     private final GetResponder getResponderMock;
-    private final InvalidMethodResponder invalidMethodResponderMock;
     private final MethodResponderSupplier methodResponderSupplier;
     private final PostResponder postResponderMock;
 
     public MethodResponderSupplierTest() {
         getResponderMock = mock(GetResponder.class);
         postResponderMock = mock(PostResponder.class);
-        invalidMethodResponderMock = mock(InvalidMethodResponder.class);
-        methodResponderSupplier = new MethodResponderSupplier(invalidMethodResponderMock);
+        methodResponderSupplier = new MethodResponderSupplier();
         methodResponderSupplier.registerResponder(getResponderMock);
         methodResponderSupplier.registerResponder(postResponderMock);
     }

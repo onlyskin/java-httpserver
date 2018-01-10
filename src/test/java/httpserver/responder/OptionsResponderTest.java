@@ -25,7 +25,7 @@ public class OptionsResponderTest {
         MethodResponder putResponderMock = mock(PutResponder.class);
         when(putResponderMock.allows(any())).thenReturn(false);
 
-        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier(mock(InvalidMethodResponder.class));
+        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier();
         methodResponderSupplier.registerResponder(getResponderMock);
         methodResponderSupplier.registerResponder(headResponderMock);
         methodResponderSupplier.registerResponder(putResponderMock);
