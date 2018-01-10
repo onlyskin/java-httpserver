@@ -2,6 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Hasher;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -17,7 +18,7 @@ public class PatchResponder extends MethodResponder {
 
     public PatchResponder(PathExaminer pathExaminer,
                           FileOperator fileOperator, Hasher hasher) {
-        super.methodString = "PATCH";
+        super.method= Method.PATCH;
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
         this.hasher = hasher;

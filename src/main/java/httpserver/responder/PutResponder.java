@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -17,7 +18,7 @@ public class PutResponder extends MethodResponder {
     private final FileOperator fileOperator;
 
     public PutResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
-        super.methodString = "PUT";
+        super.method= Method.PUT;
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }

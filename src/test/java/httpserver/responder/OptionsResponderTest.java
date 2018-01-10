@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.MethodResponderSupplier;
 import httpserver.header.Header;
@@ -15,11 +16,11 @@ public class OptionsResponderTest {
     public void responderHasListOfAllowedMethodsInAllowHeader() throws Exception {
         MethodResponder getResponderMock = mock(GetResponder.class);
         when(getResponderMock.allows("")).thenReturn(true);
-        when(getResponderMock.getMethodString()).thenReturn("GET");
+        when(getResponderMock.getMethod()).thenReturn(Method.GET);
 
         MethodResponder headResponderMock = mock(HeadResponder.class);
         when(headResponderMock.allows("")).thenReturn(true);
-        when(headResponderMock.getMethodString()).thenReturn("HEAD");
+        when(headResponderMock.getMethod()).thenReturn(Method.HEAD);
 
         MethodResponder putResponderMock = mock(PutResponder.class);
         when(putResponderMock.allows("")).thenReturn(false);

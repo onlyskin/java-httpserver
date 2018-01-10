@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
@@ -15,7 +16,7 @@ public class HeadResponder extends GetResponder {
                          Html html,
                          RangeHeaderValueParser rangeHeaderValueParser) {
         super(getRouteMap, pathExaminer, html, rangeHeaderValueParser);
-        super.methodString = "HEAD";
+        super.method= Method.HEAD;
     }
 
     @Override

@@ -16,7 +16,7 @@ public class PostResponder extends MethodResponder {
     private final FileOperator fileOperator;
 
     public PostResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
-        super.methodString = "POST";
+        super.method= Method.POST;
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }

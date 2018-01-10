@@ -1,5 +1,6 @@
 package httpserver.request;
 
+import httpserver.Method;
 import httpserver.Parameter;
 import httpserver.header.Header;
 
@@ -25,8 +26,8 @@ public class Request {
         this.body = body;
     }
 
-    public String getMethodString() {
-        return method;
+    public Method getMethod() {
+        return Method.valueOf(method);
     }
 
     public String getPathString() {

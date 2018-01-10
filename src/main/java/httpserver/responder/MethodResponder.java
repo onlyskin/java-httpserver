@@ -1,15 +1,16 @@
 package httpserver.responder;
 
+import httpserver.Method;
 import httpserver.request.Request;
 
 public abstract class MethodResponder implements Responder {
-    protected String methodString;
+    protected Method method;
 
-    public String getMethodString() {
-        return methodString;
+    public Method getMethod() {
+        return method;
     }
 
     public boolean handles(Request request) {
-        return request.getMethodString().equals(this.methodString);
+        return request.getMethod().equals(method);
     }
 }

@@ -1,8 +1,8 @@
 package httpserver.request;
 
+import httpserver.Method;
 import httpserver.Parameter;
 import httpserver.header.Header;
-import httpserver.request.Request;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class RequestTest {
     public void hasCorrectMethodPathHeadersAndQueryString() throws Exception {
         Request request = new Request("GET", "/example.txt", headers, "example=test");
 
-        assertEquals("GET", request.getMethodString());
+        assertEquals(Method.GET, request.getMethod());
         assertEquals("/example.txt", request.getPathString());
 
         Header[] expected = new Header[]{new Header("test-header", "test-value")};

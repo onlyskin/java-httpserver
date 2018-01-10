@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
@@ -26,7 +27,7 @@ public class GetResponder extends MethodResponder {
                         PathExaminer pathExaminer,
                         Html html,
                         RangeHeaderValueParser rangeHeaderValueParser) {
-        super.methodString = "GET";
+        super.method= Method.GET;
         this.pathExaminer = pathExaminer;
         this.specialCaseRouteMap = getRouteMap;
         this.html = html;

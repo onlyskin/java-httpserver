@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.MethodResponderSupplier;
 import httpserver.header.Header;
@@ -15,7 +16,7 @@ public class OptionsResponder extends MethodResponder {
 
     public OptionsResponder(MethodResponderSupplier methodResponderSupplier) {
         this.methodResponderSupplier = methodResponderSupplier;
-        super.methodString = "OPTIONS";
+        super.method = Method.OPTIONS;
     }
 
     @Override
@@ -25,7 +26,7 @@ public class OptionsResponder extends MethodResponder {
 
         for (MethodResponder methodResponder: methodResponders) {
             if (methodResponder.allows(request.getPathString())) {
-                joiner.add(methodResponder.getMethodString());
+                joiner.add(methodResponder.getMethod().toString());
             }
         }
 
