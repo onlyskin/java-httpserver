@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -42,7 +43,7 @@ public class FormGetResponderTest {
     @Test
     public void returnsOkResponseWithPayload() throws Exception {
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
-        Request request = new Request("GET", pathString, new Header[0], "");
+        Request request = new Request(Method.GET, pathString, new Header[0], "");
 
         Response response = formGetResponder.respond(appConfigMock, request);
 
@@ -57,7 +58,7 @@ public class FormGetResponderTest {
     @Test
     public void createsFormFileIfDoesntExist() throws Exception {
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
-        Request request = new Request("GET", pathString, new Header[0], "");
+        Request request = new Request(Method.GET, pathString, new Header[0], "");
 
         Response response = formGetResponder.respond(appConfigMock, request);
 

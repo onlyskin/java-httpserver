@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -36,7 +37,7 @@ public class DeleteResponderTest {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("DELETE", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.DELETE, pathString, new Header[0], "", "data=example");
 
         Response response = deleteResponder.respond(appConfigMock, request);
 
@@ -49,7 +50,7 @@ public class DeleteResponderTest {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("DELETE", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.DELETE, pathString, new Header[0], "", "data=example");
 
         Response response = deleteResponder.respond(appConfigMock, request);
 
@@ -58,7 +59,7 @@ public class DeleteResponderTest {
 
     @Test
     public void returns405WhenNotAllowed() throws Exception {
-        Request request = new Request("DELETE", "/not_allowed", new Header[0], "");
+        Request request = new Request(Method.DELETE, "/not_allowed", new Header[0], "");
 
         Response response = deleteResponder.respond(appConfigMock, request);
 
@@ -73,7 +74,7 @@ public class DeleteResponderTest {
 
     @Test
     public void handlesDELETE() throws Exception {
-        Request deleteRequest = new Request("DELETE", "", null, null);
+        Request deleteRequest = new Request(Method.DELETE, "", null, null);
         assertTrue(deleteResponder.handles(deleteRequest));
     }
 }

@@ -19,7 +19,7 @@ public class RequestTest {
 
     @Test
     public void hasCorrectMethodPathHeadersAndQueryString() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers, "example=test");
+        Request request = new Request(Method.GET, "/example.txt", headers, "example=test");
 
         assertEquals(Method.GET, request.getMethod());
         assertEquals("/example.txt", request.getPathString());
@@ -31,7 +31,7 @@ public class RequestTest {
 
     @Test
     public void canGetHeaderValue() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers, "");
+        Request request = new Request(Method.GET, "/example.txt", headers, "");
 
         String headerValue = request.getHeaderValue("test-header");
 
@@ -40,7 +40,7 @@ public class RequestTest {
 
     @Test
     public void testsIfHeaderPresent() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers, "");
+        Request request = new Request(Method.GET, "/example.txt", headers, "");
 
         assertTrue(request.hasHeader("test-header"));
         assertFalse(request.hasHeader("no-header"));
@@ -48,21 +48,21 @@ public class RequestTest {
 
     @Test
     public void getsNullForEmptyHeader() throws Exception {
-        Request request = new Request("GET", "/example.txt", new Header[0], "");
+        Request request = new Request(Method.GET, "/example.txt", new Header[0], "");
 
         assertNull(request.getHeaderValue("test-header"));
     }
 
     @Test
     public void getsEmptyStringForNoQueryString() throws Exception {
-        Request request = new Request("GET", "/example.txt", headers, "");
+        Request request = new Request(Method.GET, "/example.txt", headers, "");
 
         assertEquals("", request.getQueryString());
     }
 
     @Test
     public void getsParams() throws Exception {
-        Request request = new Request("GET", "/example", new Header[0], "key1=value1%3C%2C%3F&key2=value2");
+        Request request = new Request(Method.GET, "/example", new Header[0], "key1=value1%3C%2C%3F&key2=value2");
 
         Parameter[] expected = new Parameter[]{new Parameter("key1", "value1<,?"), new Parameter("key2", "value2")};
         Parameter[] actual = request.getParams();
@@ -71,7 +71,7 @@ public class RequestTest {
 
     @Test
     public void getsBody() throws Exception {
-        Request request = new Request("GET", "/example", new Header[0], "", "body content");
+        Request request = new Request(Method.GET, "/example", new Header[0], "", "body content");
 
         assertEquals("body content", request.getBody());
     }

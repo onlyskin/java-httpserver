@@ -33,7 +33,7 @@ public class RequestParser {
 
         String body = getBody(bufferedReader);
 
-        return new Request(requestLine.getMethod(),
+        return new Request(Method.valueOf(requestLine.getMethod()),
                 requestLine.getPath(),
                 headers,
                 requestLine.getQueryString(),

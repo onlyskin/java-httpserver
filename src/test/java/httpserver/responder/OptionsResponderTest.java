@@ -30,7 +30,7 @@ public class OptionsResponderTest {
         methodResponderSupplier.registerResponder(headResponderMock);
         methodResponderSupplier.registerResponder(putResponderMock);
 
-        Request request = new Request("OPTIONS", "", new Header[0], "");
+        Request request = new Request(Method.OPTIONS, "", new Header[0], "");
 
         OptionsResponder optionsResponder = new OptionsResponder(methodResponderSupplier);
         Response response = optionsResponder.respond(mock(AppConfig.class), request);
@@ -49,8 +49,8 @@ public class OptionsResponderTest {
     @Test
     public void onlyHandlesOPTIONS() throws Exception {
         OptionsResponder optionsResponder = new OptionsResponder(null);
-        Request optionsRequest = new Request("OPTIONS", "", null, "");
-        Request getRequest = new Request("GET", "", null, "");
+        Request optionsRequest = new Request(Method.OPTIONS, "", null, "");
+        Request getRequest = new Request(Method.GET, "", null, "");
 
         assertFalse(optionsResponder.handles(getRequest));
         assertTrue(optionsResponder.handles(optionsRequest));

@@ -1,6 +1,7 @@
 package httpserver.responder.special;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.header.Header;
 import httpserver.Logger;
 import httpserver.request.Request;
@@ -29,7 +30,7 @@ public class LogsResponderTest {
     @Test
     public void callsReadLogOnAppConfigLogger() throws Exception {
         Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
-        Request request = new Request("GET", "test", headers, "");
+        Request request = new Request(Method.GET, "test", headers, "");
 
         Response response = logsResponder.respond(appConfigMock, request);
 
@@ -40,7 +41,7 @@ public class LogsResponderTest {
     @Test
     public void returnsUnauthorizedResponseWhenIncorrectAuthHeader() throws Exception {
         Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
-        Request request = new Request("GET", "test", headers, "");
+        Request request = new Request(Method.GET, "test", headers, "");
         when(loggerMock.readLog()).thenThrow(new IOException());
 
         Response response = logsResponder.respond(appConfigMock, request);
@@ -50,7 +51,7 @@ public class LogsResponderTest {
 
     @Test
     public void returns500ResponseWhenLogErrors() throws Exception {
-        Request request = new Request("GET", "test", new Header[0], "");
+        Request request = new Request(Method.GET, "test", new Header[0], "");
     }
     @Test
 

@@ -30,21 +30,12 @@ public class MethodResponderSupplierTest {
 
     @Test
     public void returnsResponderForMethod() throws Exception {
-        Request request = new Request("GET", null, null, null);
+        Request request = new Request(Method.GET, null, null, null);
         when(getResponderMock.handles(any())).thenReturn(true);
 
         MethodResponder methodResponder = methodResponderSupplier.supplyResponder(request);
 
         assertEquals(getResponderMock, methodResponder);
-    }
-
-    @Test
-    public void returnsInvalidMethodIfNotPresent() throws Exception {
-        Request request = new Request("AAA", null, null, null);
-
-        MethodResponder methodResponder = methodResponderSupplier.supplyResponder(request);
-
-        assertEquals(invalidMethodResponderMock, methodResponder);
     }
 
     @Test

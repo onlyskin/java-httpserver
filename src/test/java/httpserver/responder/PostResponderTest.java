@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
@@ -41,7 +42,7 @@ public class PostResponderTest {
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = postResponder.respond(appConfigMock, request);
 
@@ -59,7 +60,7 @@ public class PostResponderTest {
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = postResponder.respond(appConfigMock, request);
 
@@ -74,7 +75,7 @@ public class PostResponderTest {
 
     @Test
     public void returns405IfNotAllows() throws Exception {
-        Request request = new Request("POST", "/not_allowed", new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, "/not_allowed", new Header[0], "", "data=example");
 
         Response response = postResponder.respond(appConfigMock, request);
 
@@ -90,7 +91,7 @@ public class PostResponderTest {
 
     @Test
     public void handlesPUT() throws Exception {
-        Request postRequest = new Request("POST", "", null, null);
+        Request postRequest = new Request(Method.POST, "", null, null);
         assertTrue(postResponder.handles(postRequest));
     }
 }

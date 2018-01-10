@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
@@ -43,7 +44,7 @@ public class HeadResponderTest {
                 mock(Html.class),
                 mock(RangeHeaderValueParser.class));
 
-        Request request = new Request("HEAD", "/filename", new Header[0], "");
+        Request request = new Request(Method.HEAD, "/filename", new Header[0], "");
 
         Response response = headResponder.respond(appConfigMock, request);
 
@@ -56,8 +57,8 @@ public class HeadResponderTest {
     @Test
     public void onlyHandlesHEAD() throws Exception {
         HeadResponder headResponder = new HeadResponder(null, null, null, null);
-        Request headRequest = new Request("HEAD", "", null, null);
-        Request getRequest = new Request("GET", "", null, null);
+        Request headRequest = new Request(Method.HEAD, "", null, null);
+        Request getRequest = new Request(Method.GET, "", null, null);
 
         assertFalse(headResponder.handles(getRequest));
         assertTrue(headResponder.handles(headRequest));

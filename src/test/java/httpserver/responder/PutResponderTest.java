@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
@@ -43,7 +44,7 @@ public class PutResponderTest {
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -60,7 +61,7 @@ public class PutResponderTest {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -69,7 +70,7 @@ public class PutResponderTest {
 
     @Test
     public void returns405IfNotAllows() throws Exception {
-        Request request = new Request("POST", "/not_allowed", new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, "/not_allowed", new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -85,7 +86,7 @@ public class PutResponderTest {
 
     @Test
     public void handlesPUT() throws Exception {
-        Request putRequest = new Request("PUT", "", null, null);
+        Request putRequest = new Request(Method.PUT, "", null, null);
         assertTrue(putResponder.handles(putRequest));
     }
 }

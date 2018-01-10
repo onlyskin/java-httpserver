@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.file.PathExaminer;
@@ -44,7 +45,7 @@ public class GetResponderTest {
 
     @Test
     public void returns404ForBadPath() throws Exception {
-        Request request = new Request("GET",
+        Request request = new Request(Method.GET,
                 "nonexistentfile123", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
@@ -60,7 +61,7 @@ public class GetResponderTest {
         Responder responderMock = mock(Responder.class);
         when(routeMapMock.hasRoute("/example_route")).thenReturn(true);
         when(routeMapMock.getResponderForRoute("/example_route")).thenReturn(responderMock);
-        Request request = new Request("GET", "/example_route", new Header[0], "");
+        Request request = new Request(Method.GET, "/example_route", new Header[0], "");
 
         getResponder.respond(appConfigMock, request);
 
@@ -77,7 +78,7 @@ public class GetResponderTest {
         when(pathExaminerMock.isFile(fullPathMock)).thenReturn(true);
         byte[] payloadMock = new byte[0];
         when(pathExaminerMock.fileContents(fullPathMock)).thenReturn(payloadMock);
-        Request request = new Request("GET", "/filename", new Header[0], "");
+        Request request = new Request(Method.GET, "/filename", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -107,7 +108,7 @@ public class GetResponderTest {
         Range rangeMock = mock(Range.class);
         when(rangeHeaderValueParserMock.parse(rangeHeaderValue, payloadMock.length)).thenReturn(rangeMock);
 
-        Request request = new Request("GET", "/filename", headers, "");
+        Request request = new Request(Method.GET, "/filename", headers, "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -125,7 +126,7 @@ public class GetResponderTest {
         Path path2 = mock(Path.class);
         Path[] pathArrayMock = new Path[]{path1, path2};
         when(pathExaminerMock.directoryContents(fullPathMock)).thenReturn(pathArrayMock);
-        Request request = new Request("GET", "/", new Header[0], "");
+        Request request = new Request(Method.GET, "/", new Header[0], "");
 
         Response response = getResponder.respond(appConfigMock, request);
 
@@ -144,7 +145,7 @@ public class GetResponderTest {
 
     @Test
     public void handlesGET() throws Exception {
-        Request getRequest = new Request("GET", "", null, null);
+        Request getRequest = new Request(Method.GET, "", null, null);
         assertTrue(getResponder.handles(getRequest));
     }
 }

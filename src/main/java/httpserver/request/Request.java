@@ -14,12 +14,12 @@ public class Request {
     private final String queryString;
     private final String body;
 
-    public Request(String method, String pathString, Header[] headers, String queryString) {
+    public Request(Method method, String pathString, Header[] headers, String queryString) {
         this(method, pathString, headers, queryString, "");
     }
 
-    public Request(String method, String pathString, Header[] headers, String queryString, String body) {
-        this.method = method;
+    public Request(Method method, String pathString, Header[] headers, String queryString, String body) {
+        this.method = method.toString();
         this.pathString = pathString;
         this.headers = headers;
         this.queryString = queryString;
