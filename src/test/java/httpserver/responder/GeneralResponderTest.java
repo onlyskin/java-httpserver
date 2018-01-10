@@ -4,6 +4,7 @@ import httpserver.AppConfig;
 import httpserver.request.Request;
 import httpserver.MethodResponderSupplier;
 import httpserver.response.Response;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class GeneralResponderTest {
 
     @Test
     public void callsSupplyResponderOnResponderSupplierWithRequest() throws Exception {
+        when(methodResponderMock.allows(any(Request.class))).thenReturn(true);
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 
         generalResponder.respond(appConfigMock, requestMock);
@@ -38,7 +40,18 @@ public class GeneralResponderTest {
     }
 
     @Test
+    public void returns405IfTheResponderCalledDoesntAllowTheRequest() throws Exception {
+        when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
+        when(methodResponderMock.allows(any(Request.class))).thenReturn(false);
+
+        Response response = generalResponder.respond(appConfigMock, requestMock);
+
+        assertEquals(405, response.getStatusCode());
+    }
+
+    @Test
     public void returnsServerErrorResponseIfTheResponderCalledReturnsAnError() throws Exception {
+        when(methodResponderMock.allows(any(Request.class))).thenReturn(true);
         when(methodResponderMock.respond(any(), any())).thenThrow(new IOException());
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 

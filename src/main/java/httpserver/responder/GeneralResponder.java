@@ -3,6 +3,7 @@ package httpserver.responder;
 import httpserver.AppConfig;
 import httpserver.request.Request;
 import httpserver.MethodResponderSupplier;
+import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.Response;
 import httpserver.response.ServerErrorResponse;
 
@@ -16,7 +17,12 @@ public class GeneralResponder {
     }
 
     public Response respond(AppConfig appConfig, Request request) {
-        Responder responder = methodResponderSupplier.supplyResponder(request);
+        MethodResponder responder = methodResponderSupplier.supplyResponder(request);
+
+        if (!responder.allows(request)) {
+            return new MethodNotAllowedResponse();
+        }
+
         try {
             return responder.respond(appConfig, request);
         } catch (IOException e) {
