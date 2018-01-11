@@ -1,7 +1,6 @@
 package httpserver.header;
 
 import httpserver.Range;
-import httpserver.header.RangeHeaderValueParser;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

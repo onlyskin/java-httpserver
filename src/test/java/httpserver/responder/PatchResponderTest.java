@@ -2,6 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Hasher;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -45,7 +46,7 @@ public class PatchResponderTest {
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(hasherMock.matches(any(), any())).thenReturn(true);
         Header[] headers = new Header[0];
-        Request request = new Request("PATCH", pathString, headers, "", "patch contents");
+        Request request = new Request(Method.PATCH, pathString, headers, "", "patch contents");
 
         Response response = patchResponder.respond(appConfigMock, request);
 
@@ -62,7 +63,7 @@ public class PatchResponderTest {
         when(hasherMock.getHash(any())).thenReturn("hash code");
         String hashMock = "bfc13a";
         Header[] headers = new Header[]{new Header("If-Match", hashMock)};
-        Request request = new Request("PATCH", pathString, headers, "", "patch contents");
+        Request request = new Request(Method.PATCH, pathString, headers, "", "patch contents");
 
         Response response = patchResponder.respond(appConfigMock, request);
 
@@ -83,7 +84,7 @@ public class PatchResponderTest {
         when(hasherMock.matches(any(), any())).thenReturn(false);
         String hashMock = "bfc13a";
         Header[] headers = new Header[]{new Header("If-Match", hashMock)};
-        Request request = new Request("PATCH", pathString, headers, "", "patch contents");
+        Request request = new Request(Method.PATCH, pathString, headers, "", "patch contents");
 
         Response response = patchResponder.respond(appConfigMock, request);
 
@@ -92,11 +93,11 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns404IfHandlesButDoesntExist() throws Exception {
+    public void returns404IfAllowsButDoesntExist() throws Exception {
         String pathString = "/patch-content.txt";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("PATCH", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.PATCH, pathString, new Header[0], "", "data=example");
 
         Response response = patchResponder.respond(appConfigMock, request);
 
@@ -104,17 +105,14 @@ public class PatchResponderTest {
     }
 
     @Test
-    public void returns405IfNotHandles() throws Exception {
-        Request request = new Request("PATCH", "/not_allowed", new Header[0], "", "data=example");
-
-        Response response = patchResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
+    public void allowsPatchContentTxt() throws Exception {
+        assertTrue(patchResponder.allows(new Request(null, "/patch-content.txt", null, null)));
+        assertFalse(patchResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test
-    public void handlesPatchContentTxt() throws Exception {
-        assertTrue(patchResponder.handles("/patch-content.txt"));
-        assertFalse(patchResponder.handles("/other"));
+    public void handlesPATCH() throws Exception {
+        Request patchRequest = new Request(Method.PATCH, "", null, null);
+        assertTrue(patchResponder.handles(patchRequest));
     }
 }

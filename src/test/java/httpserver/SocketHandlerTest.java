@@ -3,7 +3,7 @@ package httpserver;
 import httpserver.file.FileOperator;
 import httpserver.request.Request;
 import httpserver.request.RequestParser;
-import httpserver.responder.GeneralResponder;
+import httpserver.responder.Responder;
 import httpserver.response.Response;
 import org.junit.Test;
 
@@ -40,21 +40,21 @@ public class SocketHandlerTest {
         RequestParser requestParserMock = mock(RequestParser.class);
         Request requestMock = mock(Request.class);
         when(requestParserMock.parse(inputStreamMock)).thenReturn(requestMock);
-        GeneralResponder generalResponderMock = mock(GeneralResponder.class);
+        Responder responderMock = mock(Responder.class);
         Response responseMock = mock(Response.class);
-        when(generalResponderMock.respond(appConfigMock, requestMock)).thenReturn(responseMock);
+        when(responderMock.respond(appConfigMock, requestMock)).thenReturn(responseMock);
         ResponseWriter responseWriterMock = mock(ResponseWriter.class);
 
         SocketHandler socketHandler = new SocketHandler(appConfigMock,
                 inputStreamMock,
                 requestParserMock,
-                generalResponderMock,
+                responderMock,
                 responseWriterMock);
 
         socketHandler.run();
 
         verify(requestParserMock).parse(inputStreamMock);
-        verify(generalResponderMock).respond(appConfigMock, requestMock);
+        verify(responderMock).respond(appConfigMock, requestMock);
         verify(responseWriterMock).write(responseMock);
         verify(inputStreamMock).close();
     }

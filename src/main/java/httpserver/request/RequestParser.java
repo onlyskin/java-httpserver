@@ -2,6 +2,7 @@ package httpserver.request;
 
 import httpserver.AppConfig;
 import httpserver.Logger;
+import httpserver.Method;
 import httpserver.header.Header;
 
 import java.io.*;
@@ -17,16 +18,24 @@ public class RequestParser {
         this.contentLength = 0;
     }
 
-    public Request parse(InputStream inputStream) throws IOException {
+    public Request parse(InputStream inputStream)
+            throws IOException, IllegalArgumentException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
         RequestLine requestLine = getRequestLine(bufferedReader);
+
+        Method method;
+        try {
+            method = requestLine.getMethod();
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
+        }
 
         Header[] headers = getHeaders(bufferedReader);
 
         String body = getBody(bufferedReader);
 
-        return new Request(requestLine.getMethod(),
+        return new Request(method,
                 requestLine.getPath(),
                 headers,
                 requestLine.getQueryString(),
@@ -44,8 +53,8 @@ public class RequestParser {
         private final String path;
         private final String queryString;
 
-        private String getMethod() {
-            return method;
+        private Method getMethod() throws IllegalArgumentException {
+            return Method.valueOf(method);
         }
 
         private String getPath() {

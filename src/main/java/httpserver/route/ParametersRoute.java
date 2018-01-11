@@ -1,21 +1,19 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.Parameter;
 import httpserver.request.Request;
-import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
-public class ParametersResponder implements Responder {
-    @Override
-    public Response respond(AppConfig appConfig, Request request) {
-        return new OkResponse(echoQueryString(request).getBytes());
+public class ParametersRoute extends Route {
+    public ParametersRoute() {
+        super.routeString = "/parameters";
     }
 
     @Override
-    public boolean handles(String pathString) {
-        return pathString.equals("/parameters");
+    public Response respond(AppConfig appConfig, Request request) {
+        return new OkResponse(echoQueryString(request).getBytes());
     }
 
     private String echoQueryString(Request request) {

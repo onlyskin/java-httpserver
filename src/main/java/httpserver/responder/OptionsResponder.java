@@ -3,29 +3,30 @@ package httpserver.responder;
 import httpserver.AppConfig;
 import httpserver.Method;
 import httpserver.request.Request;
-import httpserver.ResponderSupplier;
+import httpserver.MethodResponderSupplier;
 import httpserver.header.Header;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
+import java.util.List;
 import java.util.StringJoiner;
 
-public class OptionsResponder implements Responder {
-    private final ResponderSupplier responderSupplier;
+public class OptionsResponder extends MethodResponder {
+    private final MethodResponderSupplier methodResponderSupplier;
 
-    public OptionsResponder(ResponderSupplier responderSupplier) {
-        this.responderSupplier = responderSupplier;
+    public OptionsResponder(MethodResponderSupplier methodResponderSupplier) {
+        this.methodResponderSupplier = methodResponderSupplier;
+        super.method = Method.OPTIONS;
     }
 
     @Override
     public Response respond(AppConfig appConfig, Request request) {
-        Method[] methods = Method.values();
+        List<MethodResponder> methodResponders = methodResponderSupplier.allResponders();
         StringJoiner joiner = new StringJoiner(",");
 
-        for (Method method: methods) {
-            Responder responder = responderSupplier.responderForMethodString(method.toString());
-            if (responder.handles(request.getPathString())) {
-                joiner.add(method.toString());
+        for (MethodResponder methodResponder: methodResponders) {
+            if (methodResponder.allows(request)) {
+                joiner.add(methodResponder.getMethod().toString());
             }
         }
 
@@ -34,8 +35,7 @@ public class OptionsResponder implements Responder {
         return response;
     }
 
-    @Override
-    public boolean handles(String pathString) {
+    public boolean allows(Request request) {
         return true;
     }
 }

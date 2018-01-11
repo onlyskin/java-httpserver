@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -10,11 +10,12 @@ import httpserver.response.Response;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class FormGetResponder implements Responder {
+public class FormGetRoute extends Route {
     private final PathExaminer pathExaminer;
     private final FileOperator fileOperator;
 
-    public FormGetResponder(PathExaminer pathExaminer, FileOperator fileOperator) {
+    public FormGetRoute(PathExaminer pathExaminer, FileOperator fileOperator) {
+        super.routeString = "/form";
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
     }
@@ -28,10 +29,5 @@ public class FormGetResponder implements Responder {
         }
 
         return new OkResponse(fileOperator.readContents(fullPath));
-    }
-
-    @Override
-    public boolean handles(String pathString) {
-        return pathString.equals("/form");
     }
 }

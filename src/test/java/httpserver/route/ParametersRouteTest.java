@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.Parameter;
@@ -11,12 +11,12 @@ import java.io.OutputStream;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ParametersResponderTest {
+public class ParametersRouteTest {
 
-    private final ParametersResponder parametersResponder;
+    private final ParametersRoute parametersResponder;
 
-    public ParametersResponderTest() {
-        parametersResponder = new ParametersResponder();
+    public ParametersRouteTest() {
+        parametersResponder = new ParametersRoute();
     }
 
     @Test
@@ -36,8 +36,8 @@ public class ParametersResponderTest {
     }
 
     @Test
-    public void handlesParameters() throws Exception {
-        assertTrue(parametersResponder.handles("/parameters"));
-        assertFalse(parametersResponder.handles("/other"));
+    public void allowsParameters() throws Exception {
+        assertTrue(parametersResponder.allows(new Request(null, "/parameters", null, null)));
+        assertFalse(parametersResponder.allows(new Request(null, "/other", null, null)));
     }
 }

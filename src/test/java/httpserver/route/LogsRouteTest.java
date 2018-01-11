@@ -1,6 +1,7 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.header.Header;
 import httpserver.Logger;
 import httpserver.request.Request;
@@ -12,14 +13,14 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class LogsResponderTest {
+public class LogsRouteTest {
 
     private final Logger loggerMock;
     private final AppConfig appConfigMock;
-    private final LogsResponder logsResponder;
+    private final LogsRoute logsResponder;
 
-    public LogsResponderTest() {
-        logsResponder = new LogsResponder();
+    public LogsRouteTest() {
+        logsResponder = new LogsRoute();
 
         loggerMock = mock(Logger.class);
         appConfigMock = mock(AppConfig.class);
@@ -29,7 +30,7 @@ public class LogsResponderTest {
     @Test
     public void callsReadLogOnAppConfigLogger() throws Exception {
         Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
-        Request request = new Request("GET", "test", headers, "");
+        Request request = new Request(Method.GET, "test", headers, "");
 
         Response response = logsResponder.respond(appConfigMock, request);
 
@@ -40,7 +41,7 @@ public class LogsResponderTest {
     @Test
     public void returnsUnauthorizedResponseWhenIncorrectAuthHeader() throws Exception {
         Header[] headers = new Header[]{new Header("Authorization", "Basic YWRtaW46aHVudGVyMg==")};
-        Request request = new Request("GET", "test", headers, "");
+        Request request = new Request(Method.GET, "test", headers, "");
         when(loggerMock.readLog()).thenThrow(new IOException());
 
         Response response = logsResponder.respond(appConfigMock, request);
@@ -50,11 +51,12 @@ public class LogsResponderTest {
 
     @Test
     public void returns500ResponseWhenLogErrors() throws Exception {
-        Request request = new Request("GET", "test", new Header[0], "");
+        Request request = new Request(Method.GET, "test", new Header[0], "");
     }
     @Test
-    public void handlesLogs() throws Exception {
-        assertTrue(logsResponder.handles("/logs"));
-        assertFalse(logsResponder.handles("/other"));
+
+    public void allowsLogs() throws Exception {
+        assertTrue(logsResponder.allows(new Request(null, "/logs", null, null)));
+        assertFalse(logsResponder.allows(new Request(null, "/other", null, null)));
     }
 }

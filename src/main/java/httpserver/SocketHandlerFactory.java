@@ -1,7 +1,7 @@
 package httpserver;
 
 import httpserver.request.RequestParser;
-import httpserver.responder.GeneralResponder;
+import httpserver.responder.Responder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,7 +13,7 @@ public class SocketHandlerFactory {
         return new SocketHandler(appConfig,
                 clientSocket.getInputStream(),
                 new RequestParser(appConfig),
-                new GeneralResponder(new ResponderSupplierFactory().makeResponderSupplier()),
+                new Responder(new MethodResponderSupplierFactory().makeResponderSupplier()),
                 new ResponseWriter(clientSocket.getOutputStream()));
     }
 
@@ -21,7 +21,7 @@ public class SocketHandlerFactory {
         return new SocketHandler(appConfig,
                 inputStream,
                 new RequestParser(appConfig),
-                new GeneralResponder(new ResponderSupplierFactory().makeResponderSupplier()),
+                new Responder(new MethodResponderSupplierFactory().makeResponderSupplier()),
                 new ResponseWriter(outputStream));
     }
 }

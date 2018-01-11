@@ -2,6 +2,7 @@ package httpserver.responder;
 
 import httpserver.AppConfig;
 import httpserver.Hasher;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -10,13 +11,14 @@ import httpserver.response.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class PatchResponder implements Responder {
+public class PatchResponder extends MethodResponder {
     private PathExaminer pathExaminer;
     private final FileOperator fileOperator;
     private final Hasher hasher;
 
     public PatchResponder(PathExaminer pathExaminer,
                           FileOperator fileOperator, Hasher hasher) {
+        super.method= Method.PATCH;
         this.pathExaminer = pathExaminer;
         this.fileOperator = fileOperator;
         this.hasher = hasher;
@@ -24,10 +26,6 @@ public class PatchResponder implements Responder {
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        if (!handles(request.getPathString())) {
-            return new MethodNotAllowedResponse();
-        }
-
         Path fullPath = pathExaminer.getFullPath(appConfig.getRoot(), request.getPathString());
 
         if (!pathExaminer.pathExists(fullPath)) {
@@ -57,7 +55,7 @@ public class PatchResponder implements Responder {
         return hasher.matches(fileContents, ifMatchHash);
     }
 
-    public boolean handles(String pathString) {
-        return pathString.equals("/patch-content.txt");
+    public boolean allows(Request request) {
+        return request.getPathString().equals("/patch-content.txt");
     }
 }

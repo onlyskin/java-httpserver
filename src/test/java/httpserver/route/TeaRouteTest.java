@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -8,12 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class TeaResponderTest {
+public class TeaRouteTest {
 
-    private final TeaResponder teaResponder;
+    private final TeaRoute teaResponder;
 
-    public TeaResponderTest() {
-        teaResponder = new TeaResponder();
+    public TeaRouteTest() {
+        teaResponder = new TeaRoute();
     }
 
     @Test
@@ -25,8 +25,8 @@ public class TeaResponderTest {
     }
 
     @Test
-    public void handlesTea() throws Exception {
-        assertTrue(teaResponder.handles("/tea"));
-        assertFalse(teaResponder.handles("/other"));
+    public void allowsTea() throws Exception {
+        assertTrue(teaResponder.allows(new Request(null, "/tea", null, null)));
+        assertFalse(teaResponder.allows(new Request(null, "/other", null, null)));
     }
 }

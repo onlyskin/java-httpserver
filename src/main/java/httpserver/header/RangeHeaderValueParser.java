@@ -36,8 +36,8 @@ public class RangeHeaderValueParser {
     }
 
     private String[] getParts(String headerValue) {
-        String rangeString = headerValue.substring(6);
-        return rangeString.split("-", 2);
+        String range = headerValue.substring(6);
+        return range.split("-", 2);
     }
 
     private int parseRangeValue(String value) {

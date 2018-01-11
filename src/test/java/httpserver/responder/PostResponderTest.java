@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
@@ -36,12 +37,12 @@ public class PostResponderTest {
     }
 
     @Test
-    public void overwritesFileWithDataIfHandlesAndExists() throws Exception {
+    public void overwritesFileWithDataIfAllowsAndExists() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = postResponder.respond(appConfigMock, request);
 
@@ -54,12 +55,12 @@ public class PostResponderTest {
     }
 
     @Test
-    public void createsFileWithDataIfHandlesButDoesntExist() throws Exception {
+    public void createsFileWithDataIfAllowsButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = postResponder.respond(appConfigMock, request);
 
@@ -73,18 +74,15 @@ public class PostResponderTest {
     }
 
     @Test
-    public void returns405IfNotHandles() throws Exception {
-        Request request = new Request("POST", "/not_allowed", new Header[0], "", "data=example");
-
-        Response response = postResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
+    public void allowsFormAndMethodOptions() throws Exception {
+        assertTrue(postResponder.allows(new Request(null, "/form", null, null)));
+        assertTrue(postResponder.allows(new Request(null, "/method_options", null, null)));
+        assertFalse(postResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test
-    public void handlesFormAndMethodOptions() throws Exception {
-        assertTrue(postResponder.handles("/form"));
-        assertTrue(postResponder.handles("/method_options"));
-        assertFalse(postResponder.handles("/other"));
+    public void handlesPUT() throws Exception {
+        Request postRequest = new Request(Method.POST, "", null, null);
+        assertTrue(postResponder.handles(postRequest));
     }
 }

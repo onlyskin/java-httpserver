@@ -1,9 +1,8 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.Authorizer;
 import httpserver.request.Request;
-import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 import httpserver.response.ServerErrorResponse;
@@ -11,7 +10,11 @@ import httpserver.response.UnauthorizedResponse;
 
 import java.io.IOException;
 
-public class LogsResponder implements Responder {
+public class LogsRoute extends Route {
+    public LogsRoute() {
+        super.routeString = "/logs";
+    }
+
     @Override
     public Response respond(AppConfig appConfig, Request request) {
         Authorizer authorizer = new Authorizer();
@@ -26,10 +29,5 @@ public class LogsResponder implements Responder {
         } catch (IOException e) {
             return new ServerErrorResponse();
         }
-    }
-
-    @Override
-    public boolean handles(String pathString) {
-        return pathString.equals("/logs");
     }
 }

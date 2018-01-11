@@ -2,8 +2,9 @@ package httpserver;
 
 import httpserver.request.Request;
 import httpserver.request.RequestParser;
-import httpserver.responder.GeneralResponder;
+import httpserver.responder.Responder;
 import httpserver.response.BadRequestResponse;
+import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.Response;
 
 import java.io.IOException;
@@ -13,18 +14,18 @@ public class SocketHandler implements Runnable {
     private final AppConfig appConfig;
     private final InputStream inputStream;
     private final RequestParser requestParser;
-    private final GeneralResponder generalResponder;
+    private final Responder responder;
     private final ResponseWriter responseWriter;
 
     public SocketHandler(AppConfig appConfig,
                          InputStream inputStream,
                          RequestParser requestParser,
-                         GeneralResponder generalResponder,
+                         Responder responder,
                          ResponseWriter responseWriter) {
         this.appConfig = appConfig;
         this.inputStream = inputStream;
         this.requestParser = requestParser;
-        this.generalResponder = generalResponder;
+        this.responder = responder;
         this.responseWriter = responseWriter;
     }
 
@@ -33,7 +34,9 @@ public class SocketHandler implements Runnable {
 
         try {
             Request request = requestParser.parse(inputStream);
-            response = generalResponder.respond(appConfig, request);
+            response = responder.respond(appConfig, request);
+        } catch (IllegalArgumentException e) {
+            response = new MethodNotAllowedResponse();
         } catch (Exception e) {
             response = new BadRequestResponse();
         }

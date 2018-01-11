@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -8,12 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class CoffeeResponderTest {
+public class CoffeeRouteTest {
 
-    private final CoffeeResponder coffeeResponder;
+    private final CoffeeRoute coffeeResponder;
 
-    public CoffeeResponderTest() {
-        coffeeResponder = new CoffeeResponder();
+    public CoffeeRouteTest() {
+        coffeeResponder = new CoffeeRoute();
     }
 
     @Test
@@ -25,8 +25,8 @@ public class CoffeeResponderTest {
     }
 
     @Test
-    public void handlesCoffee() throws Exception {
-        assertTrue(coffeeResponder.handles("/coffee"));
-        assertFalse(coffeeResponder.handles("/other"));
+    public void allowsCoffee() throws Exception {
+        assertTrue(coffeeResponder.allows(new Request(null, "/coffee", null, null)));
+        assertFalse(coffeeResponder.allows(new Request(null, "/other", null, null)));
     }
 }

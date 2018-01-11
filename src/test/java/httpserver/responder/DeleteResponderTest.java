@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -36,7 +37,7 @@ public class DeleteResponderTest {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("DELETE", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.DELETE, pathString, new Header[0], "", "data=example");
 
         Response response = deleteResponder.respond(appConfigMock, request);
 
@@ -45,11 +46,11 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns404WhenHandledButDoesntExist() throws Exception {
+    public void returns404WhenAllowedButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("DELETE", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.DELETE, pathString, new Header[0], "", "data=example");
 
         Response response = deleteResponder.respond(appConfigMock, request);
 
@@ -57,17 +58,14 @@ public class DeleteResponderTest {
     }
 
     @Test
-    public void returns405WhenNotHandled() throws Exception {
-        Request request = new Request("DELETE", "/not_allowed", new Header[0], "");
-
-        Response response = deleteResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
+    public void allowsForm() throws Exception {
+        assertTrue(deleteResponder.allows(new Request(null, "/form", null, null)));
+        assertFalse(deleteResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test
-    public void handlesForm() throws Exception {
-        assertTrue(deleteResponder.handles("/form"));
-        assertFalse(deleteResponder.handles("/other"));
+    public void handlesDELETE() throws Exception {
+        Request deleteRequest = new Request(Method.DELETE, "", null, null);
+        assertTrue(deleteResponder.handles(deleteRequest));
     }
 }

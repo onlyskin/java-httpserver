@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -10,12 +10,12 @@ import java.io.OutputStream;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class EatCookieResponderTest {
+public class EatCookieRouteTest {
 
-    private final EatCookieResponder eatCookieResponder;
+    private final EatCookieRoute eatCookieResponder;
 
-    public EatCookieResponderTest() {
-        eatCookieResponder = new EatCookieResponder();
+    public EatCookieRouteTest() {
+        eatCookieResponder = new EatCookieRoute();
     }
 
     @Test
@@ -30,8 +30,8 @@ public class EatCookieResponderTest {
     }
 
     @Test
-    public void handlesEat_cookie() throws Exception {
-        assertTrue(eatCookieResponder.handles("/eat_cookie"));
-        assertFalse(eatCookieResponder.handles("/other"));
+    public void allowsEat_cookie() throws Exception {
+        assertTrue(eatCookieResponder.allows(new Request(null, "/eat_cookie", null, null)));
+        assertFalse(eatCookieResponder.allows(new Request(null, "/other", null, null)));
     }
 }

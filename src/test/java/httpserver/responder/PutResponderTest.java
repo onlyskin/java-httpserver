@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
 import httpserver.header.Header;
@@ -38,12 +39,12 @@ public class PutResponderTest {
     }
 
     @Test
-    public void overwritesFileWithDataIfHandlesAndExists() throws Exception {
+    public void overwritesFileWithDataIfAllowsAndExists() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -56,11 +57,11 @@ public class PutResponderTest {
     }
 
     @Test
-    public void returns404IfHandlesButDoesntExist() throws Exception {
+    public void returns404IfAllowsButDoesntExist() throws Exception {
         String pathString = "/form";
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
         when(pathExaminerMock.getFullPath(rootMock, pathString)).thenReturn(fullPathMock);
-        Request request = new Request("POST", pathString, new Header[0], "", "data=example");
+        Request request = new Request(Method.POST, pathString, new Header[0], "", "data=example");
 
         Response response = putResponder.respond(appConfigMock, request);
 
@@ -68,18 +69,15 @@ public class PutResponderTest {
     }
 
     @Test
-    public void returns405IfNotHandles() throws Exception {
-        Request request = new Request("POST", "/not_allowed", new Header[0], "", "data=example");
-
-        Response response = putResponder.respond(appConfigMock, request);
-
-        assertEquals(405, response.getStatusCode());
+    public void allowsFormAndMethodOptions() throws Exception {
+        assertTrue(putResponder.allows(new Request(null, "/form", null, null)));
+        assertTrue(putResponder.allows(new Request(null, "/method_options", null, null)));
+        assertFalse(putResponder.allows(new Request(null, "/other", null, null)));
     }
 
     @Test
-    public void handlesFormAndMethodOptions() throws Exception {
-        assertTrue(putResponder.handles("/form"));
-        assertTrue(putResponder.handles("/method_options"));
-        assertFalse(putResponder.handles("/other"));
+    public void handlesPUT() throws Exception {
+        Request putRequest = new Request(Method.PUT, "", null, null);
+        assertTrue(putResponder.handles(putRequest));
     }
 }

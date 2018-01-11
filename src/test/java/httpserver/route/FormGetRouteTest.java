@@ -1,6 +1,7 @@
-package httpserver.responder;
+package httpserver.route;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.request.Request;
 import httpserver.file.FileOperator;
 import httpserver.file.PathExaminer;
@@ -15,8 +16,8 @@ import java.nio.file.Path;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class FormGetResponderTest {
-    private final FormGetResponder formGetResponder;
+public class FormGetRouteTest {
+    private final FormGetRoute formGetResponder;
     private final PathExaminer pathExaminerMock;
     private final FileOperator fileOperatorMock;
     private final Path rootMock;
@@ -25,7 +26,7 @@ public class FormGetResponderTest {
     private final AppConfig appConfigMock;
     private final String pathString;
 
-    public FormGetResponderTest() throws IOException {
+    public FormGetRouteTest() throws IOException {
         rootMock = mock(Path.class);
         pathString = "/form";
         fileContentsMock = "file contents mock".getBytes();
@@ -36,13 +37,13 @@ public class FormGetResponderTest {
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
         appConfigMock = mock(AppConfig.class);
         when(appConfigMock.getRoot()).thenReturn(rootMock);
-        formGetResponder = new FormGetResponder(pathExaminerMock, fileOperatorMock);
+        formGetResponder = new FormGetRoute(pathExaminerMock, fileOperatorMock);
     }
     
     @Test
     public void returnsOkResponseWithPayload() throws Exception {
         when(pathExaminerMock.pathExists(any())).thenReturn(true);
-        Request request = new Request("GET", pathString, new Header[0], "");
+        Request request = new Request(Method.GET, pathString, new Header[0], "");
 
         Response response = formGetResponder.respond(appConfigMock, request);
 
@@ -57,7 +58,7 @@ public class FormGetResponderTest {
     @Test
     public void createsFormFileIfDoesntExist() throws Exception {
         when(pathExaminerMock.pathExists(any())).thenReturn(false);
-        Request request = new Request("GET", pathString, new Header[0], "");
+        Request request = new Request(Method.GET, pathString, new Header[0], "");
 
         Response response = formGetResponder.respond(appConfigMock, request);
 
@@ -65,8 +66,8 @@ public class FormGetResponderTest {
     }
 
     @Test
-    public void handlesForm() throws Exception {
-        assertTrue(formGetResponder.handles("/form"));
-        assertFalse(formGetResponder.handles("/other"));
+    public void allowsForm() throws Exception {
+        assertTrue(formGetResponder.allows(new Request(null, "/form", null, null)));
+        assertFalse(formGetResponder.allows(new Request(null, "/other", null, null)));
     }
 }

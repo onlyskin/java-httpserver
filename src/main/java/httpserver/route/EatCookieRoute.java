@@ -1,20 +1,18 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
-import httpserver.responder.Responder;
 import httpserver.response.OkResponse;
 import httpserver.response.Response;
 
-public class EatCookieResponder implements Responder {
+public class EatCookieRoute extends Route {
+    public EatCookieRoute() {
+        super.routeString = "/eat_cookie";
+    }
+
     @Override
     public Response respond(AppConfig appConfig, Request request) {
         Response response = new OkResponse("mmmm chocolate".getBytes());
         return response;
-    }
-
-    @Override
-    public boolean handles(String pathString) {
-        return pathString.equals("/eat_cookie");
     }
 }

@@ -1,6 +1,7 @@
 package httpserver.responder;
 
 import httpserver.AppConfig;
+import httpserver.Method;
 import httpserver.Range;
 import httpserver.file.Html;
 import httpserver.header.ContentTypeHeader;
@@ -11,38 +12,38 @@ import httpserver.response.OkResponse;
 import httpserver.response.PartialContentResponse;
 import httpserver.response.Response;
 import httpserver.file.PathExaminer;
+import httpserver.route.Router;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class GetResponder implements Responder {
+public class GetResponder extends MethodResponder {
 
     private final PathExaminer pathExaminer;
-    private final RouteMap specialCaseRouteMap;
+    private final Router router;
     private final Html html;
     private RangeHeaderValueParser rangeHeaderValueParser;
 
-    public GetResponder(RouteMap getRouteMap,
+    public GetResponder(Router router,
                         PathExaminer pathExaminer,
                         Html html,
                         RangeHeaderValueParser rangeHeaderValueParser) {
+        super.method= Method.GET;
         this.pathExaminer = pathExaminer;
-        this.specialCaseRouteMap = getRouteMap;
+        this.router = router;
         this.html = html;
         this.rangeHeaderValueParser = rangeHeaderValueParser;
     }
 
     @Override
     public Response respond(AppConfig appConfig, Request request) throws IOException {
-        String requestPathString = request.getPathString();
 
-        if (specialCaseRouteMap.hasRoute(requestPathString)) {
-            Responder responderForRoute = specialCaseRouteMap.getResponderForRoute(requestPathString);
-            return responderForRoute.respond(appConfig, request);
+        if (router.canRespond(request)) {
+            return router.respond(appConfig, request);
         }
 
         Path root = appConfig.getRoot();
-        Path fullPath = pathExaminer.getFullPath(root, requestPathString);
+        Path fullPath = pathExaminer.getFullPath(root, request.getPathString());
 
         if (!pathExaminer.pathExists(fullPath)) {
             return new NotFoundResponse();
@@ -86,7 +87,7 @@ public class GetResponder implements Responder {
         return response;
     }
 
-    public boolean handles(String s) {
+    public boolean allows(Request request) {
         return true;
     }
 }

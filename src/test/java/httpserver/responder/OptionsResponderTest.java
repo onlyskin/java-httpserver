@@ -3,7 +3,7 @@ package httpserver.responder;
 import httpserver.AppConfig;
 import httpserver.Method;
 import httpserver.request.Request;
-import httpserver.ResponderSupplier;
+import httpserver.MethodResponderSupplier;
 import httpserver.header.Header;
 import httpserver.response.Response;
 import org.junit.Test;
@@ -14,33 +14,45 @@ import static org.mockito.Mockito.*;
 public class OptionsResponderTest {
     @Test
     public void responderHasListOfAllowedMethodsInAllowHeader() throws Exception {
-        Responder trueResponderMock = mock(Responder.class);
-        when(trueResponderMock.handles(any())).thenReturn(true);
-        Responder falseResponderMock = mock(Responder.class);
-        when(falseResponderMock.handles(any())).thenReturn(false);
+        MethodResponder getResponderMock = mock(GetResponder.class);
+        when(getResponderMock.allows(any())).thenReturn(true);
+        when(getResponderMock.getMethod()).thenReturn(Method.GET);
 
-        ResponderSupplier responderSupplier = new ResponderSupplier(mock(InvalidMethodResponder.class));
-        responderSupplier.registerResponder(Method.GET, trueResponderMock);
-        responderSupplier.registerResponder(Method.HEAD, trueResponderMock);
-        responderSupplier.registerResponder(Method.POST, falseResponderMock);
-        responderSupplier.registerResponder(Method.PUT, trueResponderMock);
-        responderSupplier.registerResponder(Method.PATCH, falseResponderMock);
-        responderSupplier.registerResponder(Method.DELETE, falseResponderMock);
-        responderSupplier.registerResponder(Method.OPTIONS, trueResponderMock);
+        MethodResponder headResponderMock = mock(HeadResponder.class);
+        when(headResponderMock.allows(any())).thenReturn(true);
+        when(headResponderMock.getMethod()).thenReturn(Method.HEAD);
 
-        Request request = new Request("OPTIONS", "", new Header[0], "");
+        MethodResponder putResponderMock = mock(PutResponder.class);
+        when(putResponderMock.allows(any())).thenReturn(false);
 
-        OptionsResponder optionsResponder = new OptionsResponder(responderSupplier);
+        MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier();
+        methodResponderSupplier.registerResponder(getResponderMock);
+        methodResponderSupplier.registerResponder(headResponderMock);
+        methodResponderSupplier.registerResponder(putResponderMock);
+
+        Request request = new Request(Method.OPTIONS, "", new Header[0], "");
+
+        OptionsResponder optionsResponder = new OptionsResponder(methodResponderSupplier);
         Response response = optionsResponder.respond(mock(AppConfig.class), request);
 
         assertEquals(200, response.getStatusCode());
-        assertEquals(new Header("Allow", "GET,HEAD,PUT,OPTIONS"), response.getHeaders()[0]);
+        assertEquals(new Header("Allow", "GET,HEAD"), response.getHeaders()[0]);
     }
 
     @Test
-    public void handlesForm() throws Exception {
+    public void allowsForm() throws Exception {
         OptionsResponder optionsResponder = new OptionsResponder(null);
-        assertTrue(optionsResponder.handles("/form"));
-        assertTrue(optionsResponder.handles("anything"));
+        assertTrue(optionsResponder.allows(new Request(null, "/form", null, null)));
+        assertTrue(optionsResponder.allows(new Request(null, "anything", null, null)));
+    }
+
+    @Test
+    public void onlyHandlesOPTIONS() throws Exception {
+        OptionsResponder optionsResponder = new OptionsResponder(null);
+        Request optionsRequest = new Request(Method.OPTIONS, "", null, "");
+        Request getRequest = new Request(Method.GET, "", null, "");
+
+        assertFalse(optionsResponder.handles(getRequest));
+        assertTrue(optionsResponder.handles(optionsRequest));
     }
 }

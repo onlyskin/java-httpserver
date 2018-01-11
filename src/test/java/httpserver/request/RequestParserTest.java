@@ -2,9 +2,8 @@ package httpserver.request;
 
 import httpserver.AppConfig;
 import httpserver.Logger;
+import httpserver.Method;
 import httpserver.header.Header;
-import httpserver.request.Request;
-import httpserver.request.RequestParser;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +38,7 @@ public class RequestParserTest {
     public void parsesMethodPathAndQueryString() throws Exception {
         Request request = requestParser.parse(inputStream);
 
-        assertEquals("GET", request.getMethodString());
+        assertEquals(Method.GET, request.getMethod());
         assertEquals("/text-file", request.getPathString());
         assertEquals("key1=value1%3C%2C%3F&key2=value2", request.getQueryString());
     }
@@ -80,4 +79,11 @@ public class RequestParserTest {
         verify(loggerMock).log("GET /text-file?key1=value1%3C%2C%3F&key2=value2 HTTP/1.1");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsIllegalArgumentExceptionWhenBadMethod() throws Exception {
+        String input = "ABCXYZ /text-file HTTP/1.1\r\n" +
+                "Host: 0.0.0.0:5000\r\n\r\n";
+        InputStream inputStream = new ByteArrayInputStream(input.getBytes());
+        requestParser.parse(inputStream);
+    }
 }

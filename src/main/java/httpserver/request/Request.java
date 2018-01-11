@@ -1,5 +1,6 @@
 package httpserver.request;
 
+import httpserver.Method;
 import httpserver.Parameter;
 import httpserver.header.Header;
 
@@ -7,17 +8,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Request {
-    private final String method;
+    private final Method method;
     private final String pathString;
     private final Header[] headers;
     private final String queryString;
     private final String body;
 
-    public Request(String method, String pathString, Header[] headers, String queryString) {
+    public Request(Method method, String pathString, Header[] headers, String queryString) {
         this(method, pathString, headers, queryString, "");
     }
 
-    public Request(String method, String pathString, Header[] headers, String queryString, String body) {
+    public Request(Method method, String pathString, Header[] headers, String queryString, String body) {
         this.method = method;
         this.pathString = pathString;
         this.headers = headers;
@@ -25,7 +26,7 @@ public class Request {
         this.body = body;
     }
 
-    public String getMethodString() {
+    public Method getMethod() {
         return method;
     }
 
