@@ -11,13 +11,13 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class MethodResponderSupplierTest {
+public class MethodRouteSupplierTest {
 
     private final GetResponder getResponderMock;
     private final MethodResponderSupplier methodResponderSupplier;
     private final PostResponder postResponderMock;
 
-    public MethodResponderSupplierTest() {
+    public MethodRouteSupplierTest() {
         getResponderMock = mock(GetResponder.class);
         postResponderMock = mock(PostResponder.class);
         methodResponderSupplier = new MethodResponderSupplier();

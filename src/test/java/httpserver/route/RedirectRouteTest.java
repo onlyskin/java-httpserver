@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -8,12 +8,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class RedirectResponderTest {
+public class RedirectRouteTest {
 
-    private final RedirectResponder redirectResponder;
+    private final RedirectRoute redirectResponder;
 
-    public RedirectResponderTest() {
-        redirectResponder = new RedirectResponder();
+    public RedirectRouteTest() {
+        redirectResponder = new RedirectRoute();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class RedirectResponderTest {
 
     @Test
     public void allowsRedirect() throws Exception {
-        assertTrue(redirectResponder.allows("/redirect"));
-        assertFalse(redirectResponder.allows("/other"));
+        assertTrue(redirectResponder.allows(new Request(null, "/redirect", null, null)));
+        assertFalse(redirectResponder.allows(new Request(null, "/other", null, null)));
     }
 }

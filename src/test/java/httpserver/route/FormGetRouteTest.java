@@ -1,4 +1,4 @@
-package httpserver.responder;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.Method;
@@ -16,8 +16,8 @@ import java.nio.file.Path;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class FormGetResponderTest {
-    private final FormGetResponder formGetResponder;
+public class FormGetRouteTest {
+    private final FormGetRoute formGetResponder;
     private final PathExaminer pathExaminerMock;
     private final FileOperator fileOperatorMock;
     private final Path rootMock;
@@ -26,7 +26,7 @@ public class FormGetResponderTest {
     private final AppConfig appConfigMock;
     private final String pathString;
 
-    public FormGetResponderTest() throws IOException {
+    public FormGetRouteTest() throws IOException {
         rootMock = mock(Path.class);
         pathString = "/form";
         fileContentsMock = "file contents mock".getBytes();
@@ -37,7 +37,7 @@ public class FormGetResponderTest {
         when(fileOperatorMock.readContents(fullPathMock)).thenReturn(fileContentsMock);
         appConfigMock = mock(AppConfig.class);
         when(appConfigMock.getRoot()).thenReturn(rootMock);
-        formGetResponder = new FormGetResponder(pathExaminerMock, fileOperatorMock);
+        formGetResponder = new FormGetRoute(pathExaminerMock, fileOperatorMock);
     }
     
     @Test
@@ -67,7 +67,7 @@ public class FormGetResponderTest {
 
     @Test
     public void allowsForm() throws Exception {
-        assertTrue(formGetResponder.allows("/form"));
-        assertFalse(formGetResponder.allows("/other"));
+        assertTrue(formGetResponder.allows(new Request(null, "/form", null, null)));
+        assertFalse(formGetResponder.allows(new Request(null, "/other", null, null)));
     }
 }

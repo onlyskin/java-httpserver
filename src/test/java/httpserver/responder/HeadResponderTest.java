@@ -8,6 +8,7 @@ import httpserver.file.PathExaminer;
 import httpserver.header.Header;
 import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
+import httpserver.route.Router;
 import org.junit.Test;
 
 import java.io.OutputStream;
@@ -37,9 +38,9 @@ public class HeadResponderTest {
 
         AppConfig appConfigMock = mock(AppConfig.class);
         when(appConfigMock.getRoot()).thenReturn(rootMock);
-        RouteMap routeMapMock = mock(RouteMap.class);
-        when(routeMapMock.hasRoute(any())).thenReturn(false);
-        HeadResponder headResponder = new HeadResponder(routeMapMock,
+        Router routerMock = mock(Router.class);
+        when(routerMock.canRespond(any())).thenReturn(false);
+        HeadResponder headResponder = new HeadResponder(routerMock,
                 pathExaminerMock,
                 mock(Html.class),
                 mock(RangeHeaderValueParser.class));

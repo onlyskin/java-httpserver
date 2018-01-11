@@ -1,4 +1,4 @@
-package httpserver.responder.special;
+package httpserver.route;
 
 import httpserver.AppConfig;
 import httpserver.request.Request;
@@ -12,12 +12,12 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class CookieResponderTest {
+public class CookieRouteTest {
 
-    private final CookieResponder cookieResponder;
+    private final CookieRoute cookieResponder;
 
-    public CookieResponderTest() {
-        cookieResponder = new CookieResponder();
+    public CookieRouteTest() {
+        cookieResponder = new CookieRoute();
     }
 
     @Test
@@ -35,7 +35,7 @@ public class CookieResponderTest {
 
     @Test
     public void allowsCookie() throws Exception {
-        assertTrue(cookieResponder.allows("/cookie"));
-        assertFalse(cookieResponder.allows("/other"));
+        assertTrue(cookieResponder.allows(new Request(null, "/cookie", null, null)));
+        assertFalse(cookieResponder.allows(new Request(null, "/other", null, null)));
     }
 }

@@ -5,7 +5,7 @@ import httpserver.file.Html;
 import httpserver.file.PathExaminer;
 import httpserver.header.RangeHeaderValueParser;
 import httpserver.responder.*;
-import httpserver.responder.special.*;
+import httpserver.route.*;
 
 public class ResponderSupplierFactory {
     public MethodResponderSupplier makeResponderSupplier() {
@@ -13,18 +13,18 @@ public class ResponderSupplierFactory {
 
         PathExaminer pathExaminer = new PathExaminer();
         FileOperator fileOperator = new FileOperator();
-        RouteMap routeMap = getRouteMap(pathExaminer, fileOperator);
+        Router router = getRouter(pathExaminer, fileOperator);
         Html html = new Html();
         RangeHeaderValueParser rangeHeaderValueParser = new RangeHeaderValueParser();
         Hasher hasher = new Hasher();
 
         methodResponderSupplier.registerResponder(new GetResponder(
-                routeMap,
+                router,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
         methodResponderSupplier.registerResponder(new HeadResponder(
-                routeMap,
+                router,
                 pathExaminer,
                 html,
                 rangeHeaderValueParser));
@@ -46,17 +46,17 @@ public class ResponderSupplierFactory {
         return methodResponderSupplier;
     }
 
-    private RouteMap getRouteMap(PathExaminer pathExaminer, FileOperator fileOperator) {
-        Responder[] responderList = new Responder[]{
-                new CoffeeResponder(),
-                new TeaResponder(),
-                new LogsResponder(),
-                new CookieResponder(),
-                new EatCookieResponder(),
-                new ParametersResponder(),
-                new FormGetResponder(pathExaminer, fileOperator),
-                new RedirectResponder(),
+    private Router getRouter(PathExaminer pathExaminer, FileOperator fileOperator) {
+        Route[] routeList = new Route[]{
+                new CoffeeRoute(),
+                new TeaRoute(),
+                new LogsRoute(),
+                new CookieRoute(),
+                new EatCookieRoute(),
+                new ParametersRoute(),
+                new FormGetRoute(pathExaminer, fileOperator),
+                new RedirectRoute(),
         };
-        return new RouteMap(responderList);
+        return new Router(routeList);
     }
 }

@@ -9,6 +9,8 @@ import httpserver.header.Header;
 import httpserver.request.Request;
 import httpserver.header.RangeHeaderValueParser;
 import httpserver.response.Response;
+import httpserver.route.Route;
+import httpserver.route.Router;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -22,19 +24,19 @@ public class GetResponderTest {
 
     private final GetResponder getResponder;
     private final AppConfig appConfigMock;
-    private final RouteMap routeMapMock;
+    private final Router routerMock;
     private final PathExaminer pathExaminerMock;
     private final Path rootMock;
     private final Html htmlMock;
     private final RangeHeaderValueParser rangeHeaderValueParserMock;
 
     public GetResponderTest() throws IOException {
-        routeMapMock = mock(RouteMap.class);
+        routerMock = mock(Router.class);
         pathExaminerMock = mock(PathExaminer.class);
 
         htmlMock = mock(Html.class);
         rangeHeaderValueParserMock = mock(RangeHeaderValueParser.class);
-        getResponder = new GetResponder(routeMapMock,
+        getResponder = new GetResponder(routerMock,
                 pathExaminerMock,
                 htmlMock,
                 rangeHeaderValueParserMock);
@@ -57,17 +59,17 @@ public class GetResponderTest {
     }
 
     @Test
-    public void ifPathInRouteMapGetsResponderAndCallsRespond() throws Exception {
-        Responder responderMock = mock(Responder.class);
-        when(routeMapMock.hasRoute("/example_route")).thenReturn(true);
-        when(routeMapMock.getResponderForRoute("/example_route")).thenReturn(responderMock);
-        Request request = new Request(Method.GET, "/example_route", new Header[0], "");
+    public void ifRouterCanRespondThenReturnsRouterRespond() throws Exception {
+        Response responseMock = mock(Response.class);
+        when(routerMock.canRespond(any())).thenReturn(true);
+        when(routerMock.respond(any(), any())).thenReturn(responseMock);
+        Request requestMock = mock(Request.class);
 
-        getResponder.respond(appConfigMock, request);
+        Response actual = getResponder.respond(appConfigMock, requestMock);
 
-        verify(routeMapMock).hasRoute("/example_route");
-        verify(routeMapMock).getResponderForRoute("/example_route");
-        verify(responderMock).respond(appConfigMock, request);
+        verify(routerMock).canRespond(requestMock);
+        verify(routerMock).respond(appConfigMock, requestMock);
+        assertEquals(responseMock, actual);
     }
 
     @Test
