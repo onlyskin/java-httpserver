@@ -30,7 +30,7 @@ public class RouterTest {
     }
 
     @Test
-    public void hasRouteTrueWhenARouteAllowsPath() throws Exception {
+    public void canRespondTrueWhenARouteAllowsPath() throws Exception {
         when(routeMock1.allows(any())).thenReturn(false);
         when(routeMock2.allows(any())).thenReturn(true);
 
@@ -38,21 +38,11 @@ public class RouterTest {
     }
 
     @Test
-    public void hasRouteFalseWhenNoRouteAllowsPath() throws Exception {
+    public void canRespondFalseWhenNoRouteAllowsPath() throws Exception {
         when(routeMock1.allows(any())).thenReturn(false);
         when(routeMock2.allows(any())).thenReturn(false);
 
         assertFalse(router.canRespond(null));
-    }
-
-    @Test
-    public void returnsRouteForRequest() throws Exception {
-        when(routeMock1.allows(any())).thenReturn(false);
-        when(routeMock2.allows(any())).thenReturn(true);
-
-        Route actual = router.routeForRequest(null);
-
-        assertEquals(actual, routeMock2);
     }
 
     @Test
@@ -69,10 +59,20 @@ public class RouterTest {
     }
 
     @Test
-    public void returns500WhenRouteRespondErrors() throws Exception {
+    public void returns500WhenRouteRespondThrowsIOException() throws Exception {
         when(routeMock1.allows(any())).thenReturn(false);
         when(routeMock2.allows(any())).thenReturn(true);
         when(routeMock2.respond(any(), any())).thenThrow(new IOException());
+
+        Response response = router.respond(appConfigMock, requestMock);
+
+        assertEquals(500, response.getStatusCode());
+    }
+
+    @Test
+    public void returns500WhenRouteRespondThrowsNullPointerException() throws Exception {
+        when(routeMock1.allows(any())).thenReturn(false);
+        when(routeMock2.allows(any())).thenReturn(false);
 
         Response response = router.respond(appConfigMock, requestMock);
 

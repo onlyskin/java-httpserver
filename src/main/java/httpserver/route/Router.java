@@ -24,7 +24,7 @@ public class Router {
         return false;
     }
 
-    public Route routeForRequest(Request request) {
+    private Route routeForRequest(Request request) {
         for (Route route : routes) {
             if (route.allows(request)) {
                 return route;
@@ -37,7 +37,7 @@ public class Router {
         Route route = routeForRequest(request);
         try {
             return route.respond(appConfig, request);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             return new ServerErrorResponse();
         }
     }
