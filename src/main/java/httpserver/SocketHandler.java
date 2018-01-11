@@ -43,10 +43,18 @@ public class SocketHandler implements Runnable {
 
         responseWriter.write(response);
 
+        closeStream();
+    }
+
+    private void closeStream() {
         try {
             inputStream.close();
         } catch (IOException e) {
-            appConfig.getLogger().log(e.toString());
+            try {
+                appConfig.getLogger().log(e.toString());
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 }

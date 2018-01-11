@@ -9,25 +9,21 @@ public class Logger {
     private final FileOperator fileOperator;
     private final Path logPath;
 
-    public Logger(Path logPath, FileOperator fileOperator) {
+    public Logger(Path logPath, FileOperator fileOperator) throws IOException {
         this.fileOperator = fileOperator;
         this.logPath = logPath;
         createFileIfDoesntExist(logPath);
     }
 
-    public void log(String logString) {
+    public void log(String logString) throws IOException {
         byte[] logBytes = (logString + "\r\n").getBytes();
-        try {
-            fileOperator.appendToFile(logPath, logBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        fileOperator.appendToFile(logPath, logBytes);
     }
 
     private void createFileIfDoesntExist(Path path) {
         try {
             fileOperator.createFileAtPath(path);
-        } catch (IOException e) {}
+        } catch (IOException e) { }
     }
 
     public byte[] readLog() throws IOException {

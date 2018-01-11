@@ -49,7 +49,7 @@ public class PatchResponder extends MethodResponder {
         return !request.hasHeader("If-Match");
     }
 
-    private boolean matchingHash(Path fullPath, Request request) {
+    private boolean matchingHash(Path fullPath, Request request) throws IOException {
         byte[] fileContents = pathExaminer.fileContents(fullPath);
         String ifMatchHash = request.getHeaderValue("If-Match");
         return hasher.matches(fileContents, ifMatchHash);

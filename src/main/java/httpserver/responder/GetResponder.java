@@ -56,7 +56,7 @@ public class GetResponder extends MethodResponder {
         return responseForFile(fullPath, request);
     }
 
-    private Response responseForDir(Path root, Path path) {
+    private Response responseForDir(Path root, Path path) throws IOException {
         Path[] paths = pathExaminer.directoryContents(path);
         String result = htmlLinksForContents(root, paths);
         return new OkResponse(result.getBytes());
@@ -70,7 +70,7 @@ public class GetResponder extends MethodResponder {
         return stringBuilder.toString();
     }
 
-    private Response responseForFile(Path path, Request request) {
+    private Response responseForFile(Path path, Request request) throws IOException {
         byte[] payload = pathExaminer.fileContents(path);
 
         Response response;

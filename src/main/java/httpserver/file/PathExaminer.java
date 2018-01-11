@@ -34,22 +34,15 @@ public class PathExaminer {
         return exists(path) && !isDirectory(path);
     }
 
-    public byte[] fileContents(Path file) {
-        try {
-            return readAllBytes(file);
-        } catch (IOException e) {
-            return new byte[0];
-        }
+    public byte[] fileContents(Path file) throws IOException {
+        return readAllBytes(file);
     }
 
-    public Path[] directoryContents(Path dir) {
+    public Path[] directoryContents(Path dir) throws IOException {
         List<Path> result = new ArrayList<>();
-        try (DirectoryStream<Path> stream = newDirectoryStream(dir)) {
-            for (Path entry: stream) {
-                result.add(entry);
-            }
-        } catch (IOException e) {
-            System.out.println("Couldn't retrieve directory contents for directory at " + dir.toString());
+        DirectoryStream<Path> stream = newDirectoryStream(dir);
+        for (Path entry: stream) {
+            result.add(entry);
         }
         return result.toArray(new Path[0]);
     }
