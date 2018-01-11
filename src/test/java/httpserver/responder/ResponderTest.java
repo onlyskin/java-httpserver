@@ -11,20 +11,20 @@ import java.io.IOException;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class GeneralResponderTest {
+public class ResponderTest {
 
     private final AppConfig appConfigMock;
     private final Request requestMock;
     private final MethodResponderSupplier methodResponderSupplierMock;
     private final MethodResponder methodResponderMock;
-    private final GeneralResponder generalResponder;
+    private final Responder responder;
 
-    public GeneralResponderTest() {
+    public ResponderTest() {
         appConfigMock = mock(AppConfig.class);
         requestMock = mock(Request.class);
         methodResponderSupplierMock = mock(MethodResponderSupplier.class);
         methodResponderMock = mock(MethodResponder.class);
-        generalResponder = new GeneralResponder(methodResponderSupplierMock);
+        responder = new Responder(methodResponderSupplierMock);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class GeneralResponderTest {
         when(methodResponderMock.allows(any(Request.class))).thenReturn(true);
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 
-        generalResponder.respond(appConfigMock, requestMock);
+        responder.respond(appConfigMock, requestMock);
 
         verify(methodResponderSupplierMock).supplyResponder(requestMock);
         verify(methodResponderMock).respond(appConfigMock, requestMock);
@@ -43,7 +43,7 @@ public class GeneralResponderTest {
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
         when(methodResponderMock.allows(any(Request.class))).thenReturn(false);
 
-        Response response = generalResponder.respond(appConfigMock, requestMock);
+        Response response = responder.respond(appConfigMock, requestMock);
 
         assertEquals(405, response.getStatusCode());
     }
@@ -52,7 +52,7 @@ public class GeneralResponderTest {
     public void returns405IfTheMethodSupplierThrowsAnException() throws Exception {
         when(methodResponderSupplierMock.supplyResponder(any())).thenThrow(new Exception());
 
-        Response response = generalResponder.respond(appConfigMock, requestMock);
+        Response response = responder.respond(appConfigMock, requestMock);
 
         assertEquals(405, response.getStatusCode());
     }
@@ -63,7 +63,7 @@ public class GeneralResponderTest {
         when(methodResponderMock.respond(any(), any())).thenThrow(new IOException());
         when(methodResponderSupplierMock.supplyResponder(any())).thenReturn(methodResponderMock);
 
-        Response response = generalResponder.respond(appConfigMock, requestMock);
+        Response response = responder.respond(appConfigMock, requestMock);
 
         assertEquals(500, response.getStatusCode());
     }

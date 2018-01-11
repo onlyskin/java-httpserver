@@ -9,10 +9,10 @@ import httpserver.response.ServerErrorResponse;
 
 import java.io.IOException;
 
-public class GeneralResponder {
+public class Responder {
     private final MethodResponderSupplier methodResponderSupplier;
 
-    public GeneralResponder(MethodResponderSupplier methodResponderSupplier) {
+    public Responder(MethodResponderSupplier methodResponderSupplier) {
         this.methodResponderSupplier = methodResponderSupplier;
     }
 

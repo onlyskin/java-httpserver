@@ -7,13 +7,13 @@ import httpserver.header.RangeHeaderValueParser;
 import httpserver.responder.*;
 import httpserver.route.*;
 
-public class ResponderSupplierFactory {
+public class MethodResponderSupplierFactory {
     public MethodResponderSupplier makeResponderSupplier() {
         MethodResponderSupplier methodResponderSupplier = new MethodResponderSupplier();
 
         PathExaminer pathExaminer = new PathExaminer();
         FileOperator fileOperator = new FileOperator();
-        Router router = getRouter(pathExaminer, fileOperator);
+        Router router = makeRouter(pathExaminer, fileOperator);
         Html html = new Html();
         RangeHeaderValueParser rangeHeaderValueParser = new RangeHeaderValueParser();
         Hasher hasher = new Hasher();
@@ -46,7 +46,7 @@ public class ResponderSupplierFactory {
         return methodResponderSupplier;
     }
 
-    private Router getRouter(PathExaminer pathExaminer, FileOperator fileOperator) {
+    private Router makeRouter(PathExaminer pathExaminer, FileOperator fileOperator) {
         Route[] routeList = new Route[]{
                 new CoffeeRoute(),
                 new TeaRoute(),
