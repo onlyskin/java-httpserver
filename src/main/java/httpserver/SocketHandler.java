@@ -50,11 +50,7 @@ public class SocketHandler implements Runnable {
         try {
             inputStream.close();
         } catch (IOException e) {
-            try {
-                appConfig.getLogger().log(e.toString());
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            appConfig.getLogger().log(e.toString());
         }
     }
 }
