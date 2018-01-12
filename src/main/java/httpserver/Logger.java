@@ -30,9 +30,7 @@ public class Logger {
     private void createFileIfDoesntExist(Path path) {
         try {
             fileOperator.createFileAtPath(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (IOException e) { }
     }
 
     public byte[] readLog() throws IOException {

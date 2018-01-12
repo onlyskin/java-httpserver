@@ -59,11 +59,4 @@ public class LoggerTest {
 
         verify(printStreamMock).print(any(Exception.class));
     }
-
-    @Test(expected = RuntimeException.class)
-    public void throwsRuntimeExceptionIfCantCreateLogFile() throws Exception {
-        doThrow(new IOException()).when(fileOperatorMock).createFileAtPath(any());
-
-        Logger logger = new Logger(logPath, fileOperatorMock, printStreamMock);
-    }
 }
