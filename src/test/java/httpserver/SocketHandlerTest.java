@@ -22,7 +22,6 @@ public class SocketHandlerTest {
     private final Path root;
     private final Path relativePath1;
     private final Path relativePath2;
-    private final Logger logger;
     private final AppConfig appConfig;
     private final AppConfig appConfigMock;
     private final InputStream inputStreamMock;
@@ -35,8 +34,8 @@ public class SocketHandlerTest {
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
-        logger = new Logger(root.resolve("logs"), new FileOperator(), System.err);
-        appConfig = new AppConfig(root, logger);
+        loggerMock = mock(Logger.class);
+        appConfig = new AppConfig(root, loggerMock);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));
         appConfigMock = mock(AppConfig.class);
@@ -46,7 +45,6 @@ public class SocketHandlerTest {
         responderMock = mock(Responder.class);
         responseMock = mock(Response.class);
         responseWriterMock = mock(ResponseWriter.class);
-        loggerMock = mock(Logger.class);
     }
 
     @Test
@@ -117,13 +115,13 @@ public class SocketHandlerTest {
     @Test
     public void writesRequestedDirContentsAsHtmlToOutputStreamForGET() throws Exception {
         String expectedBody = "<div><a href=\"/" + relativePath1 + "\">/" + relativePath1 + "</a></div>" +
-                "<div><a href=\"/" + relativePath2 + "\">/" + relativePath2 + "</a></div>" +
-                "<div><a href=\"/logs\">/logs</a></div>";
+                "<div><a href=\"/" + relativePath2 + "\">/" + relativePath2 + "</a></div>";
 
         byte[] request = ("GET / HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
 
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: " + expectedBody.length() + "\r\n\r\n" + expectedBody;
-        assertEquals(expected, stringOutputForRequestBytes(request));
+        String actual = stringOutputForRequestBytes(request);
+        assertTrue(actual.contains(expected));
     }
 
     @Test
