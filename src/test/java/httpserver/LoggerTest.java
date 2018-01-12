@@ -21,11 +21,13 @@ public class LoggerTest {
     private final Path logPath;
     private final Logger logger;
     private final PrintStream printStreamMock;
+    private final FileOperator fileOperatorMock;
 
     public LoggerTest() throws IOException {
         logPath = Paths.get(tempDir().toString(), "logs");
         printStreamMock = mock(PrintStream.class);
         logger = new Logger(logPath, new FileOperator(), printStreamMock);
+        fileOperatorMock = mock(FileOperator.class);
     }
 
     @Test
@@ -50,12 +52,18 @@ public class LoggerTest {
 
     @Test
     public void printsErrorToStdErrIfCantWriteToLog() throws Exception {
-        FileOperator fileOperatorMock = mock(FileOperator.class);
         doThrow(new IOException()).when(fileOperatorMock).appendToFile(any(), any());
         Logger logger = new Logger(logPath, fileOperatorMock, printStreamMock);
 
         logger.log("");
 
         verify(printStreamMock).print(any(Exception.class));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void throwsRuntimeExceptionIfCantCreateLogFile() throws Exception {
+        doThrow(new IOException()).when(fileOperatorMock).createFileAtPath(any());
+
+        Logger logger = new Logger(logPath, fileOperatorMock, printStreamMock);
     }
 }

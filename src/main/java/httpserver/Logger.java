@@ -11,7 +11,7 @@ public class Logger {
     private final Path logPath;
     private final PrintStream errorStream;
 
-    public Logger(Path logPath, FileOperator fileOperator, PrintStream errorStream) throws IOException {
+    public Logger(Path logPath, FileOperator fileOperator, PrintStream errorStream) {
         this.fileOperator = fileOperator;
         this.logPath = logPath;
         this.errorStream = errorStream;
@@ -30,7 +30,9 @@ public class Logger {
     private void createFileIfDoesntExist(Path path) {
         try {
             fileOperator.createFileAtPath(path);
-        } catch (IOException e) { }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public byte[] readLog() throws IOException {
