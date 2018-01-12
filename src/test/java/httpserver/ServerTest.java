@@ -15,7 +15,7 @@ public class ServerTest {
     private final ServerSocket serverSocketMock;
     private final Socket socket;
     private final AppConfig appConfigMock;
-    private Server server;
+    private final Server server;
     private final ExecutorService executorServiceMock;
     private final SocketHandler socketHandlerMock;
 
@@ -53,5 +53,16 @@ public class ServerTest {
         server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
 
         verify(executorServiceMock).submit(socketHandlerMock);
+    }
+
+    @Test
+    public void acceptConnectionLogsExceptionIfThereIsAnIoException() throws Exception {
+        when(serverSocketMock.accept()).thenThrow(new IOException());
+        Logger loggerMock = mock(Logger.class);
+        when(appConfigMock.getLogger()).thenReturn(loggerMock);
+
+        server.acceptConnection(executorServiceMock, socketHandlerFactoryMock);
+
+        verify(loggerMock).log(any());
     }
 }
