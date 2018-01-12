@@ -14,8 +14,7 @@ public class Hasher {
             byte[] hash = messageDigest.digest(input);
             return bytesToHex(hash);
         } catch (NoSuchAlgorithmException e) {
-            System.out.println("Unable to get hash.");
-            return "";
+            throw new RuntimeException(e);
         }
     }
 
