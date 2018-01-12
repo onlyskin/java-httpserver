@@ -14,14 +14,13 @@ public class Server {
         this.appConfig = appConfig;
     }
 
-    public void acceptConnection(ExecutorService executorService, SocketHandlerFactory socketHandlerFactory){
+    public void acceptConnection(ExecutorService executorService, SocketHandlerFactory socketHandlerFactory) {
         try {
             Socket clientSocket = serverSocket.accept();
             SocketHandler socketHandler = socketHandlerFactory.newSocketHandler(appConfig, clientSocket);
             executorService.submit(socketHandler);
         } catch (IOException e) {
-            System.out.println("Server socket error");
-            e.printStackTrace();
+            appConfig.getLogger().log(e.toString());
         }
     }
 }

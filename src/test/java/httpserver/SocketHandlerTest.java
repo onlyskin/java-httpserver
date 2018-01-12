@@ -22,28 +22,35 @@ public class SocketHandlerTest {
     private final Path root;
     private final Path relativePath1;
     private final Path relativePath2;
-    private final Logger logger;
     private final AppConfig appConfig;
+    private final AppConfig appConfigMock;
+    private final InputStream inputStreamMock;
+    private final Request requestMock;
+    private final RequestParser requestParserMock;
+    private final Responder responderMock;
+    private final Response responseMock;
+    private final ResponseWriter responseWriterMock;
+    private final Logger loggerMock;
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
-        logger = new Logger(root, new FileOperator());
-        appConfig = new AppConfig(root, logger);
+        loggerMock = mock(Logger.class);
+        appConfig = new AppConfig(root, loggerMock);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));
+        appConfigMock = mock(AppConfig.class);
+        inputStreamMock = mock(InputStream.class);
+        requestMock = mock(Request.class);
+        requestParserMock = mock(RequestParser.class);
+        responderMock = mock(Responder.class);
+        responseMock = mock(Response.class);
+        responseWriterMock = mock(ResponseWriter.class);
     }
 
     @Test
     public void callsInjectedPartsCorrectly() throws Exception {
-        AppConfig appConfigMock = mock(AppConfig.class);
-        InputStream inputStreamMock = mock(InputStream.class);
-        RequestParser requestParserMock = mock(RequestParser.class);
-        Request requestMock = mock(Request.class);
         when(requestParserMock.parse(inputStreamMock)).thenReturn(requestMock);
-        Responder responderMock = mock(Responder.class);
-        Response responseMock = mock(Response.class);
         when(responderMock.respond(appConfigMock, requestMock)).thenReturn(responseMock);
-        ResponseWriter responseWriterMock = mock(ResponseWriter.class);
 
         SocketHandler socketHandler = new SocketHandler(appConfigMock,
                 inputStreamMock,
@@ -60,10 +67,26 @@ public class SocketHandlerTest {
     }
 
     @Test
-    public void returns400ForMalformedRequestLine() throws Exception {
+    public void callsLogOnLoggerWhenInputStreamCloseThrowsException() throws Exception {
+        when(appConfigMock.getLogger()).thenReturn(loggerMock);
+        doThrow(new IOException()).when(inputStreamMock).close();
+
+        SocketHandler socketHandler = new SocketHandler(appConfigMock,
+                inputStreamMock,
+                requestParserMock,
+                responderMock,
+                responseWriterMock);
+
+        socketHandler.run();
+
+        verify(loggerMock).log(any());
+    }
+
+    @Test
+    public void returns500ForMalformedRequestLine() throws Exception {
         byte[] request = ("".getBytes());
 
-        String expected = "HTTP/1.1 400 Bad Request\r\nContent-Length: 0\r\n\r\n";
+        String expected = "HTTP/1.1 500 Internal Server Error\r\nContent-Length: 0\r\n\r\n";
         assertEquals(expected, stringOutputForRequestBytes(request));
     }
 
@@ -97,7 +120,8 @@ public class SocketHandlerTest {
         byte[] request = ("GET / HTTP/1.1\r\nHost: 127.0.0.1:5000\r\n\r\n").getBytes();
 
         String expected = "HTTP/1.1 200 OK\r\nContent-Length: " + expectedBody.length() + "\r\n\r\n" + expectedBody;
-        assertEquals(expected, stringOutputForRequestBytes(request));
+        String actual = stringOutputForRequestBytes(request);
+        assertTrue(actual.contains(expected));
     }
 
     @Test

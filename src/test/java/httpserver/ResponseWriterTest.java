@@ -9,16 +9,21 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ResponseWriterTest {
     private final ResponseWriter responseWriter;
     private final ByteArrayOutputStream outputStream;
+    private final Logger logger;
 
     public ResponseWriterTest() {
-        this.outputStream = new ByteArrayOutputStream();
-        this.responseWriter = new ResponseWriter(outputStream);
+        outputStream = new ByteArrayOutputStream();
+        logger = mock(Logger.class);
+        responseWriter = new ResponseWriter(outputStream, logger);
     }
 
     @Test
@@ -42,6 +47,18 @@ public class ResponseWriterTest {
 
         assertTrue(output.contains("example: header"));
         assertTrue(output.contains("Content-Length: 7"));
+    }
+
+    @Test
+    public void logsExceptionIfWritingThrowsException() throws Exception {
+        OutputStream outputStreamMock = mock(OutputStream.class);
+        doThrow(new IOException()).when(outputStreamMock).write(any());
+        ResponseWriter responseWriter = new ResponseWriter(outputStreamMock, logger);
+        Response response = new OkResponse("example".getBytes());
+
+        responseWriter.write(response);
+
+        verify(logger).log(any());
     }
 
     @Test

@@ -28,11 +28,20 @@ public class MethodRouteSupplierTest {
     @Test
     public void returnsResponderForMethod() throws Exception {
         Request request = new Request(Method.GET, null, null, null);
-        when(getResponderMock.handles(any())).thenReturn(true);
+        when(getResponderMock.handles(request)).thenReturn(true);
 
         MethodResponder methodResponder = methodResponderSupplier.supplyResponder(request);
 
         assertEquals(getResponderMock, methodResponder);
+    }
+
+    @Test(expected = Exception.class)
+    public void throwsErrorWhenNoResponderForRequestMethod() throws Exception {
+        Request request = new Request(Method.PUT, null, null, null);
+        when(getResponderMock.handles(request)).thenReturn(false);
+        when(postResponderMock.handles(request)).thenReturn(false);
+
+        methodResponderSupplier.supplyResponder(request);
     }
 
     @Test

@@ -7,7 +7,7 @@ public class UrlDecoder {
         try {
             return java.net.URLDecoder.decode(urlString, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            return urlString;
+            throw new RuntimeException(e);
         }
     }
 }

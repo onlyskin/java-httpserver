@@ -3,15 +3,18 @@ package httpserver;
 import httpserver.file.FileOperator;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Path;
 
 public class Logger {
     private final FileOperator fileOperator;
     private final Path logPath;
+    private final PrintStream errorStream;
 
-    public Logger(Path logPath, FileOperator fileOperator) {
+    public Logger(Path logPath, FileOperator fileOperator, PrintStream errorStream) {
         this.fileOperator = fileOperator;
         this.logPath = logPath;
+        this.errorStream = errorStream;
         createFileIfDoesntExist(logPath);
     }
 
@@ -20,14 +23,14 @@ public class Logger {
         try {
             fileOperator.appendToFile(logPath, logBytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            errorStream.print(e);
         }
     }
 
     private void createFileIfDoesntExist(Path path) {
         try {
             fileOperator.createFileAtPath(path);
-        } catch (IOException e) {}
+        } catch (IOException e) { }
     }
 
     public byte[] readLog() throws IOException {

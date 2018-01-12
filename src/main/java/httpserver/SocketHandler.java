@@ -3,9 +3,9 @@ package httpserver;
 import httpserver.request.Request;
 import httpserver.request.RequestParser;
 import httpserver.responder.Responder;
-import httpserver.response.BadRequestResponse;
 import httpserver.response.MethodNotAllowedResponse;
 import httpserver.response.Response;
+import httpserver.response.ServerErrorResponse;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,15 +38,19 @@ public class SocketHandler implements Runnable {
         } catch (IllegalArgumentException e) {
             response = new MethodNotAllowedResponse();
         } catch (Exception e) {
-            response = new BadRequestResponse();
+            response = new ServerErrorResponse();
         }
 
         responseWriter.write(response);
 
+        closeStream();
+    }
+
+    private void closeStream() {
         try {
             inputStream.close();
         } catch (IOException e) {
-            System.out.println("The inputStream could not be closed.");
+            appConfig.getLogger().log(e.toString());
         }
     }
 }
