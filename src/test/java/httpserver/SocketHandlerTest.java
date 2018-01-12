@@ -35,7 +35,7 @@ public class SocketHandlerTest {
 
     public SocketHandlerTest() throws IOException {
         root = tempDir();
-        logger = new Logger(root.resolve("logs"), new FileOperator(), System.out);
+        logger = new Logger(root.resolve("logs"), new FileOperator(), System.err);
         appConfig = new AppConfig(root, logger);
         relativePath1 = root.relativize(tempFileOptions(root, "aaa", "temp"));
         relativePath2 = root.relativize(tempFileOptions(root, "bbb", "temp"));

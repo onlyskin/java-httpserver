@@ -49,7 +49,7 @@ public class LoggerTest {
     }
 
     @Test
-    public void printsErrorToStdoutIfCantWriteToLog() throws Exception {
+    public void printsErrorToStdErrIfCantWriteToLog() throws Exception {
         FileOperator fileOperatorMock = mock(FileOperator.class);
         doThrow(new IOException()).when(fileOperatorMock).appendToFile(any(), any());
         Logger logger = new Logger(logPath, fileOperatorMock, printStreamMock);

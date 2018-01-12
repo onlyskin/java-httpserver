@@ -11,9 +11,11 @@ import java.util.HashMap;
 public class ResponseWriter {
     private final HashMap<Integer, String> statuses;
     private final OutputStream outputStream;
+    private final Logger logger;
 
-    public ResponseWriter(OutputStream outputStream) {
+    public ResponseWriter(OutputStream outputStream, Logger logger) {
         this.outputStream = outputStream;
+        this.logger = logger;
         this.statuses = new HashMap<>();
         statuses.put(200, "OK");
         statuses.put(204, "No Content");
@@ -35,7 +37,7 @@ public class ResponseWriter {
             writeEmptyLine();
             writePayload(response);
         } catch (IOException e) {
-            System.out.println("Error while writing to output stream.");
+            logger.log(e.toString());
         }
     }
 

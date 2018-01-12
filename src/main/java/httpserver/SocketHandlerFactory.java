@@ -14,7 +14,7 @@ public class SocketHandlerFactory {
                 clientSocket.getInputStream(),
                 new RequestParser(appConfig),
                 new Responder(new MethodResponderSupplierFactory().makeResponderSupplier()),
-                new ResponseWriter(clientSocket.getOutputStream()));
+                new ResponseWriter(clientSocket.getOutputStream(), appConfig.getLogger()));
     }
 
     public SocketHandler newSocketHandlerFromStreams(AppConfig appConfig, InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -22,6 +22,6 @@ public class SocketHandlerFactory {
                 inputStream,
                 new RequestParser(appConfig),
                 new Responder(new MethodResponderSupplierFactory().makeResponderSupplier()),
-                new ResponseWriter(outputStream));
+                new ResponseWriter(outputStream, appConfig.getLogger()));
     }
 }

@@ -16,7 +16,7 @@ public class App {
         PathExaminer pathExaminer = new PathExaminer();
         Path root = pathExaminer.getPath(fileDirectory);
         Path logPath = pathExaminer.concatenate(root,"logs");
-        AppConfig appConfig = new AppConfig(root, new Logger(logPath, new FileOperator(), System.out));
+        AppConfig appConfig = new AppConfig(root, new Logger(logPath, new FileOperator(), System.err));
 
         ServerFactory serverFactory = new ServerFactory(new ServerSocketFactory(), appConfig);
         SocketHandlerFactory socketHandlerFactory = new SocketHandlerFactory();

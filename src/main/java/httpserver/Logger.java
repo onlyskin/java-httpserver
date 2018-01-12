@@ -9,12 +9,12 @@ import java.nio.file.Path;
 public class Logger {
     private final FileOperator fileOperator;
     private final Path logPath;
-    private final PrintStream printStream;
+    private final PrintStream errorStream;
 
-    public Logger(Path logPath, FileOperator fileOperator, PrintStream printStream) throws IOException {
+    public Logger(Path logPath, FileOperator fileOperator, PrintStream errorStream) throws IOException {
         this.fileOperator = fileOperator;
         this.logPath = logPath;
-        this.printStream = printStream;
+        this.errorStream = errorStream;
         createFileIfDoesntExist(logPath);
     }
 
@@ -23,7 +23,7 @@ public class Logger {
         try {
             fileOperator.appendToFile(logPath, logBytes);
         } catch (IOException e) {
-            printStream.print(e);
+            errorStream.print(e);
         }
     }
 
